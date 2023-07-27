@@ -8,14 +8,14 @@
   right: -20px;
   padding: 6px;
 
-  background-color: var(--primary-bg);
-  border-radius: 8px;
   position: absolute;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
   width: 240px;
   height: 341px;
-  z-index: 101;
   color: #dadada;
+  background-color: $primary-bg;
+  border-radius: 8px;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+  z-index: 101;
 }
 .menu-list {
   width: 228px;
@@ -27,9 +27,10 @@
   position: relative;
   border-radius: 4px;
   list-style-type: none;
-}
-.header-dropdown-setting:hover {
-  background-color: $color-hover-item;
+
+  &:hover {
+    background-color: $color-hover-item;
+  }
 }
 .header-dropdown-setting button {
   @include flex();
@@ -59,24 +60,24 @@
 
 .line-separator {
   height: 1px;
-  background-color: var(--border-primary);
+  background-color: $border-primary;
   width: calc(100% - 24px);
   margin: 10px auto;
 }
 
 .footer {
-  color: var(--text-secondary);
-  font-size: 12px;
   margin-top: auto;
+  font-size: 12px;
+  color: $text-secondary;
 }
 .menu-list-footer {
-  padding: 0;
   width: 100%;
   margin: 0;
+  padding: 0;
   list-style: none;
 }
 .menu-list-footer li {
-  color: var(--text-secondary);
+  color: $text-secondary;
   line-height: normal;
   border-radius: 4px;
 }
@@ -84,20 +85,20 @@
   background-color: $color-hover-item;
 }
 .menu-list-footer li a {
-  padding: 12px 10px;
   height: 44px;
+  padding: 12px 10px;
+  font-size: 14px;
+  color: #ffffff80;
   display: flex;
   align-items: center;
-  font-size: 14px;
-  cursor: pointer;
-  color: #ffffff80;
   text-decoration: none;
+  cursor: pointer;
 }
 .icon-footer-left {
-  font-size: 16px;
   width: 20px;
   height: 20px;
   margin-right: 12px;
+  font-size: 16px;
 }
 .icon-footer-right {
   margin-left: auto;
@@ -110,7 +111,7 @@
   right: -8px;
   padding: 6px;
 
-  background-color: var(--primary-bg);
+  background-color: $primary-bg;
   border-radius: 8px;
   position: absolute;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
@@ -118,9 +119,7 @@
   height: 508px;
   z-index: 101;
   color: #dadada;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  @include flex($direction: column, $jutify: flex-start);
 
   & li {
     list-style-type: none;
@@ -134,15 +133,15 @@
 
 .song-transition-setting h3 {
   height: 40px;
-  font-weight: 700;
+  margin: 0;
+  padding: 0 2px;
   font-size: 16px;
+  font-weight: 700;
   line-height: 19px;
-  color: var(--text-primary);
+  color: $text-primary;
+  text-transform: none;
   display: flex;
   align-items: center;
-  padding: 0 2px;
-  text-transform: none;
-  margin: 0;
   gap: 8px;
 }
 .icon-plus {
@@ -165,8 +164,12 @@
     line-height: 20px;
     background-color: transparent;
     border: none;
-    color: #fff;
     padding: 0;
+    color: #dadada;
+
+    &:hover {
+      color: $text-item-hover;
+    }
   }
 
   & .duration-bar {
@@ -175,6 +178,7 @@
     background-color: transparent;
     display: flex;
     align-items: center;
+    opacity: 0.5;
 
     & div {
       width: 100%;
@@ -189,13 +193,18 @@
       );
       align-self: center;
     }
+
+    &:hover {
+      opacity: 1;
+    }
   }
   & .time-crossfade {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     margin: 8px 0 0 0;
+    @include flex();
   }
+}
+.crossfade-setting:hover {
+  color: $text-item-hover;
 }
 
 .gapless-setting {
@@ -212,26 +221,30 @@
     line-height: 20px;
     background-color: transparent;
     border: none;
-    color: #fff;
+    color: #dadada;
     display: flex;
     justify-content: flex-start;
     padding: 0;
+
+    &:hover {
+      color: $text-item-hover;
+    }
   }
 
   & h3 {
     height: 18px;
-    font-size: 12px;
-    line-height: 18px;
     margin-top: 4px;
-    color: var(--text-secondary);
+    font-size: 12px;
     font-weight: 400;
+    line-height: 18px;
+    color: $text-secondary;
   }
 }
 
-.line-separator {
+.ditmemay {
   width: 284px;
   height: 1px;
-  margin: 10px 12px;
+  background-color: $border-primary;
 }
 
 .quality-setting {
@@ -244,7 +257,7 @@
     height: 40px;
     @include text-style($weight: 700);
     line-height: 19px;
-    color: var(--text-primary);
+    color: $text-primary;
     display: flex;
     align-items: center;
     padding: 0 2px;
@@ -257,41 +270,127 @@
 
     & button {
       width: 288px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       height: 44px;
       border: none;
+      padding: 0;
+      color: $text-primary;
       background-color: transparent;
-      color: var(--text-primary);
+      @include flex($jutify: space-between);
+
+      & span:hover {
+        cursor: pointer;
+        color: $purple-primary;
+      }
+      & i {
+        cursor: pointer;
+      }
     }
   }
 }
 
-.featured-title {
-  height: 40px;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 19px;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  text-transform: none;
-  margin: 0;
+.more-setting {
+  width: 100%;
+  padding: 0 10px;
+
+  .featured-title {
+    height: 40px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    color: $text-primary;
+    display: flex;
+    align-items: center;
+    padding: 0 2px;
+    text-transform: none;
+    margin-bottom: 0;
+  }
+  & .last-btn {
+    width: 288px;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    line-height: 20px;
+    @include text-style($size: 1.4rem, $weight: 400, $color: #dadada);
+    @include flex($jutify: flex-start);
+
+    &:hover {
+      color: $text-item-hover;
+    }
+  }
 }
-.last-btn {
-  height: 44px;
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
-  padding: 0 12px;
-  background-color: transparent;
-  border: none;
-  color: var(--text-primary);
-}
+
 .hehe {
-  color: var(--purple-primary);
+  color: $purple-primary;
+}
+
+// giao dien menu
+.gd-menu {
+  line-height: normal;
+
+  top: -25px;
+  right: -15px;
+  padding: 6px;
+
+  position: absolute;
+  width: 320px;
+  height: 162px;
+  color: #dadada;
+  background-color: $primary-bg;
+  border-radius: 8px;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+  z-index: 101;
+}
+.theme-setting {
+  width: 308px;
+  height: 81px;
+  padding: 0 10px;
+  margin-bottom: 14px;
+
+  & .top-theme {
+    height: 17px;
+    @include flex($jutify: space-between);
+    color: #dadada;
+    padding: 5px;
+
+    &:hover {
+      color: #fff;
+      cursor: pointer;
+    }
+  }
+
+  & .content-theme {
+    width: 100%;
+    padding: 0;
+    margin-top: 8px;
+    @include flex($jutify: flex-start, $gap: 8px);
+    cursor: pointer;
+
+    & figure {
+      width: 86px;
+      height: 56px;
+      margin: 0;
+
+      & img {
+        width: 86px;
+        height: 56px;
+      }
+    }
+  }
+}
+
+.theme-footer {
+  padding: 0 10px;
+
+  & button {
+    border: none;
+    line-height: 20px;
+    @include text-style($size: 1.4rem, $color: #dadada, $weight: 400);
+    background-color: transparent;
+
+    &:hover {
+      color: #fff;
+    }
+  }
 }

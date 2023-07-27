@@ -2,18 +2,12 @@
 @import '../../../GlobalStyles/mixins.scss';
 
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  // position: fixed;
-  // left: 240px;
-  // top: 0;
-  // right: 0;
-  padding: 0 var(--padding-section);
+  @include flex($jutify: space-between);
   height: 70px;
-  z-index: 99;
   width: 100%;
   min-width: 660px;
+  z-index: 99;
+  padding: 0 var(--padding-section);
   transition: right 0.4s;
 }
 
@@ -34,31 +28,27 @@
 .wrapper {
   width: 100%;
   height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @include flex($jutify: space-between);
 }
 
 .left {
   flex-grow: 1;
+  height: 40px;
   margin-right: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  @include flex($jutify: flex-start);
   flex-basis: auto;
   flex-shrink: 0;
-  height: 40px;
 }
 .btn-back,
 .btn-forward {
   width: 44px;
   height: 24px;
-  background-color: transparent;
   border: none;
-  color: var(--layout-header-bg);
+  padding: 0;
+  color: $layout-header-bg;
+  background-color: transparent;
   opacity: 0.4;
   display: flex;
-  padding: 0;
 }
 .btn-back svg,
 .btn-forward svg {
@@ -73,7 +63,6 @@
   width: 440px;
   height: 40px;
   border-radius: 20px;
-  // background-color: var(--alpha-bg);
   background-color: $alpha-bg;
 }
 
@@ -113,7 +102,7 @@
   border: none;
   outline: none;
   font-size: 15px;
-  color: #fff;
+  color: $text-primary;
   user-select: none;
   position: relative;
 }
@@ -129,34 +118,29 @@
 }
 
 .right {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  gap: 11px;
+  @include flex($jutify: space-around, $gap: 11px);
 }
 
 // DOWNLOAD BTN
 .download-desktop-app {
-  height: 40px;
   width: 189.5px;
-  color: var(--purple-primary);
-  background-color: var(--alpha-bg);
+  height: 40px;
+  color: $purple-primary;
+  background-color: $alpha-bg;
   border-radius: 30px;
 }
 .download-desktop-icon {
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
+  @include flex($gap: 4px);
   font-weight: 700;
   cursor: pointer;
-  color: var(--link-text-hover);
+  color: $link-text-hover;
   text-decoration: none;
   user-select: none;
-}
-.download-desktop-icon:hover {
-  color: var(--purple-primary);
+
+  &:hover {
+    color: $purple-primary;
+  }
 }
 .download-desktop-icon i {
   padding-top: 5px;
@@ -164,10 +148,10 @@
 
 // Setting btn
 .setting-item {
-  padding: 0;
-  border: 0;
   width: 40px;
   height: 40px;
+  padding: 0;
+  border: 0;
   border-radius: 50%;
   position: relative;
 }
@@ -189,7 +173,7 @@
   right: -20px;
   padding: 6px;
 
-  background-color: var(--primary-bg);
+  background-color: $primary-bg;
   border-radius: 8px;
   position: absolute;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
@@ -215,15 +199,13 @@
   display: flex;
   align-items: center;
   width: 100%;
-  font-size: 14px;
   line-height: normal;
-  font-weight: 400;
   background-color: transparent;
   border: none;
   cursor: pointer;
   user-select: none;
-  color: inherit;
   word-break: normal;
+  @include text-style($size: 1.4rem, $color: inherit, $weight: 400);
 }
 .icon-play {
   font-size: 20px;
@@ -237,43 +219,42 @@
 }
 
 .line-separator {
-  height: 1px;
-  background-color: var(--border-primary);
   width: calc(100% - 24px);
+  height: 1px;
+  background-color: $border-primary;
   margin: 10px auto;
 }
 
 .footer {
-  color: var(--text-secondary);
+  color: $text-secondary;
   font-size: 12px;
   margin-top: auto;
 }
 .menu-list-footer {
-  padding: 0;
   width: 100%;
+  padding: 0;
   margin: 0;
   list-style: none;
 }
 .menu-list-footer li {
-  color: var(--text-secondary);
+  color: $text-secondary;
   line-height: normal;
   border-radius: 4px;
 }
 .menu-list-footer li a {
-  padding: 12px 10px;
   height: 44px;
+  padding: 12px 10px;
   display: flex;
   align-items: center;
-  font-size: 14px;
-  cursor: pointer;
-  color: #ffffff80;
+  @include text-style($size: 1.4rem, $color: #ffffff80);
   text-decoration: none;
+  cursor: pointer;
 }
 .icon-footer-left {
-  font-size: 16px;
   width: 20px;
   height: 20px;
   margin-right: 12px;
+  font-size: 16px;
 }
 .icon-footer-right {
   margin-left: auto;

@@ -1,30 +1,35 @@
 .wrapper {
-    width: 240px;
-    background-color: hsla(0, 0%, 100%, 0.05);
+  width: 240px;
+  background-color: hsla(0, 0%, 100%, 0.05);
 }
 
 .logo {
-    width: 240px;
-    height: 70px;
-    padding: 0 25px 0 28px;
-    display: flex;
-    align-items: center;
+  width: 240px;
+  height: 70px;
+  padding: 0 25px 0 28px;
+  display: flex;
+  align-items: center;
 }
 .votri {
-    height: 45.8px;
-    word-break: break-word;
+  height: 45.8px;
+  word-break: break-word;
 }
 .btn-logo {
-    display: inline-block;
-    line-height: 0;
-    border-radius: 0;
-    border: 0;
-    padding: 0;
-    background-color: transparent;
+  display: inline-block;
+  line-height: 0;
+  border-radius: 0;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
 }
 .zmp3-logo {
-    width: 120px;
-    height: 40px;
-    display: inline-block;
-    background: var(--img-logo-mp3) 50% / contain no-repeat;
+  width: 120px;
+  height: 40px;
+  display: inline-block;
+  background: var(--img-logo-mp3) 50% / contain no-repeat;
+
+  &:hover {
+    opacity: 0.9;
+    cursor: pointer;
+  }
 }
