@@ -11,6 +11,8 @@ import customIcon from '../../../UI/Icons/index';
 import Tippyy from '@tippyjs/react/headless';
 import SearchResult from './component/SearchResult';
 import MenuSetting from './component/MenuSetting';
+import avt from '~/img/dieuthuong.jpg';
+import UserOption from './component/UserOption';
 
 // import { NavLink, useNavigate } from 'react-router-dom';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,15 +21,15 @@ import MenuSetting from './component/MenuSetting';
 const cx = classNames.bind(styles);
 
 function Navbar() {
-  const [searchResult, setSearchResult] = useState([]);
+  // const [searchResult, setSearchResult] = useState([]);
   const [isFocus, setIsFocus] = useState(false);
 
   const inputElement = useRef();
 
   useEffect(() => {
-    setTimeout(() => {
-      setSearchResult([0]);
-    }, 0);
+    // setTimeout(() => {
+    //   setSearchResult([0]);
+    // }, 0);
   }, []);
 
   const handleInputBlur = (e) => {
@@ -80,7 +82,7 @@ function Navbar() {
         </div>
         <div className={cx('right')}>
           <div className={cx('download-desktop-app')}>
-            <a className={cx('download-desktop-icon')} href="https://zingmp3.vn/">
+            <a className={cx('download-desktop-icon')} target="_blank" rel="noreferrer" href="https://zingmp3.vn/">
               <customIcon.DownloadIcon />
               <span>Tải bản Windows</span>
             </a>
@@ -95,12 +97,20 @@ function Navbar() {
               </Tippy>
             </div>
           </Tippyy>
-          <div className={cx('user-setting')}>
-            <img
-              src="https://scontent.fhan2-4.fna.fbcdn.net/v/t39.30808-6/323887630_3454673894768857_3681784209111605314_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=BzQqv_DRf04AX9sPZ-h&_nc_oc=AQmae6eTzkmzXi0TyGvrFfELgUtA5RBNkW2zs7Cl4AsaZ-4rQwqQipv4iYADwApC7X4&_nc_ht=scontent.fhan2-4.fna&oh=00_AfCvVbgXbcIA_tFKuq7HY28B9EbozWm9eQ1vPYN4dQbv5Q&oe=64BB0C6B"
-              alt="avt"
-            />
-          </div>
+
+          <Tippyy
+            interactive
+            trigger="click"
+            render={(attrs) => (
+              <div className={cx('user-setting-menu')} tabIndex="-1" {...attrs}>
+                <UserOption />
+              </div>
+            )}
+          >
+            <div className={cx('user-setting')}>
+              <img src={avt} alt="dieuthuong" />
+            </div>
+          </Tippyy>
         </div>
       </div>
     </header>
