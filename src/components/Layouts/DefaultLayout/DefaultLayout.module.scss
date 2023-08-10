@@ -12,11 +12,13 @@
   right: 0;
   left: 0;
   height: 90px;
+  width: 100vw;
   min-width: 768px;
   padding: 0 20px;
   border-top: 1px solid hsla(0, 0%, 100%, 0.1);
   background-color: #130c1c;
   background-image: var(miniplayer-bg-img);
+  @include flex();
 }
 
 .inner {

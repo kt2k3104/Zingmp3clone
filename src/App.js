@@ -6,39 +6,56 @@ import './App.scss';
 
 import { publicRoutes } from '~/routes';
 import { DefaultLayout } from '~/components/Layouts';
+// import { useDispatch } from 'react-redux';
+// import { getSongs } from './components/Layouts/DefaultLayout/Listen/ListenSlice';
 
 function App() {
-    return (
-        <Router>
-            <div className="App">
-                <Routes>
-                    {publicRoutes.map((route, index) => {
-                        const Page = route.component;
+  //   const dispatch = useDispatch();
+  //   console.log('APP');
 
-                        let Layout = DefaultLayout;
+  //   useEffect(() => {
+  //     console.log('vao chua?');
+  //     const handleGetSongs = async () => {
+  //       try {
+  //         await dispatch(getSongs()).unwrap();
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     };
+  //     handleGetSongs();
+  //   }, [dispatch]);
 
-                        if (route.layout) {
-                            Layout = route.layout;
-                        } else if (route.layout === null) {
-                            Layout = Fragment;
-                        }
+  return (
+    <Router>
+      <div className="App">
+        <Routes>
+          {publicRoutes.map((route, index) => {
+            const Page = route.component;
 
-                        return (
-                            <Route
-                                key={index}
-                                path={route.path}
-                                element={
-                                    <Layout>
-                                        <Page />
-                                    </Layout>
-                                }
-                            />
-                        );
-                    })}
-                </Routes>
-            </div>
-        </Router>
-    );
+            let Layout = DefaultLayout;
+
+            if (route.layout) {
+              Layout = route.layout;
+            } else if (route.layout === null) {
+              Layout = Fragment;
+            }
+
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
+          })}
+        </Routes>
+      </div>
+    </Router>
+  );
 }
 
 export default App;

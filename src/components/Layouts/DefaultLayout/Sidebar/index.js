@@ -7,10 +7,22 @@ import customIcon from '~/components/UI/Icons';
 import { faCirclePlay } from '@fortawesome/free-regular-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import PlaylistItem from './component/PlaylistItem';
+import { useRef, useState } from 'react';
 
 const cx = classNames.bind(styles);
 
 function Sidebar() {
+  const [isScrollTop, setIsScrollTop] = useState(false);
+
+  const hiddenDivElement = useRef();
+
+  const handleScroll = (e) => {
+    const scrollTop = e.target.scrollTop;
+    console.log(scrollTop);
+    if (scrollTop > 0) setIsScrollTop(true);
+    else setIsScrollTop(false);
+  };
+
   return (
     <aside className={cx('wrapper')}>
       <div className={cx('logo')}>
@@ -80,7 +92,7 @@ function Sidebar() {
         </NavLink>
       </div>
       <div className={cx('divide')}></div>
-      <div className={cx('option')}>
+      <div onScroll={handleScroll} className={cx('option', isScrollTop ? 'is-mark' : '')}>
         <NavLink
           className={({ isActive, isPending }) => {
             if (isActive) return cx('isActive');
@@ -185,7 +197,7 @@ function Sidebar() {
             if (isActive) return cx('noactive');
             if (isPending) return cx('isPending');
 
-            return cx('item');
+            return cx('item', 'mb16');
           }}
           to={'/mymusic/song/upload'}
         >
@@ -194,10 +206,14 @@ function Sidebar() {
         </NavLink>
         <div className={cx('divide')}></div>
         <ul className={cx('menu-playlist')}>
-          <PlaylistItem>Playlist 1</PlaylistItem>
+          <PlaylistItem isScrollTop={isScrollTop}>Playlist 1</PlaylistItem>
           <PlaylistItem>Playlist 2</PlaylistItem>
           <PlaylistItem>Playlist 3</PlaylistItem>
           <PlaylistItem>Playlist 4</PlaylistItem>
+          <PlaylistItem>Playlist 4</PlaylistItem>
+          <PlaylistItem>Playlist 4</PlaylistItem>
+          <PlaylistItem>Playlist 4</PlaylistItem>
+          <div ref={hiddenDivElement}></div>
         </ul>
       </div>
       <div className={cx('add-new-playlist')}>

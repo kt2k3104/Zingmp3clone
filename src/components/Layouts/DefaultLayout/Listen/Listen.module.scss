@@ -1,0 +1,9 @@
+@import '../../../GlobalStyles/valiables.scss';
+@import '../../../GlobalStyles/mixins.scss';
+
+.player-controls {
+  width: 100%;
+  @include flex($jutify: space-between);
+  cursor: pointer;
+  user-select: none;
+}
