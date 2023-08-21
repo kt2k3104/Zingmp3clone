@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react';
 import styles from './PlayerControlCenter.module.scss';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,33 +7,27 @@ import { Slider, SliderTrack, SliderFilledTrack, SliderThumb } from '@chakra-ui/
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  changeRandom,
   nextSong,
   noRepeat,
   pauseSong,
   playSong,
   prevSong,
+  randomOff,
+  randomOn,
   repeatAll,
   repeatOne,
 } from '../../ListenSlice';
 
 const cx = classNames.bind(styles);
 
-function PlayerControlCenter() {
+function PlayerControlCenter({ audioRef, progress, duration, setDuration, setProgress, setIsChange }) {
   const dispatch = useDispatch();
-  const { isRepeat, isRandom, currentSong, isPlaying } = useSelector((state) => state.listen);
-  const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [isChange, setIsChange] = useState(false);
-  const audioRef = useRef();
-
-  const handleOnTimeUpdate = function (e) {
-    if (!isChange) {
-      setProgress(e.target.currentTime);
-    }
-  };
+  const { isRepeat, isRandom, isPlaying } = useSelector((state) => state.listen);
 
   const handleOnChange = function (value) {
+    if (!duration) {
+      setDuration(audioRef.current.duration);
+    }
     const currentTime = (value * duration) / 100;
     setProgress(currentTime);
   };
@@ -49,31 +42,36 @@ function PlayerControlCenter() {
     setIsChange(false);
   };
 
-  useEffect(() => {
-    setDuration(audioRef.current.duration);
-  }, []);
-
-  useEffect(() => {
-    if (isPlaying) audioRef.current.play();
-    else audioRef.current.pause();
-  }, [isPlaying]);
+  const convertTime = (time) => {
+    if (!time) return '00:00';
+    let minutes = Math.floor(time / 60);
+    let seconds = Math.floor(time - minutes * 60);
+    if (minutes < 10) {
+      minutes = '0' + minutes;
+    }
+    if (seconds < 10) {
+      seconds = '0' + seconds;
+    }
+    return `${minutes}:${seconds}`;
+  };
 
   return (
     <div className={cx('center')}>
       <div className={cx('actions')}>
-        {isRandom ? (
+        {isRandom && (
           <button
             onClick={() => {
-              dispatch(changeRandom());
+              dispatch(randomOff());
             }}
             className={cx('action-btn')}
           >
             <FontAwesomeIcon className={cx('random-on')} icon={faShuffle} />
           </button>
-        ) : (
+        )}
+        {!isRandom && (
           <button
             onClick={() => {
-              dispatch(changeRandom());
+              dispatch(randomOn());
             }}
             className={cx('action-btn')}
           >
@@ -94,7 +92,6 @@ function PlayerControlCenter() {
           <FontAwesomeIcon
             className={cx('play-pause')}
             onClick={() => {
-              console.log('pause');
               dispatch(pauseSong());
             }}
             icon={faCirclePause}
@@ -104,7 +101,6 @@ function PlayerControlCenter() {
           <FontAwesomeIcon
             className={cx('play-pause')}
             onClick={() => {
-              console.log('play');
               dispatch(playSong());
             }}
             icon={faCirclePlay}
@@ -150,11 +146,11 @@ function PlayerControlCenter() {
         )}
       </div>
       <div className={cx('duration-item')}>
-        <span className={cx('time-left')}>00:00</span>
+        <span className={cx('time-left')}>{convertTime(progress)}</span>
         <Slider
           aria-label="slider-ex-1"
           defaultValue={0}
-          h={'5px'}
+          h={'10px'}
           p={'2px'}
           role="group"
           value={(progress / duration) * 100 || 0}
@@ -179,16 +175,8 @@ function PlayerControlCenter() {
             _groupActive={{ display: 'block' }}
           />
         </Slider>
-        <span className={cx('time-right')}>00:00</span>
+        <span className={cx('time-right')}>{convertTime(duration)}</span>
       </div>
-      <audio
-        onTimeUpdate={handleOnTimeUpdate}
-        id="audio"
-        src={
-          'https://firebasestorage.googleapis.com/v0/b/musicplayer-rnb.appspot.com/o/songs%2FY%C3%AAu%205%20(Masew%20Mix).mp3?alt=media&token=2ede9532-604c-4218-b22f-7d296d380d2d'
-        }
-        ref={audioRef}
-      ></audio>
     </div>
   );
 }

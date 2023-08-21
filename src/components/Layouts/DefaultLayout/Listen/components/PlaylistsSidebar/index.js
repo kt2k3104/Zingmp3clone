@@ -3,7 +3,7 @@ import styles from './PlaylistsSidebar.module.scss';
 import classNames from 'classnames/bind';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Tippy from '@tippyjs/react';
 
 import SongItem from '../SongItem';
@@ -17,8 +17,6 @@ function PlaylistsSidebar({ showPlaylists }) {
   const [isActiveDSP, setIsActiveDSP] = useState(true);
   const [isActiveNGD, setIsActiveNGD] = useState(false);
 
-  console.log('render');
-
   const handleSelectDSP = (e) => {
     setIsActiveDSP(true);
     setIsActiveNGD(false);
@@ -28,16 +26,20 @@ function PlaylistsSidebar({ showPlaylists }) {
     setIsActiveNGD(true);
   };
 
-  const PlaylistsElement = useRef();
-
   return (
-    <div ref={PlaylistsElement} className={cx('wrapper', showPlaylists ? 'show-playlist' : '')}>
+    <div className={cx('wrapper', showPlaylists ? 'show-playlist' : '')}>
       <div className={cx('header')}>
         <div>
-          <button onClick={handleSelectDSP} className={cx('btn-left', isActiveDSP ? 'is-active' : 'no-active')}>
+          <button
+            onClick={handleSelectDSP}
+            className={cx('btn-left', isActiveDSP ? 'is-active' : 'no-active')}
+          >
             Danh sách phát
           </button>
-          <button onClick={handleSelectNGD} className={cx('btn-right', isActiveNGD ? 'is-active' : 'no-active')}>
+          <button
+            onClick={handleSelectNGD}
+            className={cx('btn-right', isActiveNGD ? 'is-active' : 'no-active')}
+          >
             Nghe gần đây
           </button>
         </div>
@@ -53,9 +55,13 @@ function PlaylistsSidebar({ showPlaylists }) {
         </Tippy>
       </div>
       <div className={cx('content')}>
-        {queue.map((song) => {
-          return <SongItem key={song.id} song={song} />;
-        })}
+        {isActiveDSP && queue.length === 0 && 'chua co bai hat'}
+        {isActiveDSP &&
+          queue.length !== 0 &&
+          queue.map((song) => {
+            return <SongItem key={song.id} song={song} />;
+          })}
+        {isActiveNGD && 'chua co du lieu'}
       </div>
     </div>
   );

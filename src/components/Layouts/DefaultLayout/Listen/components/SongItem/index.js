@@ -5,12 +5,12 @@ import { faHeart as faHeartt } from '@fortawesome/free-regular-svg-icons';
 import { faEllipsis, faHeart, faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { changeFavoriteSong, pauseSong, playSong, setCurrentSong } from '../../ListenSlice';
+import { handleChangeFavoriteSong, pauseSong, playSong, setCurrentSong } from '../../ListenSlice';
 
 const cx = classNames.bind(styles);
 
 function SongItem({ song }) {
-  const { isPlaying, currentSong } = useSelector((state) => state.listen);
+  const { isPlaying, currentSong, favoriteId } = useSelector((state) => state.listen);
   const dispatch = useDispatch();
 
   return (
@@ -20,27 +20,38 @@ function SongItem({ song }) {
           <div
             className={cx('song-thumb')}
             onClick={() => {
-              dispatch(setCurrentSong(song));
-              dispatch(playSong());
-              if (song.id === currentSong.id && isPlaying) dispatch(pauseSong());
-              else dispatch(playSong());
+              if (song.id === currentSong.id && isPlaying) {
+                dispatch(pauseSong());
+              } else if (song.id === currentSong.id && !isPlaying) {
+                dispatch(playSong());
+              } else if (song.id !== currentSong.id) {
+                dispatch(setCurrentSong(song));
+                dispatch(playSong());
+              }
             }}
           >
-            <img src={currentSong.thumb} alt="img" />
-            <div className={cx('song-thumb-active')}>
-              {isPlaying ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
-            </div>
+            <img src={song?.artwork} alt="img" />
+            {currentSong === song && (
+              <div className={cx('song-thumb-active')}>
+                {isPlaying ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
+              </div>
+            )}
+            {currentSong !== song && (
+              <div className={cx('song-thumb-active')}>
+                <FontAwesomeIcon icon={faPlay} />
+              </div>
+            )}
           </div>
           <div className={cx('card-info')}>
             <span>{song.name}</span>
-            <h3>{song.author}</h3>
+            <h3>{song.artist}</h3>
           </div>
         </div>
         <div className={cx('right')}>
-          {song.isFavorite ? (
+          {favoriteId.includes(song.id) ? (
             <button
               onClick={() => {
-                dispatch(changeFavoriteSong(song));
+                dispatch(handleChangeFavoriteSong(song.id));
               }}
             >
               <FontAwesomeIcon
@@ -51,7 +62,7 @@ function SongItem({ song }) {
           ) : (
             <button
               onClick={() => {
-                dispatch(changeFavoriteSong(song));
+                dispatch(handleChangeFavoriteSong(song.id));
               }}
             >
               <FontAwesomeIcon icon={faHeartt} />

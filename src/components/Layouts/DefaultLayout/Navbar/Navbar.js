@@ -2,7 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Navbar.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight, faClose, faGear, faSearch } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowLeft,
+  faArrowRight,
+  faClose,
+  faGear,
+  faSearch,
+} from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
@@ -11,20 +17,19 @@ import customIcon from '../../../UI/Icons/index';
 import Tippyy from '@tippyjs/react/headless';
 import SearchResult from './component/SearchResult';
 import MenuSetting from './component/MenuSetting';
-import avt from '~/img/dieuthuong.jpg';
 import UserOption from './component/UserOption';
 
-// import { NavLink, useNavigate } from 'react-router-dom';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faUser } from '@fortawesome/free-solid-svg-icons';
-
+import avt from '~/img/dieuthuong.jpg';
 const cx = classNames.bind(styles);
 
 function Navbar() {
-  // const [searchResult, setSearchResult] = useState([]);
   const [isFocus, setIsFocus] = useState(false);
 
   const inputElement = useRef();
+
+  const [visible, setVisible] = useState(false);
+  const show = () => setVisible(true);
+  const hide = () => setVisible(false);
 
   useEffect(() => {
     // setTimeout(() => {
@@ -52,7 +57,11 @@ function Navbar() {
             <FontAwesomeIcon icon={faArrowRight} />
           </button>
           <form>
-            <Tippyy interactive={true} visible={isFocus} render={(attrs) => <SearchResult {...attrs} />}>
+            <Tippyy
+              interactive={true}
+              visible={isFocus}
+              render={(attrs) => <SearchResult {...attrs} />}
+            >
               <div
                 onFocus={handleInputFocus}
                 onBlur={handleInputBlur}
@@ -82,7 +91,12 @@ function Navbar() {
         </div>
         <div className={cx('right')}>
           <div className={cx('download-desktop-app')}>
-            <a className={cx('download-desktop-icon')} target="_blank" rel="noreferrer" href="https://zingmp3.vn/">
+            <a
+              className={cx('download-desktop-icon')}
+              target="_blank"
+              rel="noreferrer"
+              href="https://zingmp3.vn/"
+            >
               <customIcon.DownloadIcon />
               <span>Tải bản Windows</span>
             </a>
@@ -100,14 +114,15 @@ function Navbar() {
 
           <Tippyy
             interactive
-            trigger="click"
+            visible={visible}
+            onClickOutside={hide}
             render={(attrs) => (
               <div className={cx('user-setting-menu')} tabIndex="-1" {...attrs}>
-                <UserOption />
+                <UserOption hide={hide} />
               </div>
             )}
           >
-            <div className={cx('user-setting')}>
+            <div onClick={visible ? hide : show} className={cx('user-setting')}>
               <img src={avt} alt="dieuthuong" />
             </div>
           </Tippyy>

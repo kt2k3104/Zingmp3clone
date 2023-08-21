@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styles from './PlayerControlRight.module.scss';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,13 +11,32 @@ import customIcon from '~/components/UI//Icons';
 
 const cx = classNames.bind(styles);
 
-function PlayerControlRight({ handleClickBtnPlaylists, isOpenPlaylists }) {
+function PlayerControlRight({ handleClickBtnPlaylists, isOpenPlaylists, audioRef }) {
   const [isHasVolume, setIsHasVolume] = useState(true);
+  const [volume, setVolume] = useState(50);
+  const lastValue = useRef(50);
 
   const handleClickBtnVolume = (e) => {
     if (isHasVolume === true) {
+      console.log('hehe');
       setIsHasVolume(false);
-      Slider.Root.value = [0];
+      setVolume(0);
+      audioRef.current.volume = 0;
+    } else {
+      console.log('hihi');
+      setIsHasVolume(true);
+      setVolume(lastValue.current);
+      audioRef.current.volume = lastValue.current / 100;
+    }
+  };
+
+  const handleChangeValue = (value) => {
+    if (value !== 0) lastValue.current = volume;
+    audioRef.current.volume = value / 100;
+    setVolume(value);
+
+    if (value === 0) {
+      setIsHasVolume(false);
     } else setIsHasVolume(true);
   };
 
@@ -50,7 +69,16 @@ function PlayerControlRight({ handleClickBtnPlaylists, isOpenPlaylists }) {
             <FontAwesomeIcon icon={faVolumeTimes} />
           </button>
         )}
-        <Slider aria-label="slider-ex-1" defaultValue={30} w={'70px'} h={'5px'} p={'2px'} role="group">
+        <Slider
+          aria-label="slider-ex-1"
+          defaultValue={70}
+          w={'70px'}
+          h={'10px'}
+          p={'2px'}
+          role="group"
+          value={volume}
+          onChange={handleChangeValue}
+        >
           <SliderTrack
             h={'3px'}
             bg={'hsla(0, 0%, 100%, 0.3)'}

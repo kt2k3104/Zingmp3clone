@@ -1,29 +1,36 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
+import { publicRoutes } from '~/routes';
+import { useDispatch } from 'react-redux';
 
 import './App.scss';
 
-import { publicRoutes } from '~/routes';
 import { DefaultLayout } from '~/components/Layouts';
-// import { useDispatch } from 'react-redux';
-// import { getSongs } from './components/Layouts/DefaultLayout/Listen/ListenSlice';
+import { getSongs } from './components/Layouts/DefaultLayout/Listen/ListenSlice';
+import { setLogin } from './page/Auth/UserSlice';
 
 function App() {
-  //   const dispatch = useDispatch();
-  //   console.log('APP');
+  const dispatch = useDispatch();
 
-  //   useEffect(() => {
-  //     console.log('vao chua?');
-  //     const handleGetSongs = async () => {
-  //       try {
-  //         await dispatch(getSongs()).unwrap();
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     };
-  //     handleGetSongs();
-  //   }, [dispatch]);
+  useEffect(() => {
+    const handleGetSongs = async () => {
+      try {
+        await dispatch(getSongs()).unwrap();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    handleGetSongs();
+
+    const handleCheckedUserLogin = () => {
+      if (localStorage.getItem('user_data')) {
+        const userData = JSON.parse(localStorage.getItem('user_data'));
+        dispatch(setLogin(userData));
+      }
+    };
+    handleCheckedUserLogin();
+  }, [dispatch]);
 
   return (
     <Router>

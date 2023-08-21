@@ -11,20 +11,24 @@ import Playlist from '~/page/Playlist';
 import Album from '~/page/Album';
 import DaTaiLen from '~/page/DaTaiLen';
 
+import Auth from '~/page/Auth';
+
 // Public routes
 const publicRoutes = [
-    { path: '/', component: KhamPha },
-    { path: '/zingchart', component: Zingchart },
-    { path: '/radio', component: Radio },
-    { path: '/mymusic', component: ThuVien },
-    { path: '/moi-phat-hanh', component: BXHNhacMoi },
-    { path: '/hub', component: ChuDeVaTheLoai },
-    { path: '/top100', component: Top100 },
-    { path: '/mymusic/history', component: NgheGanDay },
-    { path: '/mymusic/song/favorite', component: BaiHatYeuThich },
-    { path: '/mymusic/library/playlist', component: Playlist },
-    { path: '/mymusic/album', component: Album },
-    { path: '/mymusic/song/upload', component: DaTaiLen },
+  { path: '/', component: KhamPha },
+  { path: '/zingchart', component: Zingchart },
+  { path: '/radio', component: Radio },
+  { path: '/mymusic', component: ThuVien },
+  { path: '/moi-phat-hanh', component: BXHNhacMoi },
+  { path: '/hub', component: ChuDeVaTheLoai },
+  { path: '/top100', component: Top100 },
+  { path: '/mymusic/history', component: NgheGanDay },
+  { path: '/mymusic/song/favorite', component: BaiHatYeuThich },
+  { path: '/mymusic/library/playlist', component: Playlist },
+  { path: '/mymusic/album', component: Album },
+  { path: '/mymusic/song/upload', component: DaTaiLen },
+
+  { path: '/auth', component: Auth },
 ];
 
 const privateRoutes = [];
