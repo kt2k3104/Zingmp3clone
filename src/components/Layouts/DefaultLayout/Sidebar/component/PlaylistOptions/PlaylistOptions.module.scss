@@ -1,37 +1,6 @@
 @import '../../../../../GlobalStyles/valiables.scss';
 @import '../../../../../GlobalStyles/mixins.scss';
 
-.playlist-item {
-  height: 32px;
-  cursor: pointer;
-  @include flex($jutify: space-between);
-
-  & span {
-  }
-
-  & button {
-    width: 24px;
-    height: 24px;
-    background-color: transparent;
-    border: none;
-    padding-bottom: 10px;
-    @include text-style($weight: 600, $color: #dadada);
-    opacity: 0;
-
-    &:hover {
-      background-color: $color-hover-item;
-      border-radius: 50%;
-    }
-  }
-
-  &:hover > button {
-    opacity: 1;
-  }
-
-  &:hover {
-    color: #fff;
-  }
-}
 .playlist-option {
   line-height: normal;
 

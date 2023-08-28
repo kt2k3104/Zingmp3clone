@@ -5,12 +5,14 @@ import { faHeart as faHeartt } from '@fortawesome/free-regular-svg-icons';
 import { faEllipsis, faHeart, faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { handleChangeFavoriteSong, pauseSong, playSong, setCurrentSong } from '../../ListenSlice';
+import { pauseSong, playSong, setCurrentSong } from '../../ListenSlice';
+import { handleChangeFavoriteSong } from '~/page/Auth/UserSlice';
 
 const cx = classNames.bind(styles);
 
 function SongItem({ song }) {
-  const { isPlaying, currentSong, favoriteId } = useSelector((state) => state.listen);
+  const { isPlaying, currentSong, queue } = useSelector((state) => state.listen);
+  const { favoriteId } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   return (
@@ -73,12 +75,10 @@ function SongItem({ song }) {
           </button>
         </div>
       </div>
-      {currentSong.id === song.id ? (
+      {currentSong.id === song.id && currentSong.id !== queue[queue.length - 1].id && (
         <div className={cx('next-song')}>
           <h3>Tiếp theo</h3>
         </div>
-      ) : (
-        ''
       )}
     </div>
   );

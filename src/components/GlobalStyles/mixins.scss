@@ -11,3 +11,8 @@
   font-weight: $weight;
   color: $color;
 }
+@mixin responsive($breakpoint: $breakpoint-sm) {
+  @media only screen and (min-width: $breakpoint) {
+    @content;
+  }
+}

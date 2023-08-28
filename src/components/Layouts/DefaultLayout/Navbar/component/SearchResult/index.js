@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const cx = classNames.bind(styles);
 
 function SearchResult(attrs) {
-  
   return (
     <div
       // onClick={handleSearchResultOnclick}

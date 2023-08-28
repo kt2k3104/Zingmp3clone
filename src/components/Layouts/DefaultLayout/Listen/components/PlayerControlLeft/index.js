@@ -6,12 +6,13 @@ import { faHeart as faHeartt } from '@fortawesome/free-regular-svg-icons';
 import Tippy from '@tippyjs/react';
 import Tippyy from '@tippyjs/react/headless';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleChangeFavoriteSong } from '../../ListenSlice';
+import { handleChangeFavoriteSong } from '~/page/Auth/UserSlice';
 
 const cx = classNames.bind(styles);
 
 function PlayerControlLeft() {
-  const { currentSong, favoriteId } = useSelector((state) => state.listen);
+  const { currentSong } = useSelector((state) => state.listen);
+  const { favoriteId } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   return (
     <div className={cx('left')}>

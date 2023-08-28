@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { handleLogin } from './UserSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,7 +13,6 @@ function Auth() {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
 
-  const { isLogined } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -29,14 +28,15 @@ function Auth() {
 
   const onSubmitLogin = async (data) => {
     try {
-      const response = await dispatch(handleLogin({ email: data.email, password: data.password })).unwrap();
-
+      const response = await dispatch(
+        handleLogin({ email: data.email, password: data.password }),
+      ).unwrap();
+      console.log(response);
       if (response) {
         navigate('/mymusic');
       }
     } catch (error) {
       console.log(error);
-      console.log(isLogined);
       if (error.message.includes('ER_EMAIL_NOTF')) {
         setError('ER_EMAIL_NOTF', {
           type: 'ER_EMAIL_NOTF',

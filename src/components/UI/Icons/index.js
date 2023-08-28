@@ -276,7 +276,14 @@ const IconRecently = function () {
         fill="#FEFFFF"
       ></path>
       <defs>
-        <linearGradient id="paint0_linear_2645_12881" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="paint0_linear_2645_12881"
+          x1="0"
+          y1="0"
+          x2="24"
+          y2="24"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#8E4CFF"></stop>
           <stop offset="1" stopColor="#7729FF"></stop>
         </linearGradient>
@@ -301,7 +308,14 @@ const IconLove = function () {
         fill="#FEFFFF"
       ></path>
       <defs>
-        <linearGradient id="paint0_linear_2645_12880" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="paint0_linear_2645_12880"
+          x1="0"
+          y1="0"
+          x2="24"
+          y2="24"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#29CCFF"></stop>
           <stop offset="1" stopColor="#00C2FF"></stop>
         </linearGradient>
@@ -319,9 +333,27 @@ const IconPlaylist = function () {
         d="M0.5164 7.14319C1.32829 3.21545 3.8263 1.02782 7.72282 0.366909C10.6032 -0.121503 13.4847 -0.12767 16.3602 0.380652C20.3723 1.08984 22.7841 3.40504 23.5524 7.39215C24.1461 10.4736 24.1554 13.5879 23.5431 16.6663C22.7218 20.5669 20.1593 22.9747 16.2772 23.6331C13.3968 24.1215 10.5153 24.1277 7.63977 23.6193C3.62772 22.9102 1.20521 20.4794 0.436861 16.4923C-0.186982 13.3905 -0.126933 10.2566 0.5164 7.14319Z"
         fill="url(#paint0_linear_2645_12884)"
       ></path>
-      <path d="M14 10.5H18.5" stroke="#FEFFFF" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path>
-      <path d="M14 14H18.5" stroke="#FEFFFF" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path>
-      <path d="M5.5 17.5H18.5" stroke="#FEFFFF" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path>
+      <path
+        d="M14 10.5H18.5"
+        stroke="#FEFFFF"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      ></path>
+      <path
+        d="M14 14H18.5"
+        stroke="#FEFFFF"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      ></path>
+      <path
+        d="M5.5 17.5H18.5"
+        stroke="#FEFFFF"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      ></path>
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -329,7 +361,14 @@ const IconPlaylist = function () {
         fill="#FEFFFF"
       ></path>
       <defs>
-        <linearGradient id="paint0_linear_2645_12884" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="paint0_linear_2645_12884"
+          x1="0"
+          y1="0"
+          x2="24"
+          y2="24"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#FA7433"></stop>
           <stop offset="1" stopColor="#FA6D29"></stop>
         </linearGradient>
@@ -354,7 +393,14 @@ const IconAlbum = function () {
         fill="#FEFFFF"
       ></path>
       <defs>
-        <linearGradient id="paint0_linear_3153_2362" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="paint0_linear_3153_2362"
+          x1="0"
+          y1="0"
+          x2="24"
+          y2="24"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#FF52B1"></stop>
           <stop offset="1" stopColor="#FF3DA8"></stop>
         </linearGradient>
@@ -379,7 +425,14 @@ const IconUpload = function () {
         fill="#FEFFFF"
       ></path>
       <defs>
-        <linearGradient id="paint0_linear_2645_12883" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="paint0_linear_2645_12883"
+          x1="0"
+          y1="0"
+          x2="24"
+          y2="24"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#FF6161"></stop>
           <stop offset="1" stopColor="#FF3D3D"></stop>
         </linearGradient>
@@ -417,7 +470,7 @@ const PremiumIcon = function () {
     <svg width="90" height="20" viewBox="0 0 90 20" fill="none">
       <rect width="90" height="20" rx="5" fill="url(#paint0_linear_3538_2203)"></rect>
       <rect width="90" height="20" rx="5" fill="#E5AC1A"></rect>
-      <g clip-path="url(#clip0_3538_2203)">
+      <g clipPath="url(#clip0_3538_2203)">
         <path
           d="M15.1653 5.37582C14.5912 5.13072 13.9023 5 13.115 5H9.26032C9.11269 5 8.99787 5.04902 8.89946 5.14706C8.80104 5.2451 8.75183 5.35948 8.75183 5.50654V14.4771C8.75183 14.6242 8.80104 14.7549 8.89946 14.8366C8.99787 14.9346 9.11269 14.9837 9.26032 14.9837H11.1138C11.2614 14.9837 11.3927 14.9346 11.4747 14.8529C11.5895 14.7549 11.6387 14.6242 11.6387 14.4771V11.6176H13.115C13.9023 11.6176 14.5748 11.5033 15.1653 11.2745C15.7558 11.0458 16.2315 10.6699 16.5595 10.1961C16.904 9.70588 17.068 9.08497 17.068 8.34967C17.068 7.61438 16.904 6.97712 16.5595 6.47059C16.2315 5.98039 15.7558 5.60458 15.1653 5.35948V5.37582ZM14.1811 8.33333C14.1811 8.69281 14.0827 8.95425 13.8859 9.13399C13.689 9.31373 13.4102 9.39542 13.0657 9.39542H11.6223V7.2549H13.0657C13.4758 7.2549 13.7711 7.35294 13.9351 7.54902C14.1155 7.76144 14.1975 8.00654 14.1975 8.33333H14.1811Z"
           fill="#FEFFFF"
@@ -456,8 +509,8 @@ const PremiumIcon = function () {
           y2="40.0686"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#E5B332"></stop>
-          <stop offset="1" stop-color="#DCA519"></stop>
+          <stop stopColor="#E5B332"></stop>
+          <stop offset="1" stopColor="#DCA519"></stop>
         </linearGradient>
         <clipPath id="clip0_3538_2203">
           <rect width="72.5" height="10" fill="white" transform="translate(8.75 5)"></rect>
@@ -467,7 +520,7 @@ const PremiumIcon = function () {
   );
 };
 
-export default {
+const customIcon = {
   DownloadIcon,
   PlusIcon,
   PremiumIcon,
@@ -491,3 +544,5 @@ export default {
   IconKaraoke,
   IconListMusic,
 };
+
+export default customIcon;

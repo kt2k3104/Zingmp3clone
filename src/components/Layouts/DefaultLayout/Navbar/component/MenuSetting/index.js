@@ -104,8 +104,11 @@ function MenuSetting(attrs) {
                     <FontAwesomeIcon icon={faChevronRight} />
                   </div>
                   <div className={cx('content-theme')}>
-                    <figure class="image is-48x48">
-                      <img src="https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/purple.jpg" alt="theme" />
+                    <figure className="image is-48x48">
+                      <img
+                        src="https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/purple.jpg"
+                        alt="theme"
+                      />
                     </figure>
                     <h3>Tím</h3>
                   </div>

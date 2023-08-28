@@ -18,11 +18,12 @@ function Listen() {
   const [duration, setDuration] = useState(0);
   const [isChange, setIsChange] = useState(false);
 
-  const { isPlaying, isRepeat, isRandom, currentSong, currentIndex, queue } = useSelector(
+  const { isPlaying, isRepeat, isRandom, currentSong, queue } = useSelector(
     (state) => state.listen,
   );
   const dispatch = useDispatch();
   const audioRef = useRef();
+  const arr = useRef([]);
 
   const handleClickBtnPlaylists = (e) => {
     if (isOpenPlaylists === true) setIsOpenPlaylists(false);
@@ -39,21 +40,51 @@ function Listen() {
   };
 
   const handleEndedAudio = () => {
-    if (isRepeat === 2 && currentSong.id === queue.length) {
-      dispatch(nextSong());
-    } else if (isRepeat === 3) {
+    if (!isRandom) {
+      if (currentSong.id !== queue[queue.length - 1].id) {
+        dispatch(nextSong());
+      }
+      if (isRepeat === 1 && currentSong.id === queue[queue.length - 1].id) {
+        setProgress(0);
+        dispatch(pauseSong());
+      }
+      if (isRepeat === 2 && currentSong.id === queue[queue.length - 1].id) {
+        dispatch(nextSong());
+      }
+    }
+    if (isRandom && isRepeat !== 3) {
+      arr.current.push(currentSong);
+      let newSongIndex = Math.floor(Math.random() * queue.length);
+      while (currentSong.id === queue[newSongIndex].id) {
+        newSongIndex = Math.floor(Math.random() * queue.length);
+        if (currentSong.id !== newSongIndex) break;
+      }
+      if (arr.current.length < queue.length) {
+        while (arr.current.includes(queue[newSongIndex])) {
+          newSongIndex = Math.floor(Math.random() * queue.length);
+          if (!arr.current.includes(queue[newSongIndex])) break;
+        }
+        dispatch(setCurrentSong(queue[newSongIndex]));
+      }
+      if (isRepeat === 1 && arr.current.length === queue.length) {
+        setProgress(0);
+        dispatch(pauseSong());
+        arr.current = [];
+      }
+      if (isRepeat === 2 && arr.current.length === queue.length) {
+        arr.current = [];
+        dispatch(setCurrentSong(queue[newSongIndex]));
+      }
+    }
+
+    if (isRepeat === 3) {
       audioRef.current.play();
     }
-    if (isRandom) {
-      const newSongIndex = Math.floor(Math.random() * queue.length);
-      if (newSongIndex !== currentIndex) dispatch(setCurrentSong(queue[newSongIndex]));
-      else dispatch(nextSong());
-    } else if (currentSong.id !== queue.length) dispatch(nextSong());
-    else {
-      setProgress(0);
-      dispatch(pauseSong());
-    }
   };
+
+  useEffect(() => {
+    arr.current = [];
+  }, [isRandom, isRepeat]);
 
   useEffect(() => {
     setDuration(audioRef.current.duration);

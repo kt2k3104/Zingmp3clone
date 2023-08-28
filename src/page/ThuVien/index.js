@@ -2,24 +2,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Thuvien.module.scss';
 import classNames from 'classnames/bind';
 import { faChevronRight, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
-import { Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator } from '@chakra-ui/react';
+import { Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator, HStack } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import PlaylistItem from './components/PlaylistItem/PlaylistItem';
-import FavoriteSong from './components/FavoriteSong/FavoriteSong';
+import SongItem from './components/SongItem/SongItem';
 import { useEffect } from 'react';
-import { setQueueFavorite } from '~/components/Layouts/DefaultLayout/Listen/ListenSlice';
+import { getPlaylists, setFavoriteId } from '../Auth/UserSlice';
 
 const cx = classNames.bind(styles);
 
 function ThuVien() {
-  const { queueFavorite } = useSelector((state) => state.listen);
-  const { isLogined, user } = useSelector((state) => state.user);
+  const { isLogined, user, playlists, queueFavorite } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setQueueFavorite());
-  }, [dispatch]);
+    dispatch(getPlaylists());
+    dispatch(setFavoriteId());
+  }, [dispatch, isLogined, user]);
+
   return (
     <div className={cx('wrapper')}>
       {isLogined && (
@@ -36,13 +37,20 @@ function ThuVien() {
                 TẤT CẢ <FontAwesomeIcon icon={faChevronRight} />
               </h4>
             </div>
-            <div className={cx('playlists')}>
+            <HStack gap={'27px'} w={'100%'} justifyContent={'flex-start'}>
               <PlaylistItem />
-              <PlaylistItem />
-              <PlaylistItem />
-              <PlaylistItem />
-              <PlaylistItem />
-            </div>
+              {playlists?.map((playlist, index) => {
+                if (index > 3) return undefined;
+                return (
+                  <div
+                    key={playlist.id}
+                    className={cx('playlist_item', index === 3 ? 'hideplaylist' : '')}
+                  >
+                    <PlaylistItem playlist={playlist} />
+                  </div>
+                );
+              })}
+            </HStack>
           </div>
           <div className={cx('content')}>
             <Tabs position="relative" variant="enclosed">
@@ -95,24 +103,34 @@ function ThuVien() {
                   <Tabs variant="soft-rounded" colorScheme="purple">
                     <TabList>
                       <Tab
+                        _hover={{ borderColor: '#9b4de0', color: '#9b4de0' }}
                         fontSize={'12px'}
                         padding={'3px 10px 2px'}
                         lineHeight={'1.5'}
                         color={'#fff'}
                         fontWeight={'400'}
                         border={'1px solid #fff'}
-                        _selected={{ bgColor: '#9b4de0', border: 'none' }}
+                        _selected={{
+                          bgColor: '#9b4de0',
+                          border: 'none',
+                          _hover: { color: '#fff' },
+                        }}
                       >
                         YÊU THÍCH
                       </Tab>
                       <Tab
+                        _hover={{ borderColor: '#9b4de0', color: '#9b4de0' }}
                         fontSize={'12px'}
                         padding={'3px 10px 2px'}
                         ml={'16px'}
                         color={'#fff'}
                         fontWeight={'400'}
                         border={'1px solid #fff'}
-                        _selected={{ bgColor: '#9b4de0', border: 'none' }}
+                        _selected={{
+                          bgColor: '#9b4de0',
+                          border: 'none',
+                          _hover: { color: '#fff' },
+                        }}
                       >
                         ĐÃ TẢI LÊN
                       </Tab>
@@ -124,16 +142,42 @@ function ThuVien() {
                           <span className={cx('span2')}>ALBUM</span>
                           <span className={cx('span3')}>THỜI GIAN</span>
                         </div>
+                        {queueFavorite?.length === 0 && <p>Chưa có bài hát ưa thích</p>}
+
                         {queueFavorite?.length !== 0 &&
                           queueFavorite?.map((song) => {
-                            return <FavoriteSong song={song} key={song.id} />;
+                            return <SongItem favoriteSong song={song} key={song.id} />;
                           })}
                       </TabPanel>
-                      <TabPanel def>
+                      <TabPanel p={'0'} mt={'20px'}>
+                        <div className={cx('up-limit')}>
+                          <div className={cx('left')}>
+                            <h3>Đã tải lên: {user?.songs?.length}/200</h3>
+                            <div className={cx('slider')}>
+                              <div
+                                className={cx('slider-active')}
+                                style={{ width: `${user?.songs?.length / 2}%` }}
+                              ></div>
+                            </div>
+                          </div>
+                          <div className={cx('right')}>
+                            <h3>Bạn muốn tải lên nhiều hơn?</h3>
+                            <a
+                              href="https://zingmp3.vn/vip/upgrade?utm_source=desktop&utm_campaign=VIP&utm_medium=upload-upvip-btn"
+                              target="blank"
+                            >
+                              NÂNG CẤP TÀI KHOẢN
+                            </a>
+                          </div>
+                        </div>
+                        <div className={cx('media-select-header')}>
+                          <span className={cx('span1')}>BÀI HÁT</span>
+                          <span className={cx('span3')}>THỜI GIAN</span>
+                        </div>
                         {user?.songs?.length === 0 && <p>Chưa có bài hát được tải lên</p>}
                         {user?.songs?.length !== 0 &&
                           user?.songs?.map((song) => {
-                            return <FavoriteSong song={song} key={song.id} />;
+                            return <SongItem mySong song={song} key={song.id} />;
                           })}
                       </TabPanel>
                     </TabPanels>

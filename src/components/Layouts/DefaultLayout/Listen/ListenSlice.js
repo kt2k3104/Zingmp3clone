@@ -13,13 +13,12 @@ const currentSong = {
 
 const initialStates = {
   queue: [],
+  allSongs: [],
   currentSong: currentSong,
   currentIndex: 0,
   isPlaying: false,
   isRandom: false,
   isRepeat: 1,
-  favoriteId: [],
-  queueFavorite: [],
 };
 
 export const getSongs = createAsyncThunk('listen/getSongs', async (_, thunkAPI) => {
@@ -27,7 +26,16 @@ export const getSongs = createAsyncThunk('listen/getSongs', async (_, thunkAPI) 
     const response = await axios.get('http://localhost:9000/songs');
     return response.data.result;
   } catch (error) {
-    throw error;
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
+export const deleteSong = createAsyncThunk('listen/deleteSong', async (reqData, thunkAPI) => {
+  try {
+    const response = await requestApi(`/songs/${reqData}`, 'DELETE');
+    console.log(response);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
   }
 });
 
@@ -39,18 +47,6 @@ export const handleUploadSong = createAsyncThunk('listen/uploadSong', async (bod
     return thunkAPI.rejectWithValue(error.response.data);
   }
 });
-
-export const handleChangeFavoriteSong = createAsyncThunk(
-  'listen/handleChangeFavoriteSong',
-  async (reqData, thunkAPI) => {
-    try {
-      const { data } = await requestApi(`/songs/favorite/${reqData}`, 'GET');
-      return { data: data.result, id: reqData };
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
-  },
-);
 
 const listenSlice = createSlice({
   name: 'listen',
@@ -90,31 +86,14 @@ const listenSlice = createSlice({
     noRepeat: (state) => void (state.isRepeat = 1),
     repeatAll: (state) => void (state.isRepeat = 2),
     repeatOne: (state) => void (state.isRepeat = 3),
-
-    setQueueFavorite: (state) => {
-      const queue = JSON.parse(localStorage.getItem('user_data')).user.favoriteSongs;
-      state.queueFavorite = queue;
-      state.favoriteId = [];
-      queue?.forEach((song) => {
-        return state.favoriteId.push(song.id);
-      });
-    },
   },
 
   extraReducers(bullder) {
-    bullder
-      .addCase(getSongs.fulfilled, (state, action) => {
-        state.queue = action.payload;
-        state.currentSong = action.payload[0];
-        state.currentIndex = 0;
-      })
-      .addCase(handleChangeFavoriteSong.fulfilled, (state, action) => {
-        state.queueFavorite = action.payload.data.response.favoriteSongs;
-        state.favoriteId = [];
-        state.queueFavorite.forEach((song) => {
-          state.favoriteId.push(song.id);
-        });
-      });
+    bullder.addCase(getSongs.fulfilled, (state, action) => {
+      state.queue = action.payload;
+      state.currentSong = action.payload[0];
+      state.currentIndex = 0;
+    });
   },
 });
 
@@ -129,6 +108,5 @@ export const {
   noRepeat,
   repeatAll,
   repeatOne,
-  setQueueFavorite,
 } = listenSlice.actions;
 export default listenSlice.reducer;

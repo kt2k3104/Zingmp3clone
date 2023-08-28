@@ -84,9 +84,15 @@
   }
 }
 
-.playlists {
+.playlist_item {
   width: 100%;
-  @include flex($jutify: space-between, $gap: 28px);
+  max-width: 213.68px;
+}
+.hideplaylist {
+  display: none;
+  @include responsive($breakpoint: $breakpoint-xl) {
+    display: block;
+  }
 }
 
 .content {
@@ -96,13 +102,15 @@
   padding-bottom: 80px;
 }
 
+.media-select-header,
 .media-favorite-header {
   width: 100%;
-  padding: 10px;
+  padding: 12px 10px 13px;
   @include flex($jutify: space-between);
   @include text-style($size: 1.2rem, $color: $text-secondary, $weight: 500);
+  border-bottom: 1px solid $alpha-bg;
   & .span1 {
-    padding-left: 16px;
+    padding-left: 20px;
     width: 50%;
   }
   & .span2 {
@@ -110,5 +118,53 @@
   }
   & .span3 {
     width: 10%;
+    text-align: end;
+    padding-right: 2px;
+  }
+}
+
+.up-limit {
+  width: 100%;
+  height: 64.8px;
+  background-color: $alpha-bg;
+  margin-bottom: 10px;
+  padding: 15px;
+  @include flex($jutify: space-between);
+  border-radius: 4px;
+
+  .left {
+    width: 360px;
+
+    .slider {
+      width: 100%;
+      height: 6px;
+      background-color: $alpha-bg;
+      border-radius: 999px;
+      margin-top: 6px;
+      overflow: hidden;
+
+      .slider-active {
+        height: 100%;
+        background-color: $purple-primary;
+      }
+    }
+  }
+
+  .right {
+    @include flex($gap: 10px);
+
+    h3 {
+      font-style: italic;
+    }
+    a {
+      background-color: $yellow;
+      padding: 9px 24px 6px;
+      @include text-style($size: 1.4rem, $color: $black, $weight: 400);
+      border-radius: 999px;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
   }
 }
