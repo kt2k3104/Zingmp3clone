@@ -19,14 +19,15 @@
 
 .gallery {
   width: 100%;
-  height: 241.66px;
+  height: auto;
   padding-top: 32px;
   margin-bottom: 48px;
 
   .gallery_img {
     width: 372.75px;
-    height: 209.66px;
+    height: auto;
     padding: 0 15px;
+    cursor: pointer;
     img {
       width: 100%;
       height: 100%;

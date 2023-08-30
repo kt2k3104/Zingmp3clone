@@ -9,12 +9,14 @@ import PlaylistItem from './components/PlaylistItem/PlaylistItem';
 import SongItem from './components/SongItem/SongItem';
 import { useEffect } from 'react';
 import { getPlaylists, setFavoriteId } from '../Auth/UserSlice';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 function ThuVien() {
   const { isLogined, user, playlists, queueFavorite } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getPlaylists());
@@ -33,7 +35,11 @@ function ThuVien() {
             <div className={cx('title')}>
               <h3>PLAYLIST</h3>
               <button>+</button>
-              <h4>
+              <h4
+                onClick={() => {
+                  navigate('/mymusic/library/playlist');
+                }}
+              >
                 TẤT CẢ <FontAwesomeIcon icon={faChevronRight} />
               </h4>
             </div>
@@ -55,46 +61,10 @@ function ThuVien() {
           <div className={cx('content')}>
             <Tabs position="relative" variant="enclosed">
               <TabList borderBottomColor={'hsla(0, 0%, 100%, 0.1)'}>
-                <Tab
-                  fontSize={'14px'}
-                  p={'15px 0'}
-                  mr={'40px'}
-                  color={'#dadada'}
-                  fontWeight={'500'}
-                  _selected={{ color: 'white' }}
-                >
-                  BÀI HÁT
-                </Tab>
-                <Tab
-                  fontSize={'14px'}
-                  p={'15px 0'}
-                  mr={'40px'}
-                  color={'#dadada'}
-                  fontWeight={'500'}
-                  _selected={{ color: 'white' }}
-                >
-                  PODCAST
-                </Tab>
-                <Tab
-                  fontSize={'14px'}
-                  p={'15px 0'}
-                  mr={'40px'}
-                  color={'#dadada'}
-                  fontWeight={'500'}
-                  _selected={{ color: 'white' }}
-                >
-                  ALBUM
-                </Tab>
-                <Tab
-                  fontSize={'14px'}
-                  p={'15px 0'}
-                  mr={'40px'}
-                  color={'#dadada'}
-                  fontWeight={'500'}
-                  _selected={{ color: 'white' }}
-                >
-                  MV
-                </Tab>
+                <Tab sx={css.tab1}>BÀI HÁT</Tab>
+                <Tab sx={css.tab1}>PODCAST</Tab>
+                <Tab sx={css.tab1}>ALBUM</Tab>
+                <Tab sx={css.tab1}>MV</Tab>
               </TabList>
               <TabIndicator height="1px" bg="#9b4de0" borderRadius="1px" />
 
@@ -102,36 +72,8 @@ function ThuVien() {
                 <TabPanel p={'28px 0 0 0'}>
                   <Tabs variant="soft-rounded" colorScheme="purple">
                     <TabList>
-                      <Tab
-                        _hover={{ borderColor: '#9b4de0', color: '#9b4de0' }}
-                        fontSize={'12px'}
-                        padding={'3px 10px 2px'}
-                        lineHeight={'1.5'}
-                        color={'#fff'}
-                        fontWeight={'400'}
-                        border={'1px solid #fff'}
-                        _selected={{
-                          bgColor: '#9b4de0',
-                          border: 'none',
-                          _hover: { color: '#fff' },
-                        }}
-                      >
-                        YÊU THÍCH
-                      </Tab>
-                      <Tab
-                        _hover={{ borderColor: '#9b4de0', color: '#9b4de0' }}
-                        fontSize={'12px'}
-                        padding={'3px 10px 2px'}
-                        ml={'16px'}
-                        color={'#fff'}
-                        fontWeight={'400'}
-                        border={'1px solid #fff'}
-                        _selected={{
-                          bgColor: '#9b4de0',
-                          border: 'none',
-                          _hover: { color: '#fff' },
-                        }}
-                      >
+                      <Tab sx={css.tab2}>YÊU THÍCH</Tab>
+                      <Tab ml={'16px'} sx={css.tab2}>
                         ĐÃ TẢI LÊN
                       </Tab>
                     </TabList>
@@ -202,3 +144,27 @@ function ThuVien() {
 }
 
 export default ThuVien;
+
+const css = {
+  tab1: {
+    fontSize: '14px',
+    p: '15px 0',
+    mr: '40px',
+    colo: '#dadada',
+    fontWeight: '500',
+    _selected: { color: 'white' },
+  },
+  tab2: {
+    _hover: { borderColor: '#9b4de0', color: '#9b4de0' },
+    fontSize: '12px',
+    padding: '3px 10px 2px',
+    color: '#fff',
+    fontWeight: '400',
+    border: '1px solid #fff',
+    _selected: {
+      bgColor: '#9b4de0',
+      border: 'none',
+      _hover: { color: '#fff' },
+    },
+  },
+};

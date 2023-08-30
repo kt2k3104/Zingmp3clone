@@ -31,11 +31,12 @@ function PlaylistItem({ playlist }) {
     >
       <div className={cx('img')}>
         <div className={cx('imgg')}>
-          <img src="./assets/img/imgplaylist.png" alt="img" />
+          <img src="../../assets/img/imgplaylist.png" alt="img" />
         </div>
         <div className={cx('img_hover')}>
           {isFavoritePlaylist && (
             <button
+              className={cx('btn-option')}
               onClick={(e) => {
                 e.stopPropagation();
                 setIsFavoritePlaylist(false);
@@ -46,6 +47,7 @@ function PlaylistItem({ playlist }) {
           )}{' '}
           {!isFavoritePlaylist && (
             <button
+              className={cx('btn-option')}
               onClick={(e) => {
                 e.stopPropagation();
                 setIsFavoritePlaylist(true);
@@ -58,13 +60,14 @@ function PlaylistItem({ playlist }) {
           <FontAwesomeIcon className={cx('btn_play')} icon={faPlayCircle} />
           <Tippy
             interactive
-            placement="right"
             visible={visible}
             onClickOutside={hide}
+            placement="right"
             offset={[-130, 0]}
             render={(attrs) => <PlaylistOptions hide={hide} playlist={playlist} attrs={attrs} />}
           >
             <button
+              className={cx('btn-option')}
               onClick={(e) => {
                 e.stopPropagation();
                 visible ? hide() : show();

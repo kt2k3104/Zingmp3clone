@@ -3,6 +3,7 @@
 
 .wrapper {
   width: 100%;
+  @include flex($direction: column);
 
   .img {
     width: 100%;
@@ -10,11 +11,14 @@
     overflow: hidden;
     cursor: pointer;
     position: relative;
-    border-radius: 5px;
+    border-radius: 50%;
+    border-bottom-right-radius: 10%;
 
     img {
-      width: 100%;
+      width: 99%;
       transition: transform 0.4s linear;
+      border-radius: 50%;
+      border-bottom-right-radius: 30%;
     }
     &:hover > .img_hover {
       opacity: 1;
@@ -26,8 +30,10 @@
   }
   h3 {
     margin-top: 12px;
-    width: 100%;
-    @include text-style($size: 1.4rem, $color: $text-secondary, $weight: 400);
+    @include text-style($size: 1.6rem, $color: $text-primary, $weight: 600);
+  }
+  span {
+    @include text-style($size: 1.2rem, $color: $text-secondary, $weight: 400);
   }
 }
 
@@ -46,19 +52,6 @@
     font-size: 45px;
     &:hover {
       opacity: 0.9;
-    }
-  }
-  & .purple_heart {
-    color: $purple-primary;
-  }
-  & button {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: transparent;
-    border: none;
-    &:hover {
-      background-color: hsla(0, 0%, 100%, 0.3);
     }
   }
 }

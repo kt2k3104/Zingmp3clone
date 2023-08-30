@@ -86,3 +86,23 @@
     font-size: 90px;
   }
 }
+
+.media-playlist-header {
+  width: 100%;
+  padding: 12px 10px 13px;
+  @include flex($jutify: space-between);
+  @include text-style($size: 1.2rem, $color: $text-secondary, $weight: 500);
+  border-bottom: 1px solid $alpha-bg;
+  & .span1 {
+    padding-left: 20px;
+    width: 50%;
+  }
+  & .span2 {
+    width: 40%;
+  }
+  & .span3 {
+    width: 10%;
+    text-align: end;
+    padding-right: 2px;
+  }
+}

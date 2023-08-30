@@ -5,8 +5,52 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import NewRelease from './components/NewRelease/NewRelease';
 import PlaylistSection from './components/PlaylistSection/PlaylistSection';
+import LivestreamSection from './components/LivestreamSection/LivestreamSection';
+import PartnerSection from './components/PartnerSection/PartnerSection';
 
 const cx = classNames.bind(styles);
+
+function KhamPha() {
+  const settings = {
+    dots: true,
+    infinite: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+  };
+
+  return (
+    <div className={cx('wrapper')}>
+      <div className={cx('gallery')}>
+        <Slider {...settings}>
+          <div className={cx('gallery_img')}>
+            <img src="/assets/img/khampha/gallery/imgGallery1.png" alt="img" />
+          </div>
+          <div className={cx('gallery_img')}>
+            <img src="/assets/img/khampha/gallery/imgGallery2.png" alt="img" />
+          </div>
+          <div className={cx('gallery_img')}>
+            <img src="/assets/img/khampha/gallery/imgGallery3.png" alt="img" />
+          </div>
+          <div className={cx('gallery_img')}>
+            <img src="/assets/img/khampha/gallery/imgGallery4.png" alt="img" />
+          </div>
+        </Slider>
+      </div>
+      <NewRelease newReleaseSongs={newReleaseSongs} />
+      <PlaylistSection data={playlistData.Chill} />
+      <PlaylistSection data={playlistData.Motchutyeudoi} />
+      <PlaylistSection data={playlistData.RemicLaDanceLuon} />
+      <PlaylistSection data={playlistData.Tamtrangtancham} />
+      <PlaylistSection data={playlistData.Nghesithinhhanh} />
+      <LivestreamSection data={radioData} />
+      <PartnerSection />
+    </div>
+  );
+}
+
+export default KhamPha;
 
 const newReleaseSongs = [
   {
@@ -235,42 +279,40 @@ const playlistData = {
   },
 };
 
-function KhamPha() {
-  const settings = {
-    dots: true,
-    infinite: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-  };
-
-  return (
-    <div className={cx('wrapper')}>
-      <div className={cx('gallery')}>
-        <Slider {...settings}>
-          <div className={cx('gallery_img')}>
-            <img src="/assets/img/khampha/gallery/imgGallery1.png" alt="img" />
-          </div>
-          <div className={cx('gallery_img')}>
-            <img src="/assets/img/khampha/gallery/imgGallery2.png" alt="img" />
-          </div>
-          <div className={cx('gallery_img')}>
-            <img src="/assets/img/khampha/gallery/imgGallery3.png" alt="img" />
-          </div>
-          <div className={cx('gallery_img')}>
-            <img src="/assets/img/khampha/gallery/imgGallery4.png" alt="img" />
-          </div>
-        </Slider>
-      </div>
-      <NewRelease newReleaseSongs={newReleaseSongs} />
-      <PlaylistSection data={playlistData.Chill} />
-      <PlaylistSection data={playlistData.Motchutyeudoi} />
-      <PlaylistSection data={playlistData.RemicLaDanceLuon} />
-      <PlaylistSection data={playlistData.Tamtrangtancham} />
-      <PlaylistSection data={playlistData.Nghesithinhhanh} />
-    </div>
-  );
-}
-
-export default KhamPha;
+const radioData = [
+  {
+    img: '/assets/img/khampha/radionoibat/2.png',
+    title: 'XONE Radio',
+    subtitle: '68 đang nghe',
+  },
+  {
+    img: '/assets/img/khampha/radionoibat/3.png',
+    title: 'V-POP',
+    subtitle: '665 đang nghe',
+  },
+  {
+    img: '/assets/img/khampha/radionoibat/4.png',
+    title: 'Pladio',
+    subtitle: '50 đang nghe',
+  },
+  {
+    img: '/assets/img/khampha/radionoibat/5.png',
+    title: 'Chạm',
+    subtitle: '113 đang nghe',
+  },
+  {
+    img: '/assets/img/khampha/radionoibat/6.png',
+    title: 'On Air',
+    subtitle: '38 đang nghe',
+  },
+  {
+    img: '/assets/img/khampha/radionoibat/7.png',
+    title: 'Bolero',
+    subtitle: '431 đang nghe',
+  },
+  {
+    img: '/assets/img/khampha/radionoibat/8.png',
+    title: 'US-UK',
+    subtitle: '68 đang nghe',
+  },
+];

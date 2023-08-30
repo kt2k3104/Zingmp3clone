@@ -27,6 +27,7 @@ import {
 } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
 import { Spinner } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 import { getPlaylists, handleDeletePlaylist } from '~/page/Auth/UserSlice';
 
@@ -38,9 +39,17 @@ function PlaylistOptions({ attrs, playlist, hide }) {
   const [onDelete, setOnDelete] = useState(false);
   const cancelRef = useRef();
   const toast = useToast();
+  const navigate = useNavigate();
 
   return (
-    <ul className={cx('playlist-option')} tabIndex="-1" {...attrs}>
+    <ul
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+      className={cx('playlist-option')}
+      tabIndex="-1"
+      {...attrs}
+    >
       <li>
         <FontAwesomeIcon icon={faFileCirclePlus} />
         <span>Thêm vào danh sách phát</span>
@@ -55,6 +64,8 @@ function PlaylistOptions({ attrs, playlist, hide }) {
       </li>
       <Tippy
         interactive
+        placement="right"
+        offset={[-113, -230]}
         render={(attrs) => (
           <ul className={cx('share-option')} tabIndex="-1" {...attrs}>
             <li>
@@ -91,7 +102,7 @@ function PlaylistOptions({ attrs, playlist, hide }) {
         <span>Chỉnh sửa playlist</span>
       </li>
       <li
-        onClick={() => {
+        onClick={(e) => {
           onOpen();
           hide();
         }}
@@ -101,19 +112,8 @@ function PlaylistOptions({ attrs, playlist, hide }) {
       </li>
       <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
         <AlertDialogOverlay>
-          <AlertDialogContent
-            maxW={'540px'}
-            w={'540px'}
-            maxH={'33vh'}
-            h={'141.8px'}
-            bgColor={'#34224f'}
-            borderRadius={'8px'}
-            p={'10px'}
-            mt={'33vh'}
-          >
-            <AlertDialogHeader w={'500px'} h={'27px'} fontSize={'18px'} mb={5} fontWeight="bold">
-              Xóa Bài Hát
-            </AlertDialogHeader>
+          <AlertDialogContent sx={css.AlertDialogContent}>
+            <AlertDialogHeader sx={css.AlertDialogHeader}>Xóa Bài Hát</AlertDialogHeader>
 
             {!onDelete && (
               <>
@@ -122,28 +122,12 @@ function PlaylistOptions({ attrs, playlist, hide }) {
                 </AlertDialogBody>
 
                 <AlertDialogFooter>
-                  <Button
-                    w={'75.4px'}
-                    h={'28.8px'}
-                    bgColor={'hsla(0,0%,100%,0.1)'}
-                    borderRadius={'999px'}
-                    ref={cancelRef}
-                    onClick={onClose}
-                    fontSize={'12px'}
-                    color={'#fff'}
-                    fontWeight={'400'}
-                    borderColor={'hsla(0,0%,100%,0.1)'}
-                    _hover={{ bgColor: 'tranparent', opacity: 0.9 }}
-                  >
+                  <Button onClick={onClose} ref={cancelRef} sx={css.button1}>
                     KHÔNG
                   </Button>
                   <Button
-                    w={'56px'}
-                    h={'28.8px'}
-                    bgColor={'#9b4de0'}
-                    borderRadius={'999px'}
                     colorScheme="red"
-                    _hover={{ bgColor: 'tranparent', opacity: 0.9 }}
+                    sx={css.button2}
                     onClick={async () => {
                       setOnDelete(true);
                       dispatch(handleDeletePlaylist(playlist.id));
@@ -153,23 +137,10 @@ function PlaylistOptions({ attrs, playlist, hide }) {
                       toast({
                         duration: 1000,
                         position: 'bottom-left',
-                        render: () => (
-                          <Box
-                            color="white"
-                            p={5}
-                            bg="#34224f"
-                            borderRadius={'5px'}
-                            marginBottom={'90px'}
-                          >
-                            Xóa bài hát thành công !
-                          </Box>
-                        ),
+                        render: () => <Box sx={css.box}>Xóa playlist thành công !</Box>,
                       });
+                      navigate('/mymusic');
                     }}
-                    ml={3}
-                    fontSize={'12px'}
-                    fontWeight={'400'}
-                    marginLeft={'15px'}
                   >
                     XÓA
                   </Button>
@@ -189,3 +160,52 @@ function PlaylistOptions({ attrs, playlist, hide }) {
 }
 
 export default PlaylistOptions;
+
+const css = {
+  AlertDialogContent: {
+    maxW: '540px',
+    w: '540px',
+    maxH: '33vh',
+    h: '141.8px',
+    bgColor: '#34224f',
+    borderRadius: '8px',
+    p: '10px',
+    mt: '33vh',
+  },
+  AlertDialogHeader: {
+    w: '500px',
+    h: '27px',
+    fontSize: '18px',
+    mb: '5',
+    fontWeight: 'bold',
+  },
+  button1: {
+    w: '75.4px',
+    h: '28.8px',
+    bgColor: 'hsla(0,0%,100%,0.1)',
+    borderRadius: '999px',
+    fontSize: '12px',
+    color: '#fff',
+    fontWeight: '400',
+    borderColor: 'hsla(0,0%,100%,0.1)',
+    _hover: { bgColor: 'tranparent', opacity: 0.9 },
+  },
+  button2: {
+    w: '56px',
+    h: '28.8px',
+    bgColor: '#9b4de0',
+    borderRadius: '999px',
+    _hover: { bgColor: 'tranparent', opacity: 0.9 },
+    ml: 3,
+    fontSize: '12px',
+    fontWeight: '400',
+    marginLeft: '15px',
+  },
+  box: {
+    color: 'white',
+    p: '5',
+    bg: '#34224f',
+    borderRadius: '5px',
+    marginBottom: '90px',
+  },
+};
