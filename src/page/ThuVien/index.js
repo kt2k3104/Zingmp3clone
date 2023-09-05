@@ -2,7 +2,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Thuvien.module.scss';
 import classNames from 'classnames/bind';
 import { faChevronRight, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
-import { Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator, HStack } from '@chakra-ui/react';
+import {
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  TabIndicator,
+  useDisclosure,
+  Box,
+} from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import PlaylistItem from './components/PlaylistItem/PlaylistItem';
@@ -10,6 +19,7 @@ import SongItem from './components/SongItem/SongItem';
 import { useEffect } from 'react';
 import { getPlaylists, setFavoriteId } from '../Auth/UserSlice';
 import { useNavigate } from 'react-router-dom';
+import ModalAddPlaylist from '~/components/Layouts/DefaultLayout/Sidebar/component/ModalAddPlaylist/ModalAddPlaylist';
 
 const cx = classNames.bind(styles);
 
@@ -18,10 +28,15 @@ function ThuVien() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  console.log(playlists);
+
   useEffect(() => {
     dispatch(getPlaylists());
     dispatch(setFavoriteId());
-  }, [dispatch, isLogined, user]);
+    console.log('asdfasdfjas;dfkja;sfj');
+  }, [dispatch, isLogined]);
 
   return (
     <div className={cx('wrapper')}>
@@ -34,7 +49,8 @@ function ThuVien() {
           <div className={cx('inner-playlists')}>
             <div className={cx('title')}>
               <h3>PLAYLIST</h3>
-              <button>+</button>
+              <button onClick={onOpen}>+</button>
+              <ModalAddPlaylist isOpen={isOpen} onClose={onClose} />
               <h4
                 onClick={() => {
                   navigate('/mymusic/library/playlist');
@@ -43,7 +59,11 @@ function ThuVien() {
                 TẤT CẢ <FontAwesomeIcon icon={faChevronRight} />
               </h4>
             </div>
-            <HStack gap={'27px'} w={'100%'} justifyContent={'flex-start'}>
+            <Box
+              m={'0 -14px'}
+              display="grid"
+              gridTemplateColumns={{ base: '25% 25% 25% 25%', xl: '20% 20% 20% 20% 20%' }}
+            >
               <PlaylistItem />
               {playlists?.map((playlist, index) => {
                 if (index > 3) return undefined;
@@ -56,7 +76,7 @@ function ThuVien() {
                   </div>
                 );
               })}
-            </HStack>
+            </Box>
           </div>
           <div className={cx('content')}>
             <Tabs position="relative" variant="enclosed">

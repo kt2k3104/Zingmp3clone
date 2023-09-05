@@ -32,6 +32,8 @@ $black: #32323d;
 $border-secondary: hsla(0, 0%, 100%, 0.05);
 $chart-bg-img-alpha: rgba(32, 19, 53, 0.9);
 $chart-box-bg-alpha: hsla(0, 0%, 100%, 0.05);
+$sidebar-bg: hsla(0, 0%, 100%, 0.05);
+$sidebar-popup-bg: #2a213a;
 
 $padding-section: 59px;
 
@@ -40,4 +42,6 @@ $img-logo-mp3: url(https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/backgrou
 $breakpoint-sm: '320px';
 $breakpoint-md: '768px';
 $breakpoint-lg: '960px';
+$breakpoint-l: '1133px';
 $breakpoint-xl: '1200px';
+$breakpoint-xxl: '1350px';

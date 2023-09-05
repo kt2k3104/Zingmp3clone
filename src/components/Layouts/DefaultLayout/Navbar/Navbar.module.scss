@@ -6,8 +6,8 @@
   height: 70px;
   width: 100%;
   min-width: 660px;
-  padding: 0 var(--padding-section);
   transition: right 0.4s;
+  padding: 0 $padding-section;
 }
 
 .header::before {

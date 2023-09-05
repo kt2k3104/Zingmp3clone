@@ -3,6 +3,7 @@
 
 .wrapper {
   width: 100%;
+  min-width: 142.1px;
 
   .img {
     width: 100%;
@@ -28,6 +29,12 @@
     margin-top: 12px;
     width: 100%;
     @include text-style($size: 1.4rem, $color: $text-secondary, $weight: 400);
+  }
+}
+.hideplaylist {
+  display: none;
+  @include responsive($breakpoint: $breakpoint-xl) {
+    display: block;
   }
 }
 

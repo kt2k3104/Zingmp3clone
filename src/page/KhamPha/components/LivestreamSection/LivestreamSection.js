@@ -6,10 +6,10 @@ import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
-function LivestreamSection({ data }) {
+function LivestreamSection({ data, noheader }) {
   return (
     <div className={cx('wrapper')}>
-      <h3 className={cx('title')}>
+      <h3 className={cx('title', noheader ? 'noheader' : '')}>
         Radio Nổi Bật
         <span>
           TẤT CẢ <FontAwesomeIcon icon={faChevronRight} />
@@ -17,7 +17,7 @@ function LivestreamSection({ data }) {
       </h3>
       <div className={cx('content')}>
         {data?.map((item, index) => {
-          return <RadioItem item={item} key={index} />;
+          return <RadioItem item={item} key={index} index={index} />;
         })}
       </div>
     </div>

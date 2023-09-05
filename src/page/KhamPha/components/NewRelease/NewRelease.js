@@ -13,58 +13,12 @@ function NewRelease({ newReleaseSongs }) {
       <h3 className={cx('title')}>Mới Phát Hành</h3>
       <Tabs variant="soft-rounded" colorScheme="green">
         <TabList>
-          <Tab
-            fontSize={'12px'}
-            padding={'3px 24px 2px'}
-            lineHeight={'1.5'}
-            color={'#fff'}
-            fontWeight={'400'}
-            border={'1px solid hsla(0,0%,100%,0.1)'}
-            mr={'15px'}
-            _selected={{
-              bgColor: '#9b4de0',
-              border: 'none',
-            }}
-          >
-            TẤT CẢ
-          </Tab>
-          <Tab
-            fontSize={'12px'}
-            padding={'3px 24px 2px'}
-            lineHeight={'1.5'}
-            color={'#fff'}
-            fontWeight={'400'}
-            border={'1px solid hsla(0,0%,100%,0.1)'}
-            mr={'15px'}
-            _selected={{
-              bgColor: '#9b4de0',
-              border: 'none',
-            }}
-          >
-            VIỆT NAM
-          </Tab>
-          <Tab
-            fontSize={'12px'}
-            padding={'3px 24px 2px'}
-            lineHeight={'1.5'}
-            color={'#fff'}
-            fontWeight={'400'}
-            border={'1px solid hsla(0,0%,100%,0.1)'}
-            _selected={{
-              bgColor: '#9b4de0',
-              border: 'none',
-            }}
-          >
-            QUỐC TẾ
-          </Tab>
+          <Tab sx={css.tab1}>TẤT CẢ</Tab>
+          <Tab sx={css.tab1}>VIỆT NAM</Tab>
+          <Tab sx={css.tab1}>QUỐC TẾ</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel
-            p={'15px 0'}
-            display={'grid'}
-            gridTemplateColumns={'auto auto auto'}
-            justifyContent={'space-between'}
-          >
+          <TabPanel sx={css.tabpanel}>
             {newReleaseSongs?.map((song, index) => {
               return <NewReleaseSong key={index} song={song} />;
             })}
@@ -85,3 +39,25 @@ function NewRelease({ newReleaseSongs }) {
 }
 
 export default NewRelease;
+
+const css = {
+  tab1: {
+    fontSize: '12px',
+    padding: '3px 24px 2px',
+    lineHeight: '1.5',
+    color: '#fff',
+    fontWeight: '400',
+    border: '1px solid hsla(0,0%,100%,0.1)',
+    mr: '15px',
+    _selected: {
+      bgColor: '#9b4de0',
+      border: 'none',
+    },
+  },
+  tabpanel: {
+    p: '15px 0',
+    display: 'grid',
+    gridTemplateColumns: { base: '45% 45%', xl: ' 30% 30% 30%' },
+    justifyContent: 'space-between',
+  },
+};

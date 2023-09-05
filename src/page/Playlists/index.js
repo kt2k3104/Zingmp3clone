@@ -9,16 +9,20 @@ import {
   Box,
   TabIndicator,
   VStack,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import PlaylistItem from '../ThuVien/components/PlaylistItem/PlaylistItem';
 import { useSelector } from 'react-redux';
+
+import PlaylistItem from '../ThuVien/components/PlaylistItem/PlaylistItem';
+import ModalAddPlaylist from '~/components/Layouts/DefaultLayout/Sidebar/component/ModalAddPlaylist/ModalAddPlaylist';
 
 const cx = classNames.bind(styles);
 
 function Playlists() {
   const { playlists } = useSelector((state) => state.user);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <div className={cx('wrapper')}>
@@ -37,14 +41,16 @@ function Playlists() {
         <TabPanels p={'20px 48px'}>
           <TabPanel
             display={'grid'}
-            gridTemplateColumns={'18% 18% 18% 18% 18%'}
-            gap={'28px'}
+            gridTemplateColumns={{ base: '25% 25% 25% 25%', xl: '20% 20% 20% 20% 20% ' }}
             rowGap={'30px'}
+            m={'0 -14px'}
           >
-            <VStack sx={css.vstack}>
+            <VStack onClick={onOpen} sx={css.vstack}>
               <FontAwesomeIcon icon={faPlusCircle} />
               <span>Tạo playlist mới</span>
             </VStack>
+            <ModalAddPlaylist isOpen={isOpen} onClose={onClose} />
+
             {playlists?.map((playlist, index) => {
               return (
                 <div
@@ -87,11 +93,13 @@ const css = {
     borderRight: '1px solid hsla(0,0%,100%,0.1)',
   },
   vstack: {
-    w: '100%',
+    w: 'calc(100% - 28px)',
+    minW: '114px',
     border: '1px solid hsla(0,0%,100%,0.1)',
     fontSize: '15px',
     borderRadius: '4px',
     justifyContent: 'center',
     cursor: 'pointer',
+    ml: '14px',
   },
 };

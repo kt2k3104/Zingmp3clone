@@ -29,12 +29,13 @@ import { useRef, useState } from 'react';
 import { Spinner } from '@chakra-ui/react';
 
 import { deleteSong, getSongs } from '~/components/Layouts/DefaultLayout/Listen/ListenSlice';
-import { getUser, handleAddSongToPlaylist } from '~/page/Auth/UserSlice';
+import { getUser } from '~/page/Auth/UserSlice';
+import OptionAddToPlaylist from './OptionAddToPlaylist/OptionAddToPlaylist';
 
 const cx = classNames.bind(styles);
 
 function SongOtherOptions({ attrs, song, hide }) {
-  const { user, playlists } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [onDelete, setOnDelete] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -90,54 +91,7 @@ function SongOtherOptions({ attrs, song, hide }) {
         trigger="mouseenter"
         offset={[-40, -10]}
         delay={[0, 300]}
-        render={(attrs) => (
-          <div className={cx('option_add_to_playlist')} tabIndex="-1" {...attrs}>
-            <input placeholder="Tìm playlist" />
-            <button>
-              <i></i>
-              Tạo playlist mới
-            </button>
-            <div className={cx('playlists')}>
-              {playlists?.map((playlist) => (
-                <div
-                  onClick={() => {
-                    try {
-                      dispatch(
-                        handleAddSongToPlaylist({
-                          playlistId: playlist.id.toString(),
-                          songId: song.id.toString(),
-                        }),
-                      );
-                      hide();
-                      toast({
-                        position: 'bottom-left',
-                        render: () => (
-                          <Box
-                            color="white"
-                            p={5}
-                            bg="#34224f"
-                            borderRadius={'5px'}
-                            marginBottom={'90px'}
-                          >
-                            Đã thêm bài hát "{song.name}" vào playlist thành công !
-                          </Box>
-                        ),
-                        duration: 1000,
-                      });
-                    } catch (error) {
-                      console.log(error);
-                    }
-                  }}
-                  key={playlist.id}
-                  className={cx('playlist_item')}
-                >
-                  <FontAwesomeIcon icon={faListOl} />
-                  {playlist.name}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        render={(attrs) => <OptionAddToPlaylist attrs={attrs} song={song} hide={hide} />}
       >
         <button>
           <i>

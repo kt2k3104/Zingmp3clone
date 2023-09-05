@@ -36,6 +36,12 @@
     @include text-style($size: 1.2rem, $color: $text-secondary, $weight: 400);
   }
 }
+.hideitem {
+  display: none;
+  @include responsive($breakpoint: $breakpoint-xl) {
+    display: block;
+  }
+}
 
 .img_hover {
   position: absolute;

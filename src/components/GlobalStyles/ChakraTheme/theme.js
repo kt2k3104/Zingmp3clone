@@ -28,7 +28,9 @@ export const theme = extendTheme({
     sm: '320px',
     md: '768px',
     lg: '960px',
+    l: '1133px',
     xl: '1200px',
-    '2xl': '1536px',
+    xxl: '1350px',
+    xxxl: '1536px',
   },
 });

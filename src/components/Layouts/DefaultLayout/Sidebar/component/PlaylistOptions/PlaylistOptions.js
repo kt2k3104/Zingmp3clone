@@ -29,7 +29,7 @@ import { useRef, useState } from 'react';
 import { Spinner } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
-import { getPlaylists, handleDeletePlaylist } from '~/page/Auth/UserSlice';
+import { handleDeletePlaylist } from '~/page/Auth/UserSlice';
 
 const cx = classNames.bind(styles);
 
@@ -133,7 +133,6 @@ function PlaylistOptions({ attrs, playlist, hide }) {
                       dispatch(handleDeletePlaylist(playlist.id));
                       setOnDelete(false);
                       onClose();
-                      dispatch(getPlaylists());
                       toast({
                         duration: 1000,
                         position: 'bottom-left',

@@ -17,7 +17,11 @@
 .content {
   width: 100%;
   display: grid;
-  grid-template-columns: 11% 11% 11% 11% 11% 11% 11% 11%;
+  @include responsive($breakpoint: $breakpoint-xl) {
+    grid-template-columns: 11% 11% 11% 11% 11% 11% 11% 11%;
+    row-gap: 20%;
+  }
+  grid-template-columns: 22% 22% 22% 22%;
   gap: 1.8%;
-  row-gap: 20%;
+  row-gap: 5%;
 }

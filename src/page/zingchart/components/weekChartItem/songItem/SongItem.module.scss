@@ -4,13 +4,11 @@
 .wrapper {
   width: 100%;
   height: 60px;
-  padding: 0 10px;
+  padding: 10px 5px;
   border-radius: 5px;
-  @include flex($jutify: space-between);
-  border-bottom: 1px solid $border-secondary;
+  @include flex($align: left);
   &:hover {
     background-color: $alpha-bg;
-    border-color: transparent;
   }
 
   &:hover .song-thumb-active {
@@ -40,16 +38,23 @@
     display: block;
     margin-right: 8px;
   }
+  &:hover .btn-karaoke {
+    display: flex;
+  }
+  &:hover .card-info {
+    width: 112px;
+  }
 }
 
 .left {
-  width: 51%;
-  @include flex($jutify: flex-start, $gap: 10px);
-
+  width: 50%;
+  margin-right: 10px;
+  flex-grow: 1;
+  display: flex;
   .song-prefix {
-    width: 83px;
+    width: 55px;
     height: 100%;
-    margin-right: 5px;
+    margin-right: 15px;
     @include flex($gap: 5px);
     .number {
       display: block;
@@ -75,6 +80,7 @@
     width: 40px;
     height: 40px;
     position: relative;
+    margin-right: 10px;
     & img {
       border-radius: 4px;
       width: 100%;
@@ -85,9 +91,12 @@
     display: none;
   }
   .card-info {
+    overflow: hidden;
+    width: 158px;
     padding-bottom: 3px;
     @include flex($direction: column, $gap: 3.5px, $align: flex-start);
     span {
+      overflow: hidden;
       height: 18.2px;
       max-width: 100%;
       line-height: 1.3;
@@ -134,8 +143,11 @@
     @include flex();
     @include text-style($size: 1.2rem, $color: $song-item-action, $weight: 400);
   }
-  .btn-karaoke svg {
-    width: 16px;
-    height: 16px;
+  .btn-karaoke {
+    display: none;
+    svg {
+      width: 16px;
+      height: 16px;
+    }
   }
 }

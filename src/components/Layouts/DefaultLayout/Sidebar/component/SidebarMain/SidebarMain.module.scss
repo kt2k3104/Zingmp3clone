@@ -23,19 +23,11 @@
   }
 }
 
-.pt2 {
-  padding-top: 2px;
-}
-
 .item {
-  padding-left: 24px;
+  padding-left: 23px;
 }
 .item-live {
   @include flex($jutify: flex-start, $gap: 8px);
-
-  & img {
-    margin-bottom: 2px;
-  }
 }
 .isActive {
   color: #fff;
@@ -50,13 +42,16 @@
     background-color: $purple-primary;
   }
 }
-.noactive {
-  padding-left: 24px;
-}
-.isPending {
+
+.title {
+  display: none;
+  @include responsive($breakpoint: $breakpoint-l) {
+    display: flex;
+  }
 }
 
 .playicon {
+  display: flex;
   margin-left: auto;
   font-size: 18px;
   display: none;
@@ -66,8 +61,10 @@
   }
 }
 
-.item:hover > .playicon,
-.isActive:hover > .playicon,
-.noactive:hover > .playicon {
-  display: inline-block;
+@include responsive($breakpoint: $breakpoint-l) {
+  .item:hover > .playicon,
+  .isActive:hover > .playicon,
+  .noactive:hover > .playicon {
+    display: inline-block;
+  }
 }

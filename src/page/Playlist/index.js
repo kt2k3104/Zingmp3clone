@@ -4,20 +4,21 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlayCircle } from '@fortawesome/free-regular-svg-icons';
 import { faEllipsis, faMusic, faPen, faPlay } from '@fortawesome/free-solid-svg-icons';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import Tippy from '@tippyjs/react/headless';
 
-import SongItem from '../ThuVien/components/SongItem/SongItem';
 import PlaylistOptions from '~/components/Layouts/DefaultLayout/Sidebar/component/PlaylistOptions/PlaylistOptions';
+import SongItem from './components/songItem/SongItem';
 
 const cx = classNames.bind(styles);
 
 function Playlist() {
   const { user, playlists } = useSelector((state) => state.user);
-  const { state } = useLocation();
-  const { playlistId } = state;
+  const [query] = useSearchParams();
+  const playlistId = Number(query.get('id'));
+
   const [visible, setVisible] = useState(false);
   const show = () => setVisible(true);
   const hide = () => setVisible(false);
@@ -31,7 +32,30 @@ function Playlist() {
       <Stack w={'100%'} h={'100%'} gap={'0'} flexDirection={{ base: 'column', xl: 'row' }}>
         <Stack sx={css.stack1}>
           <Box sx={css.box1} role="group">
-            <Image sx={css.img} src="./assets/img/imgplaylist.png" alt="img" />
+            {!playlist.songs && (
+              <Image sx={css.img} src="https://photo-zmp3.zmdcdn.me/album_default.png" alt="img" />
+            )}
+            {playlist?.songs?.length <= 3 && (
+              <Image
+                sx={css.img}
+                src={
+                  playlist?.songs?.length === 0
+                    ? 'https://photo-zmp3.zmdcdn.me/album_default.png'
+                    : playlist?.songs?.length <= 3
+                    ? playlist?.songs[0].artwork
+                    : ''
+                }
+                alt="img"
+              />
+            )}
+            {playlist?.songs?.length > 3 && (
+              <Box sx={css.box3}>
+                <Image src={playlist?.songs[0].artwork} alt="img" />
+                <Image src={playlist?.songs[1].artwork} alt="img" />
+                <Image src={playlist?.songs[2].artwork} alt="img" />
+                <Image src={playlist?.songs[3].artwork} alt="img" />
+              </Box>
+            )}
             <Stack sx={css.stack2}>
               <FontAwesomeIcon className={cx('btn_play')} icon={faPlayCircle} />
             </Stack>
@@ -69,7 +93,7 @@ function Playlist() {
           </Stack>
         </Stack>
         <Box sx={css.box2}>
-          {playlist?.songs?.length === 0 && (
+          {(!playlist?.songs || playlist?.songs?.length === 0) && (
             <div className={cx('no_content_box')}>
               <FontAwesomeIcon icon={faMusic} />
               <span>Không có bài hát trong playlist của bạn</span>
@@ -118,8 +142,6 @@ const css = {
     w: '100%',
     transition: 'transform 0.4s linear',
     _groupHover: { filter: 'brightness(55%)', transform: 'scale(1.1)' },
-    src: './assets/img/imgplaylist.png',
-    alt: 'img',
   },
   stack2: {
     _groupHover: { opacity: '1' },
@@ -158,5 +180,12 @@ const css = {
     w: { base: '100%', xl: 'calc(100% - 300px)' },
     h: { base: 'calc(100% - 230px)', xl: '100%' },
     pl: { base: '0', xl: '30px' },
+  },
+  box3: {
+    display: 'grid',
+    gridTemplateColumns: '50% 50%',
+    w: '100%',
+    transition: 'transform 0.4s linear',
+    _groupHover: { filter: 'brightness(55%)', transform: 'scale(1.1)' },
   },
 };

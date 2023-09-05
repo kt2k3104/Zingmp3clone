@@ -45,7 +45,7 @@ function SongItem({ song }) {
             )}
           </div>
           <div className={cx('card-info')}>
-            <span>{song.name}</span>
+            <span className={cx('name')}>{song.name}</span>
             <h3>{song.artist}</h3>
           </div>
         </div>

@@ -7,11 +7,11 @@ import { faHeart as faHeartt, faPlayCircle } from '@fortawesome/free-regular-svg
 
 const cx = classNames.bind(styles);
 
-function PlaylistItem({ playlist }) {
+function PlaylistItem({ playlist, index }) {
   const [isFavoritePlaylist, setIsFavoritePlaylist] = useState(false);
 
   return (
-    <div className={cx('wrapper')}>
+    <div className={cx('wrapper', index === 4 ? 'hideplaylist' : '')}>
       <div className={cx('img')}>
         <img className={cx('img')} src={playlist.img} alt="img" />
         <div className={cx('img_hover')}>

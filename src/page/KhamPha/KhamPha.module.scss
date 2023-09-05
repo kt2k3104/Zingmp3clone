@@ -2,11 +2,13 @@
 @import '../../components/GlobalStyles/valiables.scss';
 
 .wrapper {
-  width: calc(100vw - 240px);
-  height: calc(100vh - 160px);
+  @include responsive($breakpoint: $breakpoint-l) {
+    width: calc(100vw - 240px);
+  }
+  width: calc(100vw - 70px);
+  height: 100%;
   overflow: auto;
-  padding: 0 59px 60px;
-
+  padding: 0 $padding-section;
   &::-webkit-scrollbar {
     width: 4px;
   }

@@ -31,7 +31,7 @@ function SidebarOptions({ isScrollTop }) {
         to={'/moi-phat-hanh'}
       >
         <customIcon.IconMusic />
-        <span>BXH Nhạc Mới</span>
+        <span className={cx('title')}>BXH Nhạc Mới</span>
         <FontAwesomeIcon className={cx('playicon')} icon={faCirclePlay} />
       </NavLink>
       <NavLink
@@ -44,7 +44,7 @@ function SidebarOptions({ isScrollTop }) {
         to={'/hub'}
       >
         <customIcon.IconChuDe />
-        <span>Chủ Đề & Thể Loại</span>
+        <span className={cx('title')}>Chủ Đề & Thể Loại</span>
       </NavLink>
       <NavLink
         className={({ isActive, isPending }) => {
@@ -56,7 +56,7 @@ function SidebarOptions({ isScrollTop }) {
         to={'/top100'}
       >
         <customIcon.IconTop100 />
-        <span>Top 100</span>
+        <span className={cx('title')}>Top 100</span>
       </NavLink>
       {isLogined && (
         <>
@@ -82,7 +82,7 @@ function SidebarOptions({ isScrollTop }) {
             to={'/mymusic/history'}
           >
             <customIcon.IconRecently />
-            <span>Nghe gần đây</span>
+            <span className={cx('title')}>Nghe gần đây</span>
           </NavLink>
           <NavLink
             className={({ isActive, isPending }) => {
@@ -94,7 +94,7 @@ function SidebarOptions({ isScrollTop }) {
             to={'/mymusic/song/favorite'}
           >
             <customIcon.IconLove />
-            <span>Bài hát yêu thích</span>
+            <span className={cx('title')}>Bài hát yêu thích</span>
             <FontAwesomeIcon className={cx('playicon')} icon={faCirclePlay} />
           </NavLink>
           <NavLink
@@ -107,7 +107,7 @@ function SidebarOptions({ isScrollTop }) {
             to={'/mymusic/library/playlist'}
           >
             <customIcon.IconPlaylist />
-            <span>Playlist</span>
+            <span className={cx('title')}>Playlist</span>
           </NavLink>
           <NavLink
             className={({ isActive, isPending }) => {
@@ -119,7 +119,7 @@ function SidebarOptions({ isScrollTop }) {
             to={'/mymusic/album'}
           >
             <customIcon.IconAlbum />
-            <span>Album</span>
+            <span className={cx('title')}>Album</span>
           </NavLink>
           <NavLink
             className={({ isActive, isPending }) => {
@@ -131,7 +131,7 @@ function SidebarOptions({ isScrollTop }) {
             to={'/mymusic/song/upload'}
           >
             <customIcon.IconUpload />
-            <span>Đã tải lên</span>
+            <span className={cx('title')}>Đã tải lên</span>
           </NavLink>
           <div className={cx('divide')}></div>
           <ul className={cx('menu-playlist')}>

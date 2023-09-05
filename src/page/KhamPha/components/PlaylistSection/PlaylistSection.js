@@ -17,7 +17,7 @@ function PlaylistSection({ data }) {
       </h3>
       <div className={cx('content')}>
         {data.playlists.map((playlist, index) => {
-          return <PlaylistItem playlist={playlist} key={index} />;
+          return <PlaylistItem playlist={playlist} key={index} index={index} />;
         })}
       </div>
     </div>

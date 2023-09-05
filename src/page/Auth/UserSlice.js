@@ -9,6 +9,7 @@ const initialState = {
   favoriteId: [],
   queueFavorite: [],
   playlists: [],
+  afterAddPlaylistNavigatePath: '',
 };
 
 export const handleLogin = createAsyncThunk('auth/login', async (body, thunkAPI) => {
@@ -99,7 +100,11 @@ export const handleDeletePlaylist = createAsyncThunk(
   async (reqData, thunkAPI) => {
     try {
       const { data } = await requestApi(`/playlists/${reqData}`, 'DELETE');
-      return data.result;
+      const result = {
+        data: data.result,
+        playlistId: reqData,
+      };
+      return result;
     } catch (error) {
       console.log(error);
       return thunkAPI.rejectWithValue(error.response.data);
@@ -107,10 +112,10 @@ export const handleDeletePlaylist = createAsyncThunk(
   },
 );
 export const handleRemoveSongToPlaylist = createAsyncThunk(
-  'auth/handleAddSongToPlaylist',
+  'auth/handleRemoveSongToPlaylist',
   async (reqData, thunkAPI) => {
     try {
-      const { data } = await requestApi(`/playlists/add`, 'PATCH', reqData);
+      const { data } = await requestApi(`/playlists/remove`, 'PATCH', reqData);
       return data.result;
     } catch (error) {
       console.log(error);
@@ -146,6 +151,9 @@ const userSlice = createSlice({
         state.favoriteId.push(song.id);
       });
     },
+    changePlaylistNavigatePath: (state, action) => {
+      state.afterAddPlaylistNavigatePath = action.payload;
+    },
   },
 
   extraReducers(bullder) {
@@ -177,6 +185,12 @@ const userSlice = createSlice({
       })
       .addCase(handleAddPlaylist.fulfilled, (state, action) => {
         state.playlists.push(action.payload);
+        state.afterAddPlaylistNavigatePath = `/playlist?id=${action.payload.id}`;
+      })
+      .addCase(handleDeletePlaylist.fulfilled, (state, action) => {
+        state.playlists = state.playlists.filter((playlist) => {
+          return playlist.id !== action.payload.playlistId;
+        });
       })
       .addCase(getPlaylists.fulfilled, (state, action) => {
         state.playlists = action.payload;
@@ -187,10 +201,18 @@ const userSlice = createSlice({
             playlist.songs = action.payload.songs;
           }
         });
+      })
+      .addCase(handleRemoveSongToPlaylist.fulfilled, (state, action) => {
+        state.playlists.forEach((playlist) => {
+          if (playlist.id === action.payload.id) {
+            playlist.songs = action.payload.songs;
+          }
+        });
       });
   },
 });
 
-export const { setLogin, setLogout, setQueueFavorite, setFavoriteId } = userSlice.actions;
+export const { setLogin, setLogout, setQueueFavorite, setFavoriteId, changePlaylistNavigatePath } =
+  userSlice.actions;
 
 export default userSlice.reducer;

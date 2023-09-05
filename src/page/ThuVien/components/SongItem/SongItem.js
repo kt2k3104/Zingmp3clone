@@ -114,7 +114,7 @@ function SongItem({ song, favoriteSong, mySong }) {
             onClick={() => {
               dispatch(handleChangeFavoriteSong(song.id));
             }}
-            className={favoriteSong && cx('showInFav')}
+            className={cx('showInFav')}
           >
             <FontAwesomeIcon className={cx('heart_purple')} icon={faHeart} />
           </button>
@@ -123,7 +123,6 @@ function SongItem({ song, favoriteSong, mySong }) {
             onClick={() => {
               dispatch(handleChangeFavoriteSong(song.id));
             }}
-            className={favoriteSong ? cx('showInFav') : ''}
           >
             <FontAwesomeIcon icon={faHeartt} />
           </button>
@@ -133,15 +132,13 @@ function SongItem({ song, favoriteSong, mySong }) {
           interactive
           placement="left"
           visible={isVisible}
+          // trigger="mouseenter"
           onClickOutside={hide}
           offset={[0, 0]}
           render={(attrs) => <SongOtherOptions hide={hide} song={song} attrs={attrs} />}
         >
           <Tippy content="Khác">
-            <button
-              className={cx('btn_option', favoriteSong ? 'dfnone' : '')}
-              onClick={isVisible ? hide : show}
-            >
+            <button className={cx('btn_option', 'dfnone')} onClick={isVisible ? hide : show}>
               <FontAwesomeIcon icon={faEllipsis} />
             </button>
           </Tippy>

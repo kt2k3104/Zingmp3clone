@@ -24,7 +24,7 @@ function SidebarMain() {
         to={'/'}
       >
         <customIcon.IconKhampha />
-        <span className={cx('pt2')}>Khám Phá</span>
+        <span className={cx('title')}>Khám Phá</span>
       </NavLink>
       <NavLink
         className={({ isActive, isPending }) => {
@@ -36,7 +36,7 @@ function SidebarMain() {
         to={'/zingchart'}
       >
         <customIcon.IconZingchart />
-        <span className={cx('pt2')}>#zingchart</span>
+        <span className={cx('title')}>#zingchart</span>
         <FontAwesomeIcon className={cx('playicon')} icon={faCirclePlay} />
       </NavLink>
       <NavLink
@@ -49,7 +49,7 @@ function SidebarMain() {
         to={'/radio'}
       >
         <customIcon.IconRadio />
-        <span className={cx('item-live', 'pt2')}>
+        <span className={cx('item-live', 'title')}>
           Radio{' '}
           <img
             src="https://zjs.zmdcdn.me/zmp3-desktop/dev/147506/static/media/live-tag.e25dd240.svg"
@@ -69,7 +69,7 @@ function SidebarMain() {
           to={'/mymusic'}
         >
           <customIcon.IconLibrary />
-          <span className={cx('pt2')}>Thư Viện</span>
+          <span className={cx('title')}>Thư Viện</span>
           <FontAwesomeIcon className={cx('playicon')} icon={faCirclePlay} />
         </NavLink>
       )}
@@ -84,7 +84,7 @@ function SidebarMain() {
           to={'/auth'}
         >
           <customIcon.IconLibrary />
-          <span className={cx('pt2')}>Thư Viện</span>
+          <span className={cx('title')}>Thư Viện</span>
           <FontAwesomeIcon className={cx('playicon')} icon={faCirclePlay} />
         </NavLink>
       )}

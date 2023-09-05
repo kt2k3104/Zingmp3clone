@@ -3,6 +3,7 @@
 
 .wrapper {
   width: 100%;
+  min-width: 500px;
   height: 60px;
   padding: 10px;
   border-radius: 5px;
@@ -10,7 +11,7 @@
   border-bottom: 1px solid $alpha-bg;
   &:hover {
     background-color: $alpha-bg;
-    border: none;
+    border-color: transparent;
   }
 
   &:hover .song-thumb-active {
@@ -97,6 +98,10 @@
 }
 
 .center {
+  @include responsive($breakpoint: $breakpoint-md) {
+    display: block;
+  }
+  display: none;
   & span {
     @include text-style($size: 1.2rem, $color: $song-item-action);
 
@@ -149,6 +154,7 @@
   }
 
   .heart_purple {
+    opacity: 1;
     color: $purple-primary;
   }
 

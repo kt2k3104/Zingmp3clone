@@ -1,12 +1,12 @@
-@import '../../../../components//GlobalStyles//mixins.scss';
-@import '../../../../components//GlobalStyles//valiables.scss';
+@import '../../../../components//GlobalStyles/mixins.scss';
+@import '../../../../components//GlobalStyles/valiables.scss';
 
 .wrapper {
   width: 100%;
   height: 60px;
   padding: 0 10px;
   border-radius: 5px;
-  @include flex($jutify: space-between);
+  @include flex($jutify: flex-start);
   border-bottom: 1px solid $border-secondary;
   &:hover {
     background-color: $alpha-bg;
@@ -43,9 +43,9 @@
 }
 
 .left {
-  width: 51%;
+  width: 50%;
   @include flex($jutify: flex-start, $gap: 10px);
-
+  min-width: 435px;
   .song-prefix {
     width: 83px;
     height: 100%;
@@ -144,6 +144,11 @@
 }
 
 .center {
+  @include responsive($breakpoint: $breakpoint-lg) {
+    display: flex;
+  }
+  display: none;
+
   & span {
     @include text-style($size: 1.2rem, $color: $song-item-action);
 
