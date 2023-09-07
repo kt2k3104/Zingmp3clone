@@ -16,12 +16,12 @@ const cx = classNames.bind(styles);
 function Sidebar() {
   const { isLogined } = useSelector((state) => state.user);
   const [isScrollTop, setIsScrollTop] = useState(false);
+  const [scroll, setScroll] = useState(0);
   const navigate = useNavigate();
 
   const handleScroll = (e) => {
-    const scrollTop = e.target.scrollTop;
-    console.log(scrollTop);
-    if (scrollTop > 0) setIsScrollTop(true);
+    setScroll(e.target.scrollTop);
+    if (scroll > 0) setIsScrollTop(true);
     else setIsScrollTop(false);
   };
 
@@ -41,7 +41,7 @@ function Sidebar() {
       </div>
       <div className={cx('divide')}></div>
       <div onScroll={handleScroll} className={cx('option', isScrollTop ? 'is-mark' : '')}>
-        <SidebarOptions isScrollTop={isScrollTop} />
+        <SidebarOptions scroll={scroll} isScrollTop={isScrollTop} />
       </div>
       <div
         onClick={() => {

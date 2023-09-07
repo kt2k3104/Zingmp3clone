@@ -1,7 +1,12 @@
 import styles from './PlayerControlCenter.module.scss';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBackwardStep, faForwardStep, faRepeat, faShuffle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBackwardStep,
+  faForwardStep,
+  faRepeat,
+  faShuffle,
+} from '@fortawesome/free-solid-svg-icons';
 import { faCirclePause, faCirclePlay } from '@fortawesome/free-regular-svg-icons';
 import { Slider, SliderTrack, SliderFilledTrack, SliderThumb } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,10 +22,18 @@ import {
   repeatAll,
   repeatOne,
 } from '../../ListenSlice';
+import { memo } from 'react';
 
 const cx = classNames.bind(styles);
 
-function PlayerControlCenter({ audioRef, progress, duration, setDuration, setProgress, setIsChange }) {
+function PlayerControlCenter({
+  audioRef,
+  progress,
+  duration,
+  setDuration,
+  setProgress,
+  setIsChange,
+}) {
   const dispatch = useDispatch();
   const { isRepeat, isRandom, isPlaying } = useSelector((state) => state.listen);
 
@@ -181,4 +194,4 @@ function PlayerControlCenter({ audioRef, progress, duration, setDuration, setPro
   );
 }
 
-export default PlayerControlCenter;
+export default memo(PlayerControlCenter);

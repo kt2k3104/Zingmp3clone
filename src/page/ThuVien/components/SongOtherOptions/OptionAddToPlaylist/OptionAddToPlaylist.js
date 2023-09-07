@@ -18,7 +18,7 @@ function OptionAddToPlaylist({ attrs, song, hide }) {
   return (
     <div className={cx('option_add_to_playlist')} tabIndex="-1" {...attrs}>
       <input placeholder="Tìm playlist" />
-      <button
+      <li
         onClick={() => {
           onOpen();
           hide();
@@ -26,7 +26,7 @@ function OptionAddToPlaylist({ attrs, song, hide }) {
       >
         <i></i>
         Tạo playlist mới
-      </button>
+      </li>
       <ModalAddPlaylist isOpen={isOpen} onClose={onClose} />
       <div className={cx('playlists')}>
         {playlists?.map((playlist) => (

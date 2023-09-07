@@ -21,7 +21,7 @@
     outline: none;
   }
 
-  button {
+  li {
     width: 100%;
     height: 45px;
     padding: 10px 20px 10px 14px;
@@ -33,6 +33,10 @@
       height: 20px;
       font-size: 25px;
       background-image: url(https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.9.66/static/media/thumb-add.2971eb21.svg);
+    }
+    &:hover {
+      cursor: pointer;
+      background-color: $alpha-bg;
     }
   }
   .playlists {

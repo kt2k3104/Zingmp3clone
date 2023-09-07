@@ -54,7 +54,6 @@
   @include flex($jutify: space-evenly);
   font-size: 20px;
   opacity: 0;
-
   & .btn_play {
     font-size: 45px;
     &:hover {
@@ -73,5 +72,11 @@
     &:hover {
       background-color: hsla(0, 0%, 100%, 0.3);
     }
+  }
+}
+.showoptions {
+  opacity: 1;
+  .imggg {
+    filter: brightness(55%);
   }
 }

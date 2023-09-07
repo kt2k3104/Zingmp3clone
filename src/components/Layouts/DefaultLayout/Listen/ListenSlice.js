@@ -30,6 +30,19 @@ export const getSongs = createAsyncThunk('listen/getSongs', async (_, thunkAPI) 
   }
 });
 
+export const editSong = createAsyncThunk('listen/editSong', async (reqData, thunkAPI) => {
+  try {
+    await requestApi(`/songs/${reqData.songId}`, 'PUT', reqData.data);
+    const response = {
+      id: reqData.songId,
+      name: reqData.data.name,
+    };
+    return response;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
 export const deleteSong = createAsyncThunk('listen/deleteSong', async (reqData, thunkAPI) => {
   try {
     const response = await requestApi(`/songs/${reqData}`, 'DELETE');
@@ -89,11 +102,19 @@ const listenSlice = createSlice({
   },
 
   extraReducers(bullder) {
-    bullder.addCase(getSongs.fulfilled, (state, action) => {
-      state.queue = action.payload;
-      state.currentSong = action.payload[0];
-      state.currentIndex = 0;
-    });
+    bullder
+      .addCase(getSongs.fulfilled, (state, action) => {
+        state.queue = action.payload;
+        state.currentSong = action.payload[0];
+        state.currentIndex = 0;
+      })
+      .addCase(editSong.fulfilled, (state, action) => {
+        state.queue.forEach((song) => {
+          if (song.id === action.payload.id) {
+            song.name = action.payload.name;
+          }
+        });
+      });
   },
 });
 

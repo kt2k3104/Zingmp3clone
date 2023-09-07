@@ -1,4 +1,4 @@
-import styles from './PlaylistOptions.module.scss';
+import styles from './playlistoption.module.scss';
 import classNames from 'classnames/bind';
 import {
   faAngleRight,
@@ -30,29 +30,19 @@ import { Spinner } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 import { handleDeletePlaylist } from '~/page/Auth/UserSlice';
-import ModalAddPlaylist from '../ModalAddPlaylist/ModalAddPlaylist';
 
 const cx = classNames.bind(styles);
 
 function PlaylistOptions({ attrs, playlist, hide }) {
   const dispatch = useDispatch();
-  const {
-    isOpen: isOpenModalDelete,
-    onOpen: onOpenModalDelete,
-    onClose: onCloseModalDelete,
-  } = useDisclosure();
-  const {
-    isOpen: isOpenModalUpdate,
-    onOpen: onOpenModalUpdate,
-    onClose: onCloseModalUpdate,
-  } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [onDelete, setOnDelete] = useState(false);
   const cancelRef = useRef();
   const toast = useToast();
   const navigate = useNavigate();
 
   return (
-    <ul
+    <div
       onClick={(e) => {
         e.stopPropagation();
       }}
@@ -60,81 +50,67 @@ function PlaylistOptions({ attrs, playlist, hide }) {
       tabIndex="-1"
       {...attrs}
     >
-      <li>
+      <button>
         <FontAwesomeIcon icon={faFileCirclePlus} />
         <span>Thêm vào danh sách phát</span>
-      </li>
-      <li>
+      </button>
+      <button>
         <FontAwesomeIcon icon={faDownload} />
         <span>Tải xuống</span>
-      </li>
-      <li>
+      </button>
+      <button>
         <FontAwesomeIcon icon={faLink} />
         <span>Sao chép link</span>
-      </li>
+      </button>
       <Tippy
         interactive
         placement="right"
         offset={[-113, -230]}
         render={(attrs) => (
-          <ul className={cx('share-option')} tabIndex="-1" {...attrs}>
-            <li>
+          <div className={cx('share-option')} tabIndex="-1" {...attrs}>
+            <button>
               <img
                 className={cx('icon-fb')}
                 src="https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.9.57/static/media/facebook.d62c237b.svg"
                 alt="fb"
               />
               <span>Facebook</span>
-            </li>
-            <li>
+            </button>
+            <button>
               <img
                 className={cx('icon-zalo')}
                 src="https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.9.57/static/media/zalo.d94c16f4.svg"
                 alt="zalo"
               />
               <span>Zalo</span>
-            </li>
-            <li>
+            </button>
+            <button>
               <FontAwesomeIcon icon={faCode} />
               <span>Mã nhúng</span>
-            </li>
-          </ul>
+            </button>
+          </div>
         )}
       >
-        <li>
+        <button>
           <FontAwesomeIcon icon={faShare} />
           <span>Chia sẻ</span>
           <FontAwesomeIcon className={cx('icon-angleright')} icon={faAngleRight} />
-        </li>
+        </button>
       </Tippy>
-      <li
-        onClick={() => {
-          onOpenModalUpdate();
-          hide();
-        }}
-      >
+      <button>
         <FontAwesomeIcon icon={faPenToSquare} />
         <span>Chỉnh sửa playlist</span>
-      </li>
-      <ModalAddPlaylist
-        playlist={playlist}
-        isOpen={isOpenModalUpdate}
-        onClose={onCloseModalUpdate}
-      />
-      <li
+      </button>
+      <button
         onClick={(e) => {
-          onOpenModalDelete();
+          onOpen();
           hide();
         }}
       >
         <FontAwesomeIcon icon={faTrashAlt} />
         <span>Xóa playlist</span>
-      </li>
-      <AlertDialog
-        isOpen={isOpenModalDelete}
-        leastDestructiveRef={cancelRef}
-        onClose={onCloseModalDelete}
-      >
+      </button>
+      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
         <AlertDialogOverlay>
           <AlertDialogContent sx={css.AlertDialogContent}>
             <AlertDialogHeader sx={css.AlertDialogHeader}>Xóa Bài Hát</AlertDialogHeader>
@@ -146,7 +122,7 @@ function PlaylistOptions({ attrs, playlist, hide }) {
                 </AlertDialogBody>
 
                 <AlertDialogFooter>
-                  <Button onClick={onCloseModalDelete} ref={cancelRef} sx={css.button1}>
+                  <Button onClick={onClose} ref={cancelRef} sx={css.button1}>
                     KHÔNG
                   </Button>
                   <Button
@@ -156,7 +132,7 @@ function PlaylistOptions({ attrs, playlist, hide }) {
                       setOnDelete(true);
                       dispatch(handleDeletePlaylist(playlist.id));
                       setOnDelete(false);
-                      onCloseModalDelete();
+                      onClose();
                       toast({
                         duration: 1000,
                         position: 'bottom-left',
@@ -178,7 +154,7 @@ function PlaylistOptions({ attrs, playlist, hide }) {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </ul>
+    </div>
   );
 }
 

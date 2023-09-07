@@ -5,17 +5,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlayCircle } from '@fortawesome/free-regular-svg-icons';
 import { faEllipsis, faMusic, faPen, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useSearchParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import Tippy from '@tippyjs/react/headless';
 
 import PlaylistOptions from '~/components/Layouts/DefaultLayout/Sidebar/component/PlaylistOptions/PlaylistOptions';
 import SongItem from './components/songItem/SongItem';
+import { getPlaylists } from '../Auth/UserSlice';
 
 const cx = classNames.bind(styles);
 
 function Playlist() {
   const { user, playlists } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [query] = useSearchParams();
   const playlistId = Number(query.get('id'));
 
@@ -27,12 +29,16 @@ function Playlist() {
     if (item.id === playlistId) playlist = item;
   });
 
+  useEffect(() => {
+    dispatch(getPlaylists());
+  }, [dispatch]);
+
   return (
     <div className={cx('wrapper')}>
       <Stack w={'100%'} h={'100%'} gap={'0'} flexDirection={{ base: 'column', xl: 'row' }}>
         <Stack sx={css.stack1}>
           <Box sx={css.box1} role="group">
-            {!playlist.songs && (
+            {!playlist?.songs && (
               <Image sx={css.img} src="https://photo-zmp3.zmdcdn.me/album_default.png" alt="img" />
             )}
             {playlist?.songs?.length <= 3 && (
@@ -107,7 +113,7 @@ function Playlist() {
                 <span className={cx('span3')}>THỜI GIAN</span>
               </div>
               {playlist?.songs?.map((song) => {
-                return <SongItem favoriteSong key={song.id} song={song} />;
+                return <SongItem playlistId={playlist.id} favoriteSong key={song.id} song={song} />;
               })}
             </>
           )}

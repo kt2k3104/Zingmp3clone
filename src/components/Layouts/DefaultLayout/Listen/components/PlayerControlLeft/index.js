@@ -7,6 +7,7 @@ import Tippy from '@tippyjs/react';
 import Tippyy from '@tippyjs/react/headless';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleChangeFavoriteSong } from '~/page/Auth/UserSlice';
+import { memo } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -67,4 +68,4 @@ function PlayerControlLeft() {
   );
 }
 
-export default PlayerControlLeft;
+export default memo(PlayerControlLeft);

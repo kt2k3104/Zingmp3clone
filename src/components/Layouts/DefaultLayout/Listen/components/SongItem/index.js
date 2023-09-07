@@ -2,11 +2,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './SongItem.module.scss';
 import classNames from 'classnames/bind';
 import { faHeart as faHeartt } from '@fortawesome/free-regular-svg-icons';
-import { faEllipsis, faHeart, faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsis, faHeart, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { pauseSong, playSong, setCurrentSong } from '../../ListenSlice';
 import { handleChangeFavoriteSong } from '~/page/Auth/UserSlice';
+import { memo } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -33,12 +34,20 @@ function SongItem({ song }) {
             }}
           >
             <img src={song?.artwork} alt="img" />
-            {currentSong === song && (
+            {currentSong.id === song.id && (
               <div className={cx('song-thumb-active')}>
-                {isPlaying ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
+                {isPlaying ? (
+                  <img
+                    style={{ width: '40%', height: '40%', borderRadius: 0 }}
+                    src="/assets/img/icon-playing.gif"
+                    alt="img"
+                  />
+                ) : (
+                  <FontAwesomeIcon icon={faPlay} />
+                )}
               </div>
             )}
-            {currentSong !== song && (
+            {currentSong.id !== song.id && (
               <div className={cx('song-thumb-active')}>
                 <FontAwesomeIcon icon={faPlay} />
               </div>
@@ -84,4 +93,4 @@ function SongItem({ song }) {
   );
 }
 
-export default SongItem;
+export default memo(SongItem);

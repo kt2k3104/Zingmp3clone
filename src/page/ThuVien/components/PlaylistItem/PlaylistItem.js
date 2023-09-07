@@ -3,17 +3,17 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartt, faPlayCircle } from '@fortawesome/free-regular-svg-icons';
 import { faHeart, faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Tippy from '@tippyjs/react/headless';
-import PlaylistOptions from '~/components/Layouts/DefaultLayout/Sidebar/component/PlaylistOptions/PlaylistOptions';
 import { Box, Img } from '@chakra-ui/react';
 import { changePlaylistNavigatePath } from '~/page/Auth/UserSlice';
+import PlaylistOptions from '~/components/Layouts/DefaultLayout/Sidebar/component/PlaylistOptions/PlaylistOptions';
 
 const cx = classNames.bind(styles);
 
-function PlaylistItem({ playlist }) {
+function PlaylistItem({ playlist, scroll }) {
   const { user, afterAddPlaylistNavigatePath } = useSelector((state) => state.user);
   const [isFavoritePlaylist, setIsFavoritePlaylist] = useState(false);
   const navigate = useNavigate();
@@ -29,13 +29,19 @@ function PlaylistItem({ playlist }) {
     }
   }, [navigate, afterAddPlaylistNavigatePath, dispatch]);
 
+  useEffect(() => {
+    if (visible) {
+      hide();
+    }
+  }, [scroll]);
+
   return (
     <div
       onClick={(e) => {
         e.preventDefault();
         dispatch(changePlaylistNavigatePath(`/playlist?id=${playlist.id}`));
       }}
-      className={cx('wrapper')}
+      className={cx('wrapper', visible ? 'showoptions' : '')}
     >
       <div className={cx('img')}>
         <div className={cx('imgg')}>
@@ -72,7 +78,7 @@ function PlaylistItem({ playlist }) {
             </Box>
           )}
         </div>
-        <div className={cx('img_hover')}>
+        <div className={cx('img_hover', visible ? 'showoptions' : '')}>
           {isFavoritePlaylist && (
             <button
               className={cx('btn-option')}
@@ -123,7 +129,7 @@ function PlaylistItem({ playlist }) {
   );
 }
 
-export default PlaylistItem;
+export default memo(PlaylistItem);
 
 const css = {
   img: {

@@ -74,6 +74,35 @@ export const handleAddPlaylist = createAsyncThunk(
   },
 );
 
+export const handleUpdatePlaylist = createAsyncThunk(
+  'auth/handleUpdatePlaylist',
+  async (reqData, thunkAPI) => {
+    try {
+      await requestApi(`/playlists/${reqData.playlistId}`, 'PUT', reqData.data);
+      return reqData;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const handleDeletePlaylist = createAsyncThunk(
+  'auth/handleDeletePlaylist',
+  async (reqData, thunkAPI) => {
+    try {
+      const { data } = await requestApi(`/playlists/${reqData}`, 'DELETE');
+      const result = {
+        data: data.result,
+        playlistId: reqData,
+      };
+      return result;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const getPlaylists = createAsyncThunk('auth/getPlaylists', async (_, thunkAPI) => {
   try {
     const { data } = await requestApi(`/playlists`, 'GET');
@@ -95,27 +124,11 @@ export const handleAddSongToPlaylist = createAsyncThunk(
     }
   },
 );
-export const handleDeletePlaylist = createAsyncThunk(
-  'auth/handleDeletePlaylist',
-  async (reqData, thunkAPI) => {
-    try {
-      const { data } = await requestApi(`/playlists/${reqData}`, 'DELETE');
-      const result = {
-        data: data.result,
-        playlistId: reqData,
-      };
-      return result;
-    } catch (error) {
-      console.log(error);
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
-  },
-);
 export const handleRemoveSongToPlaylist = createAsyncThunk(
   'auth/handleRemoveSongToPlaylist',
   async (reqData, thunkAPI) => {
     try {
-      const { data } = await requestApi(`/playlists/remove`, 'PATCH', reqData);
+      const { data } = await requestApi('/playlists/remove', 'PATCH', reqData);
       return data.result;
     } catch (error) {
       console.log(error);
@@ -175,6 +188,7 @@ const userSlice = createSlice({
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.user = action.payload;
+        state.queueFavorite = action.payload.favoriteSongs;
       })
       .addCase(handleChangeFavoriteSong.fulfilled, (state, action) => {
         state.queueFavorite = action.payload.data.response.favoriteSongs;
@@ -186,6 +200,13 @@ const userSlice = createSlice({
       .addCase(handleAddPlaylist.fulfilled, (state, action) => {
         state.playlists.push(action.payload);
         state.afterAddPlaylistNavigatePath = `/playlist?id=${action.payload.id}`;
+      })
+      .addCase(handleUpdatePlaylist.fulfilled, (state, action) => {
+        state.playlists.forEach((playlist) => {
+          if (playlist.id === action.payload.playlistId) {
+            playlist.name = action.payload.data.name;
+          }
+        });
       })
       .addCase(handleDeletePlaylist.fulfilled, (state, action) => {
         state.playlists = state.playlists.filter((playlist) => {

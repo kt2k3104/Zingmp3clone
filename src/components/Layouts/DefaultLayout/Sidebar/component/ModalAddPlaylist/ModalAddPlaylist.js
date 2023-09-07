@@ -15,12 +15,16 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
-import { changePlaylistNavigatePath, handleAddPlaylist } from '~/page/Auth/UserSlice';
-import { useEffect } from 'react';
+import {
+  changePlaylistNavigatePath,
+  handleAddPlaylist,
+  handleUpdatePlaylist,
+} from '~/page/Auth/UserSlice';
+import { memo, useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
-function ModalAddPlaylist({ isOpen, onClose }) {
+function ModalAddPlaylist({ isOpen, onClose, playlist }) {
   const { afterAddPlaylistNavigatePath } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const toast = useToast();
@@ -60,15 +64,42 @@ function ModalAddPlaylist({ isOpen, onClose }) {
       console.log(error);
     }
   };
+  const onSubmitUpdatePlaylist = async (data) => {
+    try {
+      await dispatch(
+        handleUpdatePlaylist({ data: { name: data.playlist }, playlistId: playlist.id }),
+      ).unwrap();
+      reset();
+      toast({
+        position: 'bottom-left',
+        render: () => (
+          <Box color="white" p={5} bg="#34224f" borderRadius={'5px'} marginBottom={'90px'}>
+            Sửa playlist "{data.playlist}" thành công !
+          </Box>
+        ),
+        duration: 1000,
+      });
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent sx={css.modalcontent}>
-        <ModalHeader sx={css.modalheader}>Tạo playlist mới</ModalHeader>
+        {playlist ? (
+          <ModalHeader sx={css.modalheader}>Chỉnh sửa playlist</ModalHeader>
+        ) : (
+          <ModalHeader sx={css.modalheader}>Tạo playlist mới</ModalHeader>
+        )}
         <ModalCloseButton />
         <ModalBody>
-          <form onSubmit={handleSubmit(onSubmitAddPlaylist)} className={cx('form')}>
+          <form
+            onSubmit={handleSubmit(playlist ? onSubmitUpdatePlaylist : onSubmitAddPlaylist)}
+            className={cx('form')}
+          >
             <input
               type="text"
               name="playlist"
@@ -76,6 +107,7 @@ function ModalAddPlaylist({ isOpen, onClose }) {
               placeholder="Nhập tên playlist"
               autoFocus
               {...register('playlist', { required: true })}
+              defaultValue={playlist ? playlist.name : ''}
             />
             <div className={cx('option')}>
               <div>
@@ -95,7 +127,7 @@ function ModalAddPlaylist({ isOpen, onClose }) {
               type="submit"
               className={errors.playlist?.type === 'required' ? cx('no-select') : ''}
             >
-              TẠO MỚI
+              {!playlist ? 'TẠO MỚI' : 'LƯU'}
             </button>
           </form>
         </ModalBody>
@@ -104,7 +136,7 @@ function ModalAddPlaylist({ isOpen, onClose }) {
   );
 }
 
-export default ModalAddPlaylist;
+export default memo(ModalAddPlaylist);
 
 const css = {
   modalcontent: {

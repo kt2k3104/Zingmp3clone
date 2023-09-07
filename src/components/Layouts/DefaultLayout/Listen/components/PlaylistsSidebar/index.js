@@ -3,7 +3,7 @@ import styles from './PlaylistsSidebar.module.scss';
 import classNames from 'classnames/bind';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import Tippy from '@tippyjs/react';
 
 import SongItem from '../SongItem';
@@ -67,4 +67,4 @@ function PlaylistsSidebar({ showPlaylists }) {
   );
 }
 
-export default PlaylistsSidebar;
+export default memo(PlaylistsSidebar);

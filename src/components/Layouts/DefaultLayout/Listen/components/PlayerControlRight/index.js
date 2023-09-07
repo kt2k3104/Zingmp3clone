@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import styles from './PlayerControlRight.module.scss';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -110,4 +110,4 @@ function PlayerControlRight({ handleClickBtnPlaylists, isOpenPlaylists, audioRef
   );
 }
 
-export default PlayerControlRight;
+export default memo(PlayerControlRight);

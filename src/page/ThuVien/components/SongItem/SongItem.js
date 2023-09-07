@@ -6,7 +6,6 @@ import {
   faEllipsis,
   faHeart,
   faMusic,
-  faPause,
   faPlay,
 } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartt } from '@fortawesome/free-regular-svg-icons';
@@ -18,14 +17,14 @@ import {
 } from '~/components/Layouts/DefaultLayout/Listen/ListenSlice';
 import Tippy from '@tippyjs/react';
 import Tippyy from '@tippyjs/react/headless';
-import { useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import SongOtherOptions from '../SongOtherOptions/SongOtherOptions';
 import customIcon from '~/components/UI/Icons';
 import { handleChangeFavoriteSong } from '~/page/Auth/UserSlice';
 
 const cx = classNames.bind(styles);
 
-function SongItem({ song, favoriteSong, mySong }) {
+function SongItem({ song, favoriteSong, mySong, scroll }) {
   const { currentSong, isPlaying } = useSelector((state) => state.listen);
   const { favoriteId } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -47,6 +46,11 @@ function SongItem({ song, favoriteSong, mySong }) {
     }
     return `${minutes}:${seconds}`;
   };
+  useEffect(() => {
+    if (isVisible) {
+      hide();
+    }
+  }, [scroll]);
 
   return (
     <div className={cx('wrapper', currentSong.id === song.id ? 'isActive' : 'noActive')}>
@@ -67,12 +71,20 @@ function SongItem({ song, favoriteSong, mySong }) {
           }}
         >
           <img src={song.artwork} alt="img" />
-          {currentSong === song && (
+          {currentSong.id === song.id && (
             <div className={cx('song-thumb-active')}>
-              {isPlaying ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
+              {isPlaying ? (
+                <img
+                  style={{ width: '40%', height: '40%', borderRadius: 0 }}
+                  src="/assets/img/icon-playing.gif"
+                  alt="img"
+                />
+              ) : (
+                <FontAwesomeIcon icon={faPlay} />
+              )}
             </div>
           )}
-          {currentSong !== song && (
+          {currentSong.id !== song.id && (
             <div className={cx('song-thumb-active')}>
               <FontAwesomeIcon icon={faPlay} />
             </div>
@@ -132,10 +144,17 @@ function SongItem({ song, favoriteSong, mySong }) {
           interactive
           placement="left"
           visible={isVisible}
-          // trigger="mouseenter"
           onClickOutside={hide}
           offset={[0, 0]}
-          render={(attrs) => <SongOtherOptions hide={hide} song={song} attrs={attrs} />}
+          render={(attrs) => (
+            <SongOtherOptions
+              favoriteSong={favoriteSong}
+              mySong={mySong}
+              hide={hide}
+              song={song}
+              attrs={attrs}
+            />
+          )}
         >
           <Tippy content="Khác">
             <button className={cx('btn_option', 'dfnone')} onClick={isVisible ? hide : show}>
@@ -150,4 +169,4 @@ function SongItem({ song, favoriteSong, mySong }) {
   );
 }
 
-export default SongItem;
+export default memo(SongItem);

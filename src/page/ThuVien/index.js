@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import PlaylistItem from './components/PlaylistItem/PlaylistItem';
 import SongItem from './components/SongItem/SongItem';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getPlaylists, setFavoriteId } from '../Auth/UserSlice';
 import { useNavigate } from 'react-router-dom';
 import ModalAddPlaylist from '~/components/Layouts/DefaultLayout/Sidebar/component/ModalAddPlaylist/ModalAddPlaylist';
@@ -27,19 +27,20 @@ function ThuVien() {
   const { isLogined, user, playlists, queueFavorite } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [scroll, setScroll] = useState(0);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  console.log(playlists);
+  const handleScroll = (e) => {
+    setScroll(e.target.scrollTop);
+  };
 
   useEffect(() => {
     dispatch(getPlaylists());
     dispatch(setFavoriteId());
-    console.log('asdfasdfjas;dfkja;sfj');
   }, [dispatch, isLogined]);
-
   return (
-    <div className={cx('wrapper')}>
+    <div onScroll={handleScroll} className={cx('wrapper')}>
       {isLogined && (
         <div className={cx('inner')}>
           <div className={cx('header')}>
@@ -72,7 +73,7 @@ function ThuVien() {
                     key={playlist.id}
                     className={cx('playlist_item', index === 3 ? 'hideplaylist' : '')}
                   >
-                    <PlaylistItem playlist={playlist} />
+                    <PlaylistItem scroll={scroll} playlist={playlist} />
                   </div>
                 );
               })}
@@ -108,7 +109,9 @@ function ThuVien() {
 
                         {queueFavorite?.length !== 0 &&
                           queueFavorite?.map((song) => {
-                            return <SongItem favoriteSong song={song} key={song.id} />;
+                            return (
+                              <SongItem scroll={scroll} favoriteSong song={song} key={song.id} />
+                            );
                           })}
                       </TabPanel>
                       <TabPanel p={'0'} mt={'20px'}>
@@ -139,7 +142,7 @@ function ThuVien() {
                         {user?.songs?.length === 0 && <p>Chưa có bài hát được tải lên</p>}
                         {user?.songs?.length !== 0 &&
                           user?.songs?.map((song) => {
-                            return <SongItem mySong song={song} key={song.id} />;
+                            return <SongItem scroll={scroll} mySong song={song} key={song.id} />;
                           })}
                       </TabPanel>
                     </TabPanels>

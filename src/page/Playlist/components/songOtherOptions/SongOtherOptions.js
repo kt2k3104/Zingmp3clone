@@ -5,10 +5,12 @@ import {
   faBan,
   faBroadcastTower,
   faChevronRight,
+  faCode,
   faDownload,
+  faLink,
   faListOl,
-  faPencil,
   faPlusCircle,
+  faShare,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faFileAudio,
@@ -17,7 +19,7 @@ import {
   faTrashAlt,
 } from '@fortawesome/free-regular-svg-icons';
 import Tippy from '@tippyjs/react/headless';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -33,14 +35,12 @@ import {
 import { useRef, useState } from 'react';
 import { Spinner } from '@chakra-ui/react';
 
-import { deleteSong, getSongs } from '~/components/Layouts/DefaultLayout/Listen/ListenSlice';
-import { getUser } from '~/page/Auth/UserSlice';
+import { handleRemoveSongToPlaylist } from '~/page/Auth/UserSlice';
 import OptionAddToPlaylist from './OptionAddToPlaylist/OptionAddToPlaylist';
 
 const cx = classNames.bind(styles);
 
-function SongOtherOptions({ attrs, song, hide }) {
-  const { user } = useSelector((state) => state.user);
+function SongOtherOptions({ attrs, song, hide, playlistId }) {
   const dispatch = useDispatch();
   const [onDelete, setOnDelete] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -59,43 +59,43 @@ function SongOtherOptions({ attrs, song, hide }) {
         </div>
       </div>
       <div className={cx('list_btn')}>
-        <button>
+        <li>
           <FontAwesomeIcon icon={faDownload} />
           <span>Tải xuống</span>
-        </button>
-        <button>
+        </li>
+        <li>
           <FontAwesomeIcon icon={faListOl} />
           <span>Lời bài hát</span>
-        </button>
-        <button>
+        </li>
+        <li>
           <FontAwesomeIcon icon={faBan} />
           <span>Chặn</span>
-        </button>
+        </li>
       </div>
-      <button>
+      <li>
         <i>
           <FontAwesomeIcon icon={faListAlt} />
         </i>
         Thêm vào danh sách phát
-      </button>
-      <button>
+      </li>
+      <li>
         <i>
           <FontAwesomeIcon icon={faHandPointRight} />
         </i>
         Phát tiếp theo
-      </button>
-      <button>
+      </li>
+      <li>
         <i>
           <FontAwesomeIcon icon={faBroadcastTower} />
         </i>
         Phát nội dung tương tự
-      </button>
-      <button>
+      </li>
+      <li>
         <i>
           <FontAwesomeIcon icon={faFileAudio} />
         </i>
         Cài đặt nhạc chờ
-      </button>
+      </li>
       <Tippy
         interactive
         placement="left"
@@ -104,20 +104,57 @@ function SongOtherOptions({ attrs, song, hide }) {
         delay={[0, 300]}
         render={(attrs) => <OptionAddToPlaylist attrs={attrs} song={song} hide={hide} />}
       >
-        <button>
+        <li>
           <i>
             <FontAwesomeIcon icon={faPlusCircle} />
           </i>
           Thêm vào playlist <FontAwesomeIcon icon={faChevronRight} />
-        </button>
+        </li>
       </Tippy>
-      <button>
+      <li>
         <i>
-          <FontAwesomeIcon icon={faPencil} />
+          <FontAwesomeIcon icon={faLink} />
         </i>
-        Chỉnh sửa
-      </button>
-      <button
+        Sao chép link
+      </li>
+      <Tippy
+        interactive
+        placement="left"
+        trigger="mouseenter"
+        offset={[-110, 220]}
+        render={(attrs) => (
+          <ul className={cx('share-option')} tabIndex="-1" {...attrs}>
+            <li>
+              <img
+                className={cx('icon-fb')}
+                src="https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.9.57/static/media/facebook.d62c237b.svg"
+                alt="fb"
+              />
+              <span>Facebook</span>
+            </li>
+            <li>
+              <img
+                className={cx('icon-zalo')}
+                src="https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.9.57/static/media/zalo.d94c16f4.svg"
+                alt="zalo"
+              />
+              <span>Zalo</span>
+            </li>
+            <li>
+              <FontAwesomeIcon icon={faCode} />
+              <span>Mã nhúng</span>
+            </li>
+          </ul>
+        )}
+      >
+        <li>
+          <i>
+            <FontAwesomeIcon icon={faShare} />
+          </i>
+          Chia sẻ <FontAwesomeIcon icon={faChevronRight} />
+        </li>
+      </Tippy>
+      <li
         onClick={() => {
           onOpen();
           hide();
@@ -126,20 +163,11 @@ function SongOtherOptions({ attrs, song, hide }) {
         <i>
           <FontAwesomeIcon icon={faTrashAlt} />
         </i>
-        Xóa
-      </button>
+        Xóa khỏi playlist này
+      </li>
       <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
         <AlertDialogOverlay>
-          <AlertDialogContent
-            maxW={'540px'}
-            w={'540px'}
-            maxH={'33vh'}
-            h={'141.8px'}
-            bgColor={'#34224f'}
-            borderRadius={'8px'}
-            p={'10px'}
-            mt={'33vh'}
-          >
+          <AlertDialogContent sx={css.AlertDialogContent}>
             <AlertDialogHeader w={'500px'} h={'27px'} fontSize={'18px'} mb={5} fontWeight="bold">
               Xóa Bài Hát
             </AlertDialogHeader>
@@ -147,60 +175,42 @@ function SongOtherOptions({ attrs, song, hide }) {
             {!onDelete && (
               <>
                 <AlertDialogBody>
-                  Bài hát của bạn sẽ bị xóa khỏi hệ thống, bạn có muốn xóa ?
+                  Bài hát của bạn sẽ bị xóa khỏi playlist này, bạn có muốn xóa ?
                 </AlertDialogBody>
 
                 <AlertDialogFooter>
-                  <Button
-                    w={'75.4px'}
-                    h={'28.8px'}
-                    bgColor={'hsla(0,0%,100%,0.1)'}
-                    borderRadius={'999px'}
-                    ref={cancelRef}
-                    onClick={onClose}
-                    fontSize={'12px'}
-                    color={'#fff'}
-                    fontWeight={'400'}
-                    borderColor={'hsla(0,0%,100%,0.1)'}
-                    _hover={{ bgColor: 'tranparent', opacity: 0.9 }}
-                  >
+                  <Button ref={cancelRef} onClick={onClose} sx={css.button1}>
                     KHÔNG
                   </Button>
                   <Button
-                    w={'56px'}
-                    h={'28.8px'}
-                    bgColor={'#9b4de0'}
-                    borderRadius={'999px'}
                     colorScheme="red"
-                    _hover={{ bgColor: 'tranparent', opacity: 0.9 }}
+                    sx={css.button2}
                     onClick={async () => {
                       setOnDelete(true);
-                      const response = await dispatch(deleteSong(song.id));
+                      await dispatch(
+                        handleRemoveSongToPlaylist({
+                          playlistId: `${playlistId}`,
+                          songId: `${song.id}`,
+                        }),
+                      ).unwrap();
                       setOnDelete(false);
-                      if (response) {
-                        onClose();
-                        toast({
-                          position: 'bottom-left',
-                          render: () => (
-                            <Box
-                              color="white"
-                              p={5}
-                              bg="#34224f"
-                              borderRadius={'5px'}
-                              marginBottom={'90px'}
-                            >
-                              Xóa bài hát thành công !
-                            </Box>
-                          ),
-                        });
-                        dispatch(getUser(user.id));
-                        dispatch(getSongs());
-                      }
+
+                      onClose();
+                      toast({
+                        position: 'bottom-left',
+                        render: () => (
+                          <Box
+                            color="white"
+                            p={5}
+                            bg="#34224f"
+                            borderRadius={'5px'}
+                            marginBottom={'90px'}
+                          >
+                            Xóa bài hát khỏi playlist thành công !
+                          </Box>
+                        ),
+                      });
                     }}
-                    ml={3}
-                    fontSize={'12px'}
-                    fontWeight={'400'}
-                    marginLeft={'15px'}
                   >
                     XÓA
                   </Button>
@@ -215,9 +225,43 @@ function SongOtherOptions({ attrs, song, hide }) {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-      <p>Tải lên bởi {user.first_name + ' ' + user.last_name}</p>
     </div>
   );
 }
 
 export default SongOtherOptions;
+
+const css = {
+  AlertDialogContent: {
+    maxW: '540px',
+    w: '540px',
+    maxH: '33vh',
+    h: '141.8px',
+    bgColor: '#34224f',
+    borderRadius: '8px',
+    p: '10px',
+    mt: '33vh',
+  },
+  button1: {
+    w: '75.4px',
+    h: '28.8px',
+    bgColor: 'hsla(0,0%,100%,0.1)',
+    borderRadius: '999px',
+    fontSize: '12px',
+    color: '#fff',
+    fontWeight: '400',
+    borderColor: 'hsla(0,0%,100%,0.1)',
+    _hover: { bgColor: 'tranparent', opacity: 0.9 },
+  },
+  button2: {
+    ml: 3,
+    fontSize: '12px',
+    fontWeight: '400',
+    marginLeft: '15px',
+    w: '56px',
+    h: '28.8px',
+    bgColor: '#9b4de0',
+    borderRadius: '999px',
+    _hover: { bgColor: 'tranparent', opacity: 0.9 },
+  },
+};

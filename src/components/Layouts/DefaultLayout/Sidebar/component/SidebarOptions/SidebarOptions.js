@@ -12,7 +12,7 @@ import PlaylistItem from '../PlaylistItem';
 
 const cx = classNames.bind(styles);
 
-function SidebarOptions({ isScrollTop }) {
+function SidebarOptions({ scroll, isScrollTop }) {
   const { isLogined, playlists } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
@@ -138,7 +138,7 @@ function SidebarOptions({ isScrollTop }) {
             {playlists.length > 0 &&
               playlists.map((playlist) => {
                 return (
-                  <PlaylistItem playlist={playlist} key={playlist.id}>
+                  <PlaylistItem scroll={scroll} playlist={playlist} key={playlist.id}>
                     {playlist.name}
                   </PlaylistItem>
                 );
