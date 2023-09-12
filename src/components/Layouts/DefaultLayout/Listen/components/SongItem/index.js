@@ -5,13 +5,13 @@ import { faHeart as faHeartt } from '@fortawesome/free-regular-svg-icons';
 import { faEllipsis, faHeart, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { pauseSong, playSong, setCurrentSong } from '../../ListenSlice';
+import { addSongToQueue, pauseSong, playSong, setCurrentSong } from '../../ListenSlice';
 import { handleChangeFavoriteSong } from '~/page/Auth/UserSlice';
 import { memo } from 'react';
 
 const cx = classNames.bind(styles);
 
-function SongItem({ song }) {
+function SongItem({ song, type }) {
   const { isPlaying, currentSong, queue } = useSelector((state) => state.listen);
   const { favoriteId } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -23,6 +23,9 @@ function SongItem({ song }) {
           <div
             className={cx('song-thumb')}
             onClick={() => {
+              if (type === 'REMAINING_SONG') {
+                dispatch(addSongToQueue(song));
+              }
               if (song.id === currentSong.id && isPlaying) {
                 dispatch(pauseSong());
               } else if (song.id === currentSong.id && !isPlaying) {

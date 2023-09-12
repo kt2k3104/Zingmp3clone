@@ -16,9 +16,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import PlaylistItem from './components/PlaylistItem/PlaylistItem';
 import SongItem from './components/SongItem/SongItem';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getPlaylists, setFavoriteId } from '../Auth/UserSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ModalAddPlaylist from '~/components/Layouts/DefaultLayout/Sidebar/component/ModalAddPlaylist/ModalAddPlaylist';
 
 const cx = classNames.bind(styles);
@@ -28,6 +28,27 @@ function ThuVien() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [scroll, setScroll] = useState(0);
+  const [pageIndex, setPageIndex] = useState(0);
+  const [childPageIndex, setChildPageIndex] = useState(0);
+  const refWrapper = useRef();
+
+  const { page } = useParams();
+
+  useEffect(() => {
+    if (page === 'index') {
+      setPageIndex(0);
+      refWrapper.current.scrollTop = 0;
+    } else {
+      refWrapper.current.scrollTo({ top: 706, behavior: 'smooth' });
+      if (page === 'album') {
+        setPageIndex(2);
+      } else {
+        setPageIndex(0);
+        if (page === 'upload') setChildPageIndex(1);
+        else setChildPageIndex(0);
+      }
+    }
+  }, [page]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -40,7 +61,7 @@ function ThuVien() {
     dispatch(setFavoriteId());
   }, [dispatch, isLogined]);
   return (
-    <div onScroll={handleScroll} className={cx('wrapper')}>
+    <div onScroll={handleScroll} className={cx('wrapper')} ref={refWrapper}>
       {isLogined && (
         <div className={cx('inner')}>
           <div className={cx('header')}>
@@ -80,7 +101,15 @@ function ThuVien() {
             </Box>
           </div>
           <div className={cx('content')}>
-            <Tabs position="relative" variant="enclosed">
+            <Tabs
+              minH={'calc(100vh - 160px)'}
+              position="relative"
+              variant="enclosed"
+              index={pageIndex}
+              onChange={(index) => {
+                setPageIndex(index);
+              }}
+            >
               <TabList borderBottomColor={'hsla(0, 0%, 100%, 0.1)'}>
                 <Tab sx={css.tab1}>BÀI HÁT</Tab>
                 <Tab sx={css.tab1}>PODCAST</Tab>
@@ -91,7 +120,14 @@ function ThuVien() {
 
               <TabPanels>
                 <TabPanel p={'28px 0 0 0'}>
-                  <Tabs variant="soft-rounded" colorScheme="purple">
+                  <Tabs
+                    variant="soft-rounded"
+                    colorScheme="purple"
+                    index={childPageIndex}
+                    onChange={(index) => {
+                      setChildPageIndex(index);
+                    }}
+                  >
                     <TabList>
                       <Tab sx={css.tab2}>YÊU THÍCH</Tab>
                       <Tab ml={'16px'} sx={css.tab2}>
@@ -110,7 +146,13 @@ function ThuVien() {
                         {queueFavorite?.length !== 0 &&
                           queueFavorite?.map((song) => {
                             return (
-                              <SongItem scroll={scroll} favoriteSong song={song} key={song.id} />
+                              <SongItem
+                                type={'FAVORITE_ITEM'}
+                                scroll={scroll}
+                                favoriteSong
+                                song={song}
+                                key={song.id}
+                              />
                             );
                           })}
                       </TabPanel>
@@ -142,7 +184,15 @@ function ThuVien() {
                         {user?.songs?.length === 0 && <p>Chưa có bài hát được tải lên</p>}
                         {user?.songs?.length !== 0 &&
                           user?.songs?.map((song) => {
-                            return <SongItem scroll={scroll} mySong song={song} key={song.id} />;
+                            return (
+                              <SongItem
+                                type={'UPLOAD_SONG'}
+                                scroll={scroll}
+                                mySong
+                                song={song}
+                                key={song.id}
+                              />
+                            );
                           })}
                       </TabPanel>
                     </TabPanels>

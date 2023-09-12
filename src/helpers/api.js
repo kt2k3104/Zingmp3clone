@@ -15,9 +15,9 @@ export default function requestApi(endpoint, method, body, responseType = 'json'
 
   instance.interceptors.request.use(
     (config) => {
-      const userData = JSON.parse(localStorage.getItem('user_data'));
-      if (userData && userData.tokens.access_token) {
-        config.headers['Authorization'] = `Bearer ${userData.tokens.access_token}`;
+      const accessToken = localStorage.getItem('access_token');
+      if (accessToken) {
+        config.headers['Authorization'] = `Bearer ${accessToken}`;
       }
       return config;
     },
@@ -35,13 +35,15 @@ export default function requestApi(endpoint, method, body, responseType = 'json'
       if (error.response && error.response.status === 419) {
         console.log('Access token expired');
         try {
-          const userData = JSON.parse(localStorage.getItem('user_data'));
-          const refresh_token = userData.tokens.refresh_token;
-          console.log('call refresh token api', refresh_token);
+          const refreshToken = localStorage.getItem('refresh_token');
+          if (!refreshToken) {
+            throw new Error('Refresh token not found');
+          }
+          console.log('call refresh token api', refreshToken);
           const result = await instance.post(
             `http://localhost:9000/auth/refresh-token`,
             {
-              refresh_token: refresh_token,
+              refresh_token: refreshToken,
             },
             {
               headers: {
@@ -55,20 +57,16 @@ export default function requestApi(endpoint, method, body, responseType = 'json'
           const { access_token: new_access_token, refresh_token: new_refresh_token } =
             result.data.result;
 
-          console.log(new_access_token);
-          userData.tokens.access_token = new_access_token;
-          userData.tokens.refresh_token = new_refresh_token;
-          localStorage.setItem('user_data', JSON.stringify(userData));
+          localStorage.setItem('access_token', new_access_token);
+          localStorage.setItem('refresh_token', new_refresh_token);
 
           originalConfig.headers['Authorization'] = `Bearer ${new_access_token}`;
 
           return instance(originalConfig);
         } catch (err) {
-          // if (err.response && err.response.status === 400) {
-          //   localStorage.removeItem('user_data');
-          //   window.location.href = '/auth';
-          // }
-          console.log(err);
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('refresh_token');
+          console.log('err', err);
           return Promise.reject(err);
         }
       }

@@ -14,6 +14,7 @@ import {
   pauseSong,
   playSong,
   setCurrentSong,
+  setQueue,
 } from '~/components/Layouts/DefaultLayout/Listen/ListenSlice';
 import Tippy from '@tippyjs/react';
 import Tippyy from '@tippyjs/react/headless';
@@ -24,9 +25,9 @@ import { handleChangeFavoriteSong } from '~/page/Auth/UserSlice';
 
 const cx = classNames.bind(styles);
 
-function SongItem({ song, favoriteSong, mySong, scroll }) {
+function SongItem({ song, favoriteSong, mySong, scroll, type }) {
   const { currentSong, isPlaying } = useSelector((state) => state.listen);
-  const { favoriteId } = useSelector((state) => state.user);
+  const { favoriteId, queueFavorite, user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const [isVisible, setIsVisible] = useState(false);
@@ -59,6 +60,13 @@ function SongItem({ song, favoriteSong, mySong, scroll }) {
         <div
           className={cx('song-thumb')}
           onClick={() => {
+            if (type === 'FAVORITE_ITEM') {
+              dispatch(setQueue(queueFavorite));
+            }
+            if (type === 'UPLOAD_SONG') {
+              dispatch(setQueue(user.songs));
+            }
+
             if (song.id === currentSong.id && isPlaying) {
               dispatch(pauseSong());
             } else if (song.id === currentSong.id && !isPlaying) {

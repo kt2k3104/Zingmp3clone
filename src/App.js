@@ -8,7 +8,7 @@ import './App.scss';
 
 import { DefaultLayout } from '~/components/Layouts';
 import { getSongs } from './components/Layouts/DefaultLayout/Listen/ListenSlice';
-import { setLogin } from './page/Auth/UserSlice';
+import { handleInitLogin } from './page/Auth/UserSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -24,9 +24,8 @@ function App() {
     handleGetSongs();
 
     const handleCheckedUserLogin = () => {
-      if (localStorage.getItem('user_data')) {
-        const userData = JSON.parse(localStorage.getItem('user_data'));
-        dispatch(setLogin(userData));
+      if (localStorage.getItem('access_token')) {
+        dispatch(handleInitLogin());
       }
     };
     handleCheckedUserLogin();

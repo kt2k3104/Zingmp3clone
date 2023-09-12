@@ -8,7 +8,7 @@ import PlayerControlLeft from './components/PlayerControlLeft';
 import PlayerControlCenter from './components/PlayerControlCenter';
 import PlayerControlRight from './components/PlayerControlRight';
 import { useDispatch, useSelector } from 'react-redux';
-import { nextSong, pauseSong, setCurrentSong } from './ListenSlice';
+import { nextSong, pauseSong, playSong, setCurrentSong } from './ListenSlice';
 
 const cx = classNames.bind(styles);
 
@@ -40,7 +40,10 @@ function Listen() {
   };
 
   const handleEndedAudio = () => {
-    if (!isRandom) {
+    if (isRepeat === 3) {
+      audioRef.current.play();
+    }
+    if (!isRandom && isRepeat !== 3) {
       if (currentSong.id !== queue[queue.length - 1].id) {
         dispatch(nextSong());
       }
@@ -49,6 +52,7 @@ function Listen() {
         dispatch(pauseSong());
       }
       if (isRepeat === 2 && currentSong.id === queue[queue.length - 1].id) {
+        if (queue.length === 1) audioRef.current.play();
         dispatch(nextSong());
       }
     }
@@ -75,10 +79,6 @@ function Listen() {
         arr.current = [];
         dispatch(setCurrentSong(queue[newSongIndex]));
       }
-    }
-
-    if (isRepeat === 3) {
-      audioRef.current.play();
     }
   };
 

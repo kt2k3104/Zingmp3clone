@@ -34,7 +34,7 @@ import ModalAddPlaylist from '../ModalAddPlaylist/ModalAddPlaylist';
 
 const cx = classNames.bind(styles);
 
-function PlaylistOptions({ attrs, playlist, hide }) {
+function PlaylistOptions({ attrs, playlist, hide, x, y }) {
   const dispatch = useDispatch();
   const {
     isOpen: isOpenModalDelete,
@@ -75,7 +75,7 @@ function PlaylistOptions({ attrs, playlist, hide }) {
       <Tippy
         interactive
         placement="right"
-        offset={[-113, -230]}
+        offset={x && y ? [x, y] : [-113, -230]}
         render={(attrs) => (
           <ul className={cx('share-option')} tabIndex="-1" {...attrs}>
             <li>

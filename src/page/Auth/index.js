@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { handleLogin } from './UserSlice';
+import { handleInitLogin, handleLogin } from './UserSlice';
 import { useNavigate } from 'react-router-dom';
 import customIcon from '~/components/UI/Icons';
 
@@ -34,7 +34,7 @@ function Auth() {
       ).unwrap();
       console.log(response);
       if (response) {
-        navigate('/mymusic');
+        navigate('/mymusic/index');
       }
     } catch (error) {
       console.log(error);
@@ -83,6 +83,27 @@ function Auth() {
       });
     }
     // setIsForgotPassword(false);
+  };
+
+  const handleLoginWithGoogle = () => {
+    let timer = null;
+    const googleLoginURL = 'http://localhost:9000/auth/google/login';
+
+    const newWindow = window.open(
+      googleLoginURL,
+      '_blank',
+      'top=100,left=525,width=500,height=600',
+    );
+
+    if (newWindow) {
+      timer = setInterval(() => {
+        if (newWindow.closed) {
+          dispatch(handleInitLogin());
+          navigate('/mymusic/index');
+          if (timer) clearInterval(timer);
+        }
+      }, 2000);
+    }
   };
 
   return (
@@ -144,7 +165,7 @@ function Auth() {
                 Đăng ký
               </button>
             </div>
-            <div className={cx('icon-gg')}>
+            <div onClick={handleLoginWithGoogle} className={cx('icon-gg')}>
               <customIcon.googleIcon />
               <span>Đăng nhập với Google</span>
             </div>

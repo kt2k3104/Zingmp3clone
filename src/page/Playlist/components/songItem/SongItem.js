@@ -8,6 +8,7 @@ import {
   pauseSong,
   playSong,
   setCurrentSong,
+  setQueue,
 } from '~/components/Layouts/DefaultLayout/Listen/ListenSlice';
 import Tippy from '@tippyjs/react';
 import Tippyy from '@tippyjs/react/headless';
@@ -19,10 +20,13 @@ import SongOtherOptions from '../songOtherOptions/SongOtherOptions';
 
 const cx = classNames.bind(styles);
 
-function SongItem({ song, playlistId }) {
+function SongItem({ song, playlistId, type }) {
   const { currentSong, isPlaying } = useSelector((state) => state.listen);
-  const { favoriteId } = useSelector((state) => state.user);
+  const { favoriteId, playlists } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const playlist = playlists.find((playlist) => {
+    if (playlist.id === playlistId) return true;
+  });
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -49,6 +53,8 @@ function SongItem({ song, playlistId }) {
         <div
           className={cx('song-thumb')}
           onClick={() => {
+            if (type === 'PLAYLIST_SONG') dispatch(setQueue(playlist.songs));
+
             if (song.id === currentSong.id && isPlaying) {
               dispatch(pauseSong());
             } else if (song.id === currentSong.id && !isPlaying) {

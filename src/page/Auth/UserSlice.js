@@ -30,12 +30,11 @@ export const handleLogin = createAsyncThunk('auth/login', async (body, thunkAPI)
   }
 });
 
-export const handleEditName = createAsyncThunk('auth/handleEditName', async (body, thunkAPI) => {
+export const handleEditName = createAsyncThunk('auth/handleEditName', async (reqData, thunkAPI) => {
   try {
-    const userId = JSON.parse(localStorage.getItem('user_data')).user.id;
-    const response = await requestApi(`/users/${userId}`, 'PUT', body);
+    const response = await requestApi(`/users/${reqData.userId}`, 'PUT', reqData.body);
     console.log(response);
-    return body;
+    return reqData.body;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);
   }
@@ -44,6 +43,15 @@ export const handleEditName = createAsyncThunk('auth/handleEditName', async (bod
 export const getUser = createAsyncThunk('auth/getUser', async (reqData, thunkAPI) => {
   try {
     const { data } = await requestApi(`/users/${reqData}`, 'GET');
+    return data.result;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
+export const getCurrUser = createAsyncThunk('auth/getCurrUser', async (_, thunkAPI) => {
+  try {
+    const { data } = await requestApi(`/users/curr`, 'GET');
     return data.result;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);
@@ -136,27 +144,43 @@ export const handleRemoveSongToPlaylist = createAsyncThunk(
     }
   },
 );
+export const handleInitLogin = createAsyncThunk('auth/handleInitLogin', async (_, thunkAPI) => {
+  try {
+    // const accessToken = localStorage.getItem('access_token');
+    // console.log(accessToken);
+    // const { data } = await axios.get('http://localhost:9000/users/curr/info', {
+    //   headers: {
+    //     Authorization: `Bearer ${accessToken}`,
+    //   },
+    // });
+    const { data } = await requestApi('/users/curr/info', 'GET');
+    return data.result;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
 
 const userSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setLogin: (state, action) => {
-      state.isLogined = true;
-      state.token = action.payload.tokens.access_token;
-      state.user = action.payload.user;
-      state.queueFavorite = action.payload.user.favoriteSongs;
-      if (action.payload.user.favoriteSongs > 0) {
-        action.payload.user.favoriteSongs.forEach((song) => {
-          return state.favoriteId.push(song.id);
-        });
-      }
-    },
+    // setLogin: (state, action) => {
+    //   state.isLogined = true;
+    //   state.token = action.payload.accessToken;
+    //   state.user = action.payload.user;
+    //   state.queueFavorite = action.payload.user.favoriteSongs;
+    //   if (action.payload.user.favoriteSongs > 0) {
+    //     action.payload.user.favoriteSongs.forEach((song) => {
+    //       return state.favoriteId.push(song.id);
+    //     });
+    //   }
+    // },
     setLogout: (state) => {
       state.isLogined = false;
       state.user = null;
       state.token = '';
-      localStorage.removeItem('user_data');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
     },
     setFavoriteId: (state) => {
       state.favoriteId = [];
@@ -172,7 +196,8 @@ const userSlice = createSlice({
   extraReducers(bullder) {
     bullder
       .addCase(handleLogin.fulfilled, (state, action) => {
-        localStorage.setItem('user_data', JSON.stringify(action.payload));
+        localStorage.setItem('access_token', action.payload.tokens.access_token);
+        localStorage.setItem('refresh_token', action.payload.tokens.refresh_token);
         state.isLogined = true;
         state.token = action.payload.tokens.access_token;
         state.user = action.payload.user;
@@ -226,14 +251,30 @@ const userSlice = createSlice({
       .addCase(handleRemoveSongToPlaylist.fulfilled, (state, action) => {
         state.playlists.forEach((playlist) => {
           if (playlist.id === action.payload.id) {
-            playlist.songs = action.payload.songs;
+            playlist.songs = action.songs;
           }
         });
+      })
+      .addCase(getCurrUser.fulfilled, (state, action) => {
+        state.user = action.payload.result;
+      })
+      .addCase(handleInitLogin.fulfilled, (state, action) => {
+        const accessToken = localStorage.getItem('access_token');
+
+        state.isLogined = true;
+        state.token = accessToken;
+        state.user = action.payload;
+        state.queueFavorite = action.payload.favoriteSongs;
+        if (action.payload.favoriteSongs > 0) {
+          action.payload.favoriteSongs.forEach((song) => {
+            return state.favoriteId.push(song.id);
+          });
+        }
       });
   },
 });
 
-export const { setLogin, setLogout, setQueueFavorite, setFavoriteId, changePlaylistNavigatePath } =
+export const { setLogout, setQueueFavorite, setFavoriteId, changePlaylistNavigatePath } =
   userSlice.actions;
 
 export default userSlice.reducer;

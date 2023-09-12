@@ -14,6 +14,7 @@ const currentSong = {
 const initialStates = {
   queue: [],
   allSongs: [],
+  remainingSongs: [],
   currentSong: currentSong,
   currentIndex: 0,
   isPlaying: false,
@@ -99,11 +100,21 @@ const listenSlice = createSlice({
     noRepeat: (state) => void (state.isRepeat = 1),
     repeatAll: (state) => void (state.isRepeat = 2),
     repeatOne: (state) => void (state.isRepeat = 3),
+    setQueue: (state, action) => {
+      state.queue = action.payload;
+    },
+    addSongToQueue: (state, action) => {
+      state.queue.push(action.payload);
+      state.remainingSongs = state.remainingSongs.filter((song) => {
+        if ((song.id = action.payload.id)) return false;
+      });
+    },
   },
 
   extraReducers(bullder) {
     bullder
       .addCase(getSongs.fulfilled, (state, action) => {
+        state.allSongs = action.payload;
         state.queue = action.payload;
         state.currentSong = action.payload[0];
         state.currentIndex = 0;
@@ -129,5 +140,7 @@ export const {
   noRepeat,
   repeatAll,
   repeatOne,
+  setQueue,
+  addSongToQueue,
 } = listenSlice.actions;
 export default listenSlice.reducer;

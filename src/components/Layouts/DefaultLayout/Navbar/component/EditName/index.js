@@ -28,8 +28,11 @@ function EditName({ setIsEditName }) {
     try {
       await dispatch(
         handleEditName({
-          first_name: data.first_name,
-          last_name: data.last_name,
+          body: {
+            first_name: data.first_name,
+            last_name: data.last_name,
+          },
+          userId: user.id,
         }),
       ).unwrap();
       reset();

@@ -183,6 +183,7 @@ function UserOption({ hide }) {
                 bgColor={'#34224f'}
                 boxShadow={'0 0 5px 0 rgba(0,0,0,.2)'}
                 borderRadius={'15px'}
+                mt={'12vh'}
               >
                 <ModalHeader fontSize={'20px'}>Tải nhạc lên</ModalHeader>
                 <ModalCloseButton mt={'30px'} mr={'30px'} fontSize={'10px'} />

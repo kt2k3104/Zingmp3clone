@@ -36,6 +36,5 @@ root.render(
         <App />
       </ChakraProvider>
     </GlobalStyles>
-    ,
   </Provider>,
 );

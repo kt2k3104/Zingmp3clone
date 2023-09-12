@@ -91,7 +91,7 @@ function SidebarOptions({ scroll, isScrollTop }) {
 
               return cx('item');
             }}
-            to={'/mymusic/song/favorite'}
+            to={'/mymusic/favorite'}
           >
             <customIcon.IconLove />
             <span className={cx('title')}>Bài hát yêu thích</span>
@@ -128,7 +128,7 @@ function SidebarOptions({ scroll, isScrollTop }) {
 
               return cx('item', 'mb16');
             }}
-            to={'/mymusic/song/upload'}
+            to={'/mymusic/upload'}
           >
             <customIcon.IconUpload />
             <span className={cx('title')}>Đã tải lên</span>

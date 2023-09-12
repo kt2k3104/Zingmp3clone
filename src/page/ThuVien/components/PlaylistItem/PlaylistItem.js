@@ -38,15 +38,21 @@ function PlaylistItem({ playlist, scroll }) {
   return (
     <div
       onClick={(e) => {
-        e.preventDefault();
-        dispatch(changePlaylistNavigatePath(`/playlist?id=${playlist.id}`));
+        if (playlist) {
+          e.preventDefault();
+          dispatch(changePlaylistNavigatePath(`/playlist?id=${playlist?.id}`));
+        }
       }}
       className={cx('wrapper', visible ? 'showoptions' : '')}
     >
       <div className={cx('img')}>
         <div className={cx('imgg')}>
           {!playlist && (
-            <Img className={cx('imggg')} src="./assets/img/imgplaylist.png" alt="img" />
+            <Img
+              className={cx('imggg')}
+              src="https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_webp/cover/1/2/1/f/121fde6fe3898bc64cf04b716ddbe590.jpg"
+              alt="img"
+            />
           )}
           {playlist && !playlist?.songs && (
             <Img
@@ -89,19 +95,18 @@ function PlaylistItem({ playlist, scroll }) {
             >
               <FontAwesomeIcon className={cx('purple_heart')} icon={faHeart} />
             </button>
-          )}{' '}
+          )}
           {!isFavoritePlaylist && (
             <button
               className={cx('btn-option')}
               onClick={(e) => {
                 e.stopPropagation();
                 setIsFavoritePlaylist(true);
-                console.log('hihiihhi');
               }}
             >
               <FontAwesomeIcon icon={faHeartt} />
             </button>
-          )}{' '}
+          )}
           <FontAwesomeIcon className={cx('btn_play')} icon={faPlayCircle} />
           <Tippy
             interactive
@@ -109,13 +114,17 @@ function PlaylistItem({ playlist, scroll }) {
             onClickOutside={hide}
             placement="right"
             offset={[-130, 0]}
-            render={(attrs) => <PlaylistOptions hide={hide} playlist={playlist} attrs={attrs} />}
+            render={(attrs) => (
+              <PlaylistOptions x={-113} y={-10} hide={hide} playlist={playlist} attrs={attrs} />
+            )}
           >
             <button
               className={cx('btn-option')}
               onClick={(e) => {
-                e.stopPropagation();
-                visible ? hide() : show();
+                if (playlist) {
+                  e.stopPropagation();
+                  visible ? hide() : show();
+                }
               }}
             >
               <FontAwesomeIcon icon={faEllipsis} />

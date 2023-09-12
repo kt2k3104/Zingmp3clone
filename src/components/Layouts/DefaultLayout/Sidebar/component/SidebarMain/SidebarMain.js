@@ -66,7 +66,7 @@ function SidebarMain() {
 
             return cx('item');
           }}
-          to={'/mymusic'}
+          to={'/mymusic/index'}
         >
           <customIcon.IconLibrary />
           <span className={cx('title')}>Thư Viện</span>

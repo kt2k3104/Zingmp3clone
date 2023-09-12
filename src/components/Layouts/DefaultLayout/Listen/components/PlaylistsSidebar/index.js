@@ -8,11 +8,13 @@ import Tippy from '@tippyjs/react';
 
 import SongItem from '../SongItem';
 import { useSelector } from 'react-redux';
+import { Box, Divider, HStack, Switch } from '@chakra-ui/react';
+import handleGetRemainSongs from '~/helpers/logic';
 
 const cx = classNames.bind(styles);
 
 function PlaylistsSidebar({ showPlaylists }) {
-  const queue = useSelector((state) => state.listen.queue);
+  const { queue, allSongs, currentSong } = useSelector((state) => state.listen);
 
   const [isActiveDSP, setIsActiveDSP] = useState(true);
   const [isActiveNGD, setIsActiveNGD] = useState(false);
@@ -55,11 +57,30 @@ function PlaylistsSidebar({ showPlaylists }) {
         </Tippy>
       </div>
       <div className={cx('content')}>
-        {isActiveDSP && queue.length === 0 && 'chua co bai hat'}
         {isActiveDSP &&
           queue.length !== 0 &&
           queue.map((song) => {
             return <SongItem key={song.id} song={song} />;
+          })}
+
+        {queue.length !== allSongs.length && (
+          <HStack p={'10px 8px 8px'} justifyContent={'space-between'}>
+            <Box fontSize={'14px'}>
+              <Box fontWeight={'700'}>Tự động phát</Box>
+              <Box fontWeight={'400'} color={'hsla(0,0%,100%,0.5)'}>
+                Gợi ý từ nội dung đang phát
+              </Box>
+            </Box>
+            <HStack w={'59px'} h={'36px'} justifyContent={'center'}>
+              <Switch colorScheme="purple" />
+            </HStack>
+          </HStack>
+        )}
+        {isActiveDSP && allSongs.length === 0 && 'chua co bai hat'}
+        {isActiveDSP &&
+          queue.length !== allSongs.length &&
+          handleGetRemainSongs(queue, allSongs).map((song) => {
+            return <SongItem type={'REMAINING_SONG'} key={song.id} song={song} />;
           })}
         {isActiveNGD && 'chua co du lieu'}
       </div>
