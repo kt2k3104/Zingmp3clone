@@ -3,12 +3,14 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import ListenSlice from '~/components/Layouts/DefaultLayout/Listen/ListenSlice';
 import UserSlice from './page/Auth/UserSlice';
+import AppSlice from './app.slice';
 // ...
 
 export const store = configureStore({
   reducer: {
     listen: ListenSlice,
     user: UserSlice,
+    app: AppSlice,
   },
 });
 

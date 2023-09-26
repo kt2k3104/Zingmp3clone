@@ -104,7 +104,7 @@ function UserOption({ hide }) {
               <div className={cx('name')}>
                 {!isEditName && (
                   <div className={cx('name_title')}>
-                    <p>{user.first_name + ' ' + user.last_name}</p>
+                    <p>{user.last_name + ' ' + user.first_name}</p>
                     <Tippy placement="left" content="Sửa tên">
                       <i
                         onClick={() => {
@@ -116,7 +116,13 @@ function UserOption({ hide }) {
                     </Tippy>
                   </div>
                 )}
-                {isEditName && <EditName setIsEditName={setIsEditName} />}
+                {isEditName && (
+                  <EditName
+                    first_name={user.first_name}
+                    last_name={user.last_name}
+                    setIsEditName={setIsEditName}
+                  />
+                )}
 
                 {!isEditName && <customIcon.BasicIcon />}
               </div>

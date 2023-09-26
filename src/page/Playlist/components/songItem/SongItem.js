@@ -26,6 +26,7 @@ function SongItem({ song, playlistId, type }) {
   const dispatch = useDispatch();
   const playlist = playlists.find((playlist) => {
     if (playlist.id === playlistId) return true;
+    else return false;
   });
 
   const [isVisible, setIsVisible] = useState(false);

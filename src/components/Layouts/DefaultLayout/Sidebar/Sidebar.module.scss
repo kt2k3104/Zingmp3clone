@@ -5,8 +5,10 @@
   @include responsive($breakpoint: $breakpoint-l) {
     width: 240px;
     background-color: $sidebar-bg;
+    // background-color: #1d2a49;
   }
-  background-color: $sidebar-popup-bg;
+  // background-color: $sidebar-popup-bg;
+  background-color: #1d2a49;
   width: 70px;
   height: 100%;
 }

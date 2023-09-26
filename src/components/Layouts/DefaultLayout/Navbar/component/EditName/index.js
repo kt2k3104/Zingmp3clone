@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import styles from './EditName.module.scss';
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +9,7 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
-function EditName({ setIsEditName }) {
+function EditName({ setIsEditName, first_name, last_name }) {
   const [errInputHo, setErrInputHo] = useState(false);
   const [errInputTen, setErrInputTen] = useState(false);
 
@@ -21,7 +21,14 @@ function EditName({ setIsEditName }) {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm();
+  useEffect(() => {
+    reset();
+
+    setValue('first_name', first_name);
+    setValue('last_name', last_name);
+  }, [reset, setValue, first_name, last_name]);
 
   const onSubmitEditName = async (data) => {
     console.log(data);
@@ -50,15 +57,15 @@ function EditName({ setIsEditName }) {
           <label htmlFor="email">Họ: </label>
           <input
             type="text"
-            name="first_name"
+            name="last_name"
             className={cx(errInputHo ? 'err_input' : '')}
-            id="first_name"
-            placeholder="Your first name"
-            {...register('first_name', {
+            id="last_name"
+            placeholder="Your last name"
+            {...register('last_name', {
               required: true,
             })}
             onBlur={() => {
-              if (errors.first_name?.type === 'required') setErrInputHo(true);
+              if (errors.last_name?.type === 'required') setErrInputHo(true);
               else setErrInputHo(false);
             }}
           />
@@ -67,13 +74,13 @@ function EditName({ setIsEditName }) {
           <label htmlFor="name">Tên: </label>
           <input
             type="text"
-            name="last_name"
+            name="first_name"
             className={cx(errInputTen ? 'err_input' : '')}
-            id="last_name"
-            placeholder="Your last name"
-            {...register('last_name', { required: true })}
+            id="first_name"
+            placeholder="Your first name"
+            {...register('first_name', { required: true })}
             onBlur={() => {
-              if (errors.last_name?.type === 'required') setErrInputTen(true);
+              if (errors.first_name?.type === 'required') setErrInputTen(true);
               else setErrInputTen(false);
             }}
           />
@@ -93,4 +100,4 @@ function EditName({ setIsEditName }) {
   );
 }
 
-export default EditName;
+export default memo(EditName);

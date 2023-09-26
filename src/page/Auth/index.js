@@ -32,7 +32,6 @@ function Auth() {
       const response = await dispatch(
         handleLogin({ email: data.email, password: data.password }),
       ).unwrap();
-      console.log(response);
       if (response) {
         navigate('/mymusic/index');
       }

@@ -1,16 +1,16 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.scss';
 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Fragment, useEffect } from 'react';
 import { publicRoutes } from '~/routes';
-import { useDispatch } from 'react-redux';
-
-import './App.scss';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { DefaultLayout } from '~/components/Layouts';
 import { getSongs } from './components/Layouts/DefaultLayout/Listen/ListenSlice';
-import { handleInitLogin } from './page/Auth/UserSlice';
+import { getPlaylists, handleInitLogin } from './page/Auth/UserSlice';
 
 function App() {
+  const { isLogined } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,7 +29,16 @@ function App() {
       }
     };
     handleCheckedUserLogin();
-  }, [dispatch]);
+  }, [dispatch, isLogined]);
+
+  useEffect(() => {
+    const handleGetPlaylist = () => {
+      if (isLogined) {
+        dispatch(getPlaylists());
+      }
+    };
+    handleGetPlaylist();
+  }, [dispatch, isLogined]);
 
   return (
     <Router>

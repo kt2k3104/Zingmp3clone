@@ -5,7 +5,10 @@ export const theme = extendTheme({
     global: {
       // styles for the `body`
       body: {
-        bg: '#170f23',
+        bg: '#061c4f',
+        bgImage:
+          'url(https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme-background/rose.jpg)',
+        bgSize: '1920px auto',
         color: '#fff',
         fontFamily: 'Inter, sans-serif',
       },

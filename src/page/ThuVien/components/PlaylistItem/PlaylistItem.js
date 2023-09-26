@@ -24,7 +24,7 @@ function PlaylistItem({ playlist, scroll }) {
 
   useEffect(() => {
     if (afterAddPlaylistNavigatePath) {
-      navigate(afterAddPlaylistNavigatePath);
+      navigate(afterAddPlaylistNavigatePath, { replace: false, relative: 'path' });
       dispatch(changePlaylistNavigatePath(''));
     }
   }, [navigate, afterAddPlaylistNavigatePath, dispatch]);
@@ -40,11 +40,12 @@ function PlaylistItem({ playlist, scroll }) {
       onClick={(e) => {
         if (playlist) {
           e.preventDefault();
-          dispatch(changePlaylistNavigatePath(`/playlist?id=${playlist?.id}`));
+          dispatch(changePlaylistNavigatePath(`/playlist/${playlist?.id}`));
         }
       }}
       className={cx('wrapper', visible ? 'showoptions' : '')}
     >
+      {/* <Link to={`/playlist/${playlist?.id}`}> */}
       <div className={cx('img')}>
         <div className={cx('imgg')}>
           {!playlist && (

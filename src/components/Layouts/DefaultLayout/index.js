@@ -4,10 +4,21 @@ import classNames from 'classnames/bind';
 import Listen from './Listen/Listen';
 import Navbar from './Navbar/Navbar';
 import Sidebar from './Sidebar';
+import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { setLocationKey } from './Listen/ListenSlice';
+import { useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
 function DefaultLayout({ children }) {
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  useEffect(() => {
+    dispatch(setLocationKey(location.key));
+  }, [dispatch, location]);
+
   return (
     <div className={cx('wrapper')}>
       <div className={cx('inner')}>

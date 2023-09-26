@@ -44,7 +44,8 @@
   display: none;
 }
 .isActive {
-  background-color: $purple-primary;
+  // background-color: $purple-primary;
+  background-color: #3560f5;
 
   & .song-thumb-active {
     display: block;

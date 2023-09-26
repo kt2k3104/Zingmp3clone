@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlayCircle } from '@fortawesome/free-regular-svg-icons';
 import { faEllipsis, faMusic, faPause, faPen, faPlay } from '@fortawesome/free-solid-svg-icons';
-import { useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import Tippy from '@tippyjs/react/headless';
@@ -26,7 +26,7 @@ function Playlist() {
   const { user, playlists } = useSelector((state) => state.user);
   const { isPlaying, currentSong } = useSelector((state) => state.listen);
   const dispatch = useDispatch();
-  const [query] = useSearchParams();
+  const { playlistId } = useParams();
   const {
     isOpen: isOpenModalUpdate,
     onOpen: onOpenModalUpdate,
@@ -35,10 +35,10 @@ function Playlist() {
   const [visible, setVisible] = useState(false);
   const show = () => setVisible(true);
   const hide = () => setVisible(false);
-  const playlistId = Number(query.get('id'));
+  // const playlistId = Number(query.get('id'));
   let playlist;
   playlists?.forEach((item) => {
-    if (item.id === playlistId) playlist = item;
+    if (item.id === Number(playlistId)) playlist = item;
   });
 
   useEffect(() => {

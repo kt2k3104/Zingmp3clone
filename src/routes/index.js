@@ -8,7 +8,7 @@ import Top100 from '~/page/Top100';
 import NgheGanDay from '~/page/NgheGanDay';
 import Playlist from '~/page/Playlist';
 import Playlists from '~/page/Playlists';
-
+import Timkiem from '~/page/Timkiem';
 import Auth from '~/page/Auth';
 import OAuth from '~/page/OAuth';
 import { OAuthLayout } from '~/components/Layouts';
@@ -24,8 +24,8 @@ const publicRoutes = [
   { path: '/top100', component: Top100 },
   { path: '/mymusic/history', component: NgheGanDay },
   { path: '/mymusic/library/playlist', component: Playlists },
-  { path: '/playlist', component: Playlist },
-
+  { path: '/playlist/:playlistId', component: Playlist },
+  { path: '/tim-kiem', component: Timkiem },
   { path: '/auth', component: Auth },
   { path: '/oauth/redirect', component: OAuth, layout: OAuthLayout },
 ];

@@ -39,7 +39,7 @@ function PlaylistItem({ playlist, children, scroll }) {
   return (
     <li
       onClick={() => {
-        dispatch(changePlaylistNavigatePath(`/playlist?id=${playlist.id}`));
+        dispatch(changePlaylistNavigatePath(`/playlist/${playlist.id}`));
       }}
       className={cx('playlist-item')}
     >

@@ -14,9 +14,7 @@ const initialState = {
 
 export const handleLogin = createAsyncThunk('auth/login', async (body, thunkAPI) => {
   try {
-    const response = await requestApi('/auth/login', 'POST', body);
-
-    const { data } = response;
+    const { data } = await requestApi('/auth/login', 'POST', body);
 
     const { data: user } = await axios.get(`http://localhost:9000/users/${data.result.id}`, {
       headers: {
@@ -146,13 +144,6 @@ export const handleRemoveSongToPlaylist = createAsyncThunk(
 );
 export const handleInitLogin = createAsyncThunk('auth/handleInitLogin', async (_, thunkAPI) => {
   try {
-    // const accessToken = localStorage.getItem('access_token');
-    // console.log(accessToken);
-    // const { data } = await axios.get('http://localhost:9000/users/curr/info', {
-    //   headers: {
-    //     Authorization: `Bearer ${accessToken}`,
-    //   },
-    // });
     const { data } = await requestApi('/users/curr/info', 'GET');
     return data.result;
   } catch (error) {
@@ -265,6 +256,7 @@ const userSlice = createSlice({
         state.token = accessToken;
         state.user = action.payload;
         state.queueFavorite = action.payload.favoriteSongs;
+        state.favoriteId = [];
         if (action.payload.favoriteSongs > 0) {
           action.payload.favoriteSongs.forEach((song) => {
             return state.favoriteId.push(song.id);

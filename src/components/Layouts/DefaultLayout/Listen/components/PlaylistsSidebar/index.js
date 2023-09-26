@@ -8,13 +8,13 @@ import Tippy from '@tippyjs/react';
 
 import SongItem from '../SongItem';
 import { useSelector } from 'react-redux';
-import { Box, Divider, HStack, Switch } from '@chakra-ui/react';
+import { Box, HStack, Switch } from '@chakra-ui/react';
 import handleGetRemainSongs from '~/helpers/logic';
 
 const cx = classNames.bind(styles);
 
 function PlaylistsSidebar({ showPlaylists }) {
-  const { queue, allSongs, currentSong } = useSelector((state) => state.listen);
+  const { queue, allSongs } = useSelector((state) => state.listen);
 
   const [isActiveDSP, setIsActiveDSP] = useState(true);
   const [isActiveNGD, setIsActiveNGD] = useState(false);

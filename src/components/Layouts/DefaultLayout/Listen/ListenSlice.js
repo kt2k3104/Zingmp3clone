@@ -20,6 +20,7 @@ const initialStates = {
   isPlaying: false,
   isRandom: false,
   isRepeat: 1,
+  locationKey: 'default',
 };
 
 export const getSongs = createAsyncThunk('listen/getSongs', async (_, thunkAPI) => {
@@ -107,7 +108,11 @@ const listenSlice = createSlice({
       state.queue.push(action.payload);
       state.remainingSongs = state.remainingSongs.filter((song) => {
         if ((song.id = action.payload.id)) return false;
+        else return true;
       });
+    },
+    setLocationKey: (state, action) => {
+      state.locationKey = action.payload;
     },
   },
 
@@ -142,5 +147,6 @@ export const {
   repeatOne,
   setQueue,
   addSongToQueue,
+  setLocationKey,
 } = listenSlice.actions;
 export default listenSlice.reducer;

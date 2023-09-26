@@ -8,7 +8,7 @@ import PlayerControlLeft from './components/PlayerControlLeft';
 import PlayerControlCenter from './components/PlayerControlCenter';
 import PlayerControlRight from './components/PlayerControlRight';
 import { useDispatch, useSelector } from 'react-redux';
-import { nextSong, pauseSong, playSong, setCurrentSong } from './ListenSlice';
+import { nextSong, pauseSong, setCurrentSong } from './ListenSlice';
 
 const cx = classNames.bind(styles);
 
