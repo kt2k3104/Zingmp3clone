@@ -33,13 +33,11 @@ export default function requestApi(endpoint, method, body, responseType = 'json'
     async (error) => {
       const originalConfig = error.config;
       if (error.response && error.response.status === 419) {
-        console.log('Access token expired');
         try {
           const refreshToken = localStorage.getItem('refresh_token');
           if (!refreshToken) {
             throw new Error('Refresh token not found');
           }
-          console.log('call refresh token api', refreshToken);
           const result = await instance.post(
             `http://localhost:9000/auth/refresh-token`,
             {
@@ -53,7 +51,6 @@ export default function requestApi(endpoint, method, body, responseType = 'json'
               },
             },
           );
-          console.log(result);
           const { access_token: new_access_token, refresh_token: new_refresh_token } =
             result.data.result;
 
@@ -76,7 +73,7 @@ export default function requestApi(endpoint, method, body, responseType = 'json'
 
   return instance.request({
     method: method,
-    url: `http://localhost:9000${endpoint}`,
+    url: `${process.env.REACT_APP_API_URL}${endpoint}`,
     data: body,
     responseType: responseType,
   });

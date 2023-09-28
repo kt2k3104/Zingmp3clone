@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import { faEllipsis, faStar } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react';
 
-import customIcon from '~/components/UI/Icons';
+import customIcon from '~/components/UI/Icons/Icons';
 
 const cx = classNames.bind(styles);
 

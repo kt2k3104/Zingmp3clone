@@ -14,7 +14,7 @@ const initialState = {
 
 export const handleLogin = createAsyncThunk('auth/login', async (body, thunkAPI) => {
   try {
-    const { data } = await requestApi('/auth/login', 'POST', body);
+    const { data } = await requestApi('auth/login', 'POST', body);
 
     const { data: user } = await axios.get(`http://localhost:9000/users/${data.result.id}`, {
       headers: {
@@ -30,7 +30,7 @@ export const handleLogin = createAsyncThunk('auth/login', async (body, thunkAPI)
 
 export const handleEditName = createAsyncThunk('auth/handleEditName', async (reqData, thunkAPI) => {
   try {
-    const response = await requestApi(`/users/${reqData.userId}`, 'PUT', reqData.body);
+    const response = await requestApi(`users/${reqData.userId}`, 'PUT', reqData.body);
     console.log(response);
     return reqData.body;
   } catch (error) {
@@ -40,7 +40,7 @@ export const handleEditName = createAsyncThunk('auth/handleEditName', async (req
 
 export const getUser = createAsyncThunk('auth/getUser', async (reqData, thunkAPI) => {
   try {
-    const { data } = await requestApi(`/users/${reqData}`, 'GET');
+    const { data } = await requestApi(`users/${reqData}`, 'GET');
     return data.result;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);
@@ -49,7 +49,7 @@ export const getUser = createAsyncThunk('auth/getUser', async (reqData, thunkAPI
 
 export const getCurrUser = createAsyncThunk('auth/getCurrUser', async (_, thunkAPI) => {
   try {
-    const { data } = await requestApi(`/users/curr`, 'GET');
+    const { data } = await requestApi(`users/curr`, 'GET');
     return data.result;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);
@@ -60,7 +60,7 @@ export const handleChangeFavoriteSong = createAsyncThunk(
   'auth/handleChangeFavoriteSong',
   async (reqData, thunkAPI) => {
     try {
-      const { data } = await requestApi(`/songs/favorite/${reqData}`, 'GET');
+      const { data } = await requestApi(`songs/favorite/${reqData}`, 'GET');
       return { data: data.result, id: reqData };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -72,7 +72,7 @@ export const handleAddPlaylist = createAsyncThunk(
   'auth/handleAddPlaylist',
   async (reqData, thunkAPI) => {
     try {
-      const { data } = await requestApi('/playlists', 'POST', reqData);
+      const { data } = await requestApi('playlists', 'POST', reqData);
       return data.result;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -84,7 +84,7 @@ export const handleUpdatePlaylist = createAsyncThunk(
   'auth/handleUpdatePlaylist',
   async (reqData, thunkAPI) => {
     try {
-      await requestApi(`/playlists/${reqData.playlistId}`, 'PUT', reqData.data);
+      await requestApi(`playlists/${reqData.playlistId}`, 'PUT', reqData.data);
       return reqData;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -96,7 +96,7 @@ export const handleDeletePlaylist = createAsyncThunk(
   'auth/handleDeletePlaylist',
   async (reqData, thunkAPI) => {
     try {
-      const { data } = await requestApi(`/playlists/${reqData}`, 'DELETE');
+      const { data } = await requestApi(`playlists/${reqData}`, 'DELETE');
       const result = {
         data: data.result,
         playlistId: reqData,
@@ -111,7 +111,7 @@ export const handleDeletePlaylist = createAsyncThunk(
 
 export const getPlaylists = createAsyncThunk('auth/getPlaylists', async (_, thunkAPI) => {
   try {
-    const { data } = await requestApi(`/playlists`, 'GET');
+    const { data } = await requestApi(`playlists`, 'GET');
     return data.result;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);
@@ -122,7 +122,7 @@ export const handleAddSongToPlaylist = createAsyncThunk(
   'auth/handleAddSongToPlaylist',
   async (reqData, thunkAPI) => {
     try {
-      const { data } = await requestApi(`/playlists/add`, 'PATCH', reqData);
+      const { data } = await requestApi(`playlists/add`, 'PATCH', reqData);
       return data.result;
     } catch (error) {
       console.log(error);
@@ -134,7 +134,7 @@ export const handleRemoveSongToPlaylist = createAsyncThunk(
   'auth/handleRemoveSongToPlaylist',
   async (reqData, thunkAPI) => {
     try {
-      const { data } = await requestApi('/playlists/remove', 'PATCH', reqData);
+      const { data } = await requestApi('playlists/remove', 'PATCH', reqData);
       return data.result;
     } catch (error) {
       console.log(error);
@@ -144,7 +144,7 @@ export const handleRemoveSongToPlaylist = createAsyncThunk(
 );
 export const handleInitLogin = createAsyncThunk('auth/handleInitLogin', async (_, thunkAPI) => {
   try {
-    const { data } = await requestApi('/users/curr/info', 'GET');
+    const { data } = await requestApi('users/curr/info', 'GET');
     return data.result;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);
@@ -173,12 +173,7 @@ const userSlice = createSlice({
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
     },
-    setFavoriteId: (state) => {
-      state.favoriteId = [];
-      state.queueFavorite.forEach((song) => {
-        state.favoriteId.push(song.id);
-      });
-    },
+
     changePlaylistNavigatePath: (state, action) => {
       state.afterAddPlaylistNavigatePath = action.payload;
     },
@@ -257,16 +252,13 @@ const userSlice = createSlice({
         state.user = action.payload;
         state.queueFavorite = action.payload.favoriteSongs;
         state.favoriteId = [];
-        if (action.payload.favoriteSongs > 0) {
-          action.payload.favoriteSongs.forEach((song) => {
-            return state.favoriteId.push(song.id);
-          });
-        }
+        action.payload.favoriteSongs.forEach((song) => {
+          return state.favoriteId.push(song.id);
+        });
       });
   },
 });
 
-export const { setLogout, setQueueFavorite, setFavoriteId, changePlaylistNavigatePath } =
-  userSlice.actions;
+export const { setLogout, setQueueFavorite, changePlaylistNavigatePath } = userSlice.actions;
 
 export default userSlice.reducer;

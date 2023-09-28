@@ -31,14 +31,15 @@ import {
 import { useRef, useState } from 'react';
 import { Spinner } from '@chakra-ui/react';
 
-import { deleteSong, getSongs } from '~/components/Layouts/DefaultLayout/Listen/ListenSlice';
+import { deleteSong, getSongs } from '~/layouts/components/PlayerControls/ListenSlice';
 import { getUser } from '~/page/Auth/UserSlice';
 import OptionAddToPlaylist from './OptionAddToPlaylist/OptionAddToPlaylist';
 import ModalUpdateSong from './ModalUpdateSong/ModalUpdateSong';
+import customIcon from '~/components/UI/Icons/Icons';
 
 const cx = classNames.bind(styles);
 
-function SongOtherOptions({ attrs, song, hide, favoriteSong, mySong }) {
+function SongOtherOptions({ attrs, song, hide, type }) {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [onDelete, setOnDelete] = useState(false);
@@ -80,18 +81,24 @@ function SongOtherOptions({ attrs, song, hide, favoriteSong, mySong }) {
           <span>Chặn</span>
         </li>
       </div>
-      <li>
-        <i>
-          <FontAwesomeIcon icon={faListAlt} />
-        </i>
-        Thêm vào danh sách phát
-      </li>
-      <li>
-        <i>
-          <FontAwesomeIcon icon={faHandPointRight} />
-        </i>
-        Phát tiếp theo
-      </li>
+      {type === 'UPLOAD_SONG' || type === 'FAVORITE_ITEM' ? (
+        <>
+          <li>
+            <i>
+              <FontAwesomeIcon icon={faListAlt} />
+            </i>
+            Thêm vào danh sách phát
+          </li>
+          <li>
+            <i>
+              <FontAwesomeIcon icon={faHandPointRight} />
+            </i>
+            Phát tiếp theo
+          </li>
+        </>
+      ) : (
+        <></>
+      )}
       <li>
         <i>
           <FontAwesomeIcon icon={faBroadcastTower} />
@@ -113,7 +120,7 @@ function SongOtherOptions({ attrs, song, hide, favoriteSong, mySong }) {
           Thêm vào playlist <FontAwesomeIcon icon={faChevronRight} />
         </li>
       </Tippy>
-      {mySong && (
+      {type === 'UPLOAD_SONG' && (
         <>
           <li
             onClick={() => {
@@ -140,7 +147,7 @@ function SongOtherOptions({ attrs, song, hide, favoriteSong, mySong }) {
           </li>
         </>
       )}
-      {favoriteSong && (
+      {type === 'FAVORITE_ITEM' && (
         <>
           <li>
             <i>
@@ -185,6 +192,65 @@ function SongOtherOptions({ attrs, song, hide, favoriteSong, mySong }) {
               Chia sẻ <FontAwesomeIcon icon={faChevronRight} />
             </li>
           </Tippy>
+        </>
+      )}
+      {type === 'QUEUE_SONG' && (
+        <>
+          <li>
+            <i>
+              <customIcon.IconKaraoke />
+            </i>
+            Phát cùng lời bài hát
+          </li>
+          <li>
+            <i>
+              <FontAwesomeIcon icon={faLink} />
+            </i>
+            Sao chép link
+          </li>
+          <Tippy
+            interactive
+            placement="left"
+            trigger="mouseenter"
+            offset={[-110, 220]}
+            render={(attrs) => (
+              <ul className={cx('share-option')} tabIndex="-1" {...attrs}>
+                <li>
+                  <img
+                    className={cx('icon-fb')}
+                    src="https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.9.57/static/media/facebook.d62c237b.svg"
+                    alt="fb"
+                  />
+                  <span>Facebook</span>
+                </li>
+                <li>
+                  <img
+                    className={cx('icon-zalo')}
+                    src="https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.9.57/static/media/zalo.d94c16f4.svg"
+                    alt="zalo"
+                  />
+                  <span>Zalo</span>
+                </li>
+                <li>
+                  <FontAwesomeIcon icon={faCode} />
+                  <span>Mã nhúng</span>
+                </li>
+              </ul>
+            )}
+          >
+            <li>
+              <i>
+                <FontAwesomeIcon icon={faShare} />
+              </i>
+              Chia sẻ <FontAwesomeIcon icon={faChevronRight} />
+            </li>
+          </Tippy>
+          <li onClick={() => {}}>
+            <i>
+              <FontAwesomeIcon icon={faTrashAlt} />
+            </i>
+            Xóa
+          </li>
         </>
       )}
       <AlertDialog
@@ -239,7 +305,7 @@ function SongOtherOptions({ attrs, song, hide, favoriteSong, mySong }) {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-      <p>Tải lên bởi {user.first_name + ' ' + user.last_name}</p>
+      {type === 'UPLOAD_SONG' && <p>Tải lên bởi {user.first_name + ' ' + user.last_name}</p>}
     </div>
   );
 }

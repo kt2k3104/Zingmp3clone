@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './SongItem.module.scss';
 import classNames from 'classnames/bind';
 import { faEllipsis, faMinus, faPlay } from '@fortawesome/free-solid-svg-icons';
-import customIcon from '~/components/UI/Icons';
+import customIcon from '~/components/UI/Icons/Icons';
 import Tippy from '@tippyjs/react';
 
 const cx = classNames.bind(styles);

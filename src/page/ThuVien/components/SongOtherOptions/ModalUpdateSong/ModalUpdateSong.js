@@ -18,7 +18,7 @@ import { Select } from '@chakra-ui/react';
 
 import { changePlaylistNavigatePath, getUser } from '~/page/Auth/UserSlice';
 import { memo, useEffect } from 'react';
-import { editSong } from '~/components/Layouts/DefaultLayout/Listen/ListenSlice';
+import { editSong } from '~/layouts/components/PlayerControls/ListenSlice';
 
 const cx = classNames.bind(styles);
 

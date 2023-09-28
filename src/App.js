@@ -1,12 +1,10 @@
-import './App.scss';
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Fragment, useEffect } from 'react';
 import { publicRoutes } from '~/routes';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { DefaultLayout } from '~/components/Layouts';
-import { getSongs } from './components/Layouts/DefaultLayout/Listen/ListenSlice';
+import { DefaultLayout } from '~/layouts';
+import { getSongs } from './layouts/components/PlayerControls/ListenSlice';
 import { getPlaylists, handleInitLogin } from './page/Auth/UserSlice';
 
 function App() {

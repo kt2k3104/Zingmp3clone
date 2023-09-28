@@ -5,7 +5,7 @@ import { handleAddSongToPlaylist } from '~/page/Auth/UserSlice';
 import { Box, useDisclosure, useToast } from '@chakra-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faListOl } from '@fortawesome/free-solid-svg-icons';
-import ModalAddPlaylist from '~/components/Layouts/DefaultLayout/Sidebar/component/ModalAddPlaylist/ModalAddPlaylist';
+import ModalAddPlaylist from '~/layouts/components/Sidebar/component/ModalAddPlaylist';
 
 const cx = classNames.bind(styles);
 

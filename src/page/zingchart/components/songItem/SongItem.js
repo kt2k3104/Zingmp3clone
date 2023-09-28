@@ -6,7 +6,7 @@ import { faHeart as faHeartt } from '@fortawesome/free-regular-svg-icons';
 import Tippy from '@tippyjs/react';
 import { useState } from 'react';
 
-import customIcon from '~/components/UI/Icons';
+import customIcon from '~/components/UI/Icons/Icons';
 
 const cx = classNames.bind(styles);
 

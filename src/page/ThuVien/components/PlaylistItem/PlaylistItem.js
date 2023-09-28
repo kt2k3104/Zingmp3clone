@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import Tippy from '@tippyjs/react/headless';
 import { Box, Img } from '@chakra-ui/react';
 import { changePlaylistNavigatePath } from '~/page/Auth/UserSlice';
-import PlaylistOptions from '~/components/Layouts/DefaultLayout/Sidebar/component/PlaylistOptions/PlaylistOptions';
+import PlaylistOptions from '~/layouts/components/Sidebar/component/PlaylistOptions';
 
 const cx = classNames.bind(styles);
 
@@ -33,6 +33,7 @@ function PlaylistItem({ playlist, scroll }) {
     if (visible) {
       hide();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scroll]);
 
   return (

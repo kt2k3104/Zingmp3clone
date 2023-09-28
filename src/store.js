@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-// import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
-import ListenSlice from '~/components/Layouts/DefaultLayout/Listen/ListenSlice';
+import ListenSlice from '~/layouts/components/PlayerControls/ListenSlice';
 import UserSlice from './page/Auth/UserSlice';
 import AppSlice from './app.slice';
 // ...
@@ -13,6 +12,3 @@ export const store = configureStore({
     app: AppSlice,
   },
 });
-
-// Optional, nhưng bắt buộc nếu dùng tính năng refetchOnFocus/refetchOnReconnect
-// setupListeners(store.dispatch);

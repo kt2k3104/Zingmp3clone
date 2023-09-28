@@ -12,7 +12,7 @@ function PlaylistItem({ playlist, index }) {
   const [isFavoritePlaylist, setIsFavoritePlaylist] = useState(false);
 
   return (
-    <div className={cx('wrapper', index ? 'hideplaylist' : '')}>
+    <div className={cx('wrapper', index === 4 ? 'hideplaylist' : '')}>
       <Box sx={css.box2} role="group">
         <Img sx={css.img} src={playlist.img} alt="img" />
         <HStack sx={css.hstack}>

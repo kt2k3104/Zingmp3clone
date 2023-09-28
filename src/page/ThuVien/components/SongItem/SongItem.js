@@ -15,17 +15,17 @@ import {
   playSong,
   setCurrentSong,
   setQueue,
-} from '~/components/Layouts/DefaultLayout/Listen/ListenSlice';
+} from '~/layouts/components/PlayerControls/ListenSlice';
 import Tippy from '@tippyjs/react';
 import Tippyy from '@tippyjs/react/headless';
 import { memo, useEffect, useState } from 'react';
 import SongOtherOptions from '../SongOtherOptions/SongOtherOptions';
-import customIcon from '~/components/UI/Icons';
+import customIcon from '~/components/UI/Icons/Icons';
 import { handleChangeFavoriteSong } from '~/page/Auth/UserSlice';
 
 const cx = classNames.bind(styles);
 
-function SongItem({ song, favoriteSong, mySong, scroll, type }) {
+function SongItem({ song, scroll, type }) {
   const { currentSong, isPlaying } = useSelector((state) => state.listen);
   const { favoriteId, queueFavorite, user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -51,10 +51,31 @@ function SongItem({ song, favoriteSong, mySong, scroll, type }) {
     if (isVisible) {
       hide();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scroll]);
 
   return (
-    <div className={cx('wrapper', currentSong.id === song.id ? 'isActive' : 'noActive')}>
+    <div
+      onDoubleClick={() => {
+        if (type === 'FAVORITE_ITEM') {
+          dispatch(setQueue(queueFavorite));
+        }
+        if (type === 'UPLOAD_SONG') {
+          dispatch(setQueue(user.songs));
+        }
+
+        if (song.id === currentSong.id && isPlaying) {
+          dispatch(pauseSong());
+        } else if (song.id === currentSong.id && !isPlaying) {
+          dispatch(setCurrentSong(song));
+          dispatch(playSong());
+        } else if (song.id !== currentSong.id) {
+          dispatch(setCurrentSong(song));
+          dispatch(playSong());
+        }
+      }}
+      className={cx('wrapper', currentSong.id === song.id ? 'isActive' : 'noActive')}
+    >
       <div className={cx('left')}>
         <FontAwesomeIcon className={cx('music_icon')} icon={faMusic} />
         <div
@@ -103,9 +124,14 @@ function SongItem({ song, favoriteSong, mySong, scroll, type }) {
           <h3>{song.artist}</h3>
         </div>
       </div>
-      <div className={cx('center')}>
-        {favoriteSong && <span>{song.name + ' (Single)'}</span>}
-        {mySong && (
+      <div
+        onDoubleClick={(e) => {
+          e.stopPropagation();
+        }}
+        className={cx('center')}
+      >
+        {type === 'FAVORITE_ITEM' && <span>{song.name + ' (Single)'}</span>}
+        {type === 'UPLOAD_SONG' && (
           <div className={cx('title')}>
             <span>Công khai</span>
             <FontAwesomeIcon icon={faChevronDown} />
@@ -113,17 +139,27 @@ function SongItem({ song, favoriteSong, mySong, scroll, type }) {
         )}
       </div>
       <div className={cx('right')}>
-        {favoriteSong && (
+        {type === 'FAVORITE_ITEM' && (
           <>
             <Tippy content="MV">
-              <button className={cx('btn-mv')}>
+              <button
+                onDoubleClick={(e) => {
+                  e.stopPropagation();
+                }}
+                className={cx('btn-mv')}
+              >
                 <div className={cx('icon-mv')}>
                   <p>MV</p>
                 </div>
               </button>
             </Tippy>
             <Tippy content="Xem lời bài hát">
-              <button className={cx('btn-karaoke')}>
+              <button
+                onDoubleClick={(e) => {
+                  e.stopPropagation();
+                }}
+                className={cx('btn-karaoke')}
+              >
                 <customIcon.IconKaraoke />
               </button>
             </Tippy>
@@ -131,6 +167,9 @@ function SongItem({ song, favoriteSong, mySong, scroll, type }) {
         )}
         {favoriteId.includes(song.id) ? (
           <button
+            onDoubleClick={(e) => {
+              e.stopPropagation();
+            }}
             onClick={() => {
               dispatch(handleChangeFavoriteSong(song.id));
             }}
@@ -140,6 +179,9 @@ function SongItem({ song, favoriteSong, mySong, scroll, type }) {
           </button>
         ) : (
           <button
+            onDoubleClick={(e) => {
+              e.stopPropagation();
+            }}
             onClick={() => {
               dispatch(handleChangeFavoriteSong(song.id));
             }}
@@ -154,18 +196,16 @@ function SongItem({ song, favoriteSong, mySong, scroll, type }) {
           visible={isVisible}
           onClickOutside={hide}
           offset={[0, 0]}
-          render={(attrs) => (
-            <SongOtherOptions
-              favoriteSong={favoriteSong}
-              mySong={mySong}
-              hide={hide}
-              song={song}
-              attrs={attrs}
-            />
-          )}
+          render={(attrs) => <SongOtherOptions type={type} hide={hide} song={song} attrs={attrs} />}
         >
           <Tippy content="Khác">
-            <button className={cx('btn_option', 'dfnone')} onClick={isVisible ? hide : show}>
+            <button
+              className={cx('btn_option', 'dfnone')}
+              onDoubleClick={(e) => {
+                e.stopPropagation();
+              }}
+              onClick={isVisible ? hide : show}
+            >
               <FontAwesomeIcon icon={faEllipsis} />
             </button>
           </Tippy>

@@ -9,7 +9,7 @@ import {
   pauseSong,
   playSong,
   setCurrentSong,
-} from '~/components/Layouts/DefaultLayout/Listen/ListenSlice';
+} from '~/layouts/components/PlayerControls/ListenSlice';
 import Tippy from '@tippyjs/react';
 import Tippyy from '@tippyjs/react/headless';
 import { useState } from 'react';

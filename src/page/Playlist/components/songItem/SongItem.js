@@ -9,11 +9,11 @@ import {
   playSong,
   setCurrentSong,
   setQueue,
-} from '~/components/Layouts/DefaultLayout/Listen/ListenSlice';
+} from '~/layouts/components/PlayerControls/ListenSlice';
 import Tippy from '@tippyjs/react';
 import Tippyy from '@tippyjs/react/headless';
 import { useState } from 'react';
-import customIcon from '~/components/UI/Icons';
+import customIcon from '~/components/UI/Icons/Icons';
 
 import { handleChangeFavoriteSong } from '~/page/Auth/UserSlice';
 import SongOtherOptions from '../songOtherOptions/SongOtherOptions';
